@@ -30,6 +30,8 @@ use GoSuccess\Digistore24IPN\Enum\Event;
 use GoSuccess\Digistore24IPN\Helper\SignatureHelper;
 use GoSuccess\Digistore24IPN\Exception\IPNResponseFormatException;
 
+require_once __DIR__ . '/vendor/autoload.php';
+
 $shaPassphrase = 'your-secret-passphrase';
 $ipnData = $_POST ?: $_GET;
 
