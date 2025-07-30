@@ -1,0 +1,21 @@
+{
+    "name": "gosuccess/digistore24-ipn",
+    "description": "Composer Library for the Digistore24 IPN.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "GoSuccess\\Digistore24IPN\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "GoSuccess",
+            "homepage": "https://gosuccess.io"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=8.4"
+    }
+}
