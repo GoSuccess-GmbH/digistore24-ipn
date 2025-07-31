@@ -1308,7 +1308,7 @@ class IPNRequestDto
         return DtoHelper::fromRequest(self::class);
     }
 
-    public function getAction(): ?string
+    public function getAction(): ?Action
     {
         return $this->action;
     }
@@ -1468,17 +1468,17 @@ class IPNRequestDto
         return $this->amount_vat;
     }
 
-    public function getBillingStatus(): ?string
+    public function getBillingStatus(): ?BillingStatus
     {
         return $this->billing_status;
     }
 
-    public function getBillingStopReason(): ?string
+    public function getBillingStopReason(): ?BillingStopReason
     {
         return $this->billing_stop_reason;
     }
 
-    public function getBillingType(): ?string
+    public function getBillingType(): ?BillingType
     {
         return $this->billing_type;
     }
@@ -3538,7 +3538,7 @@ class IPNRequestDto
         return $this->customer_to_affiliate_url;
     }
 
-    public function getDeliveryDate(): ?string
+    public function getDeliveryDate(): ?DateTimeImmutable
     {
         return $this->delivery_date;
     }
@@ -3548,7 +3548,7 @@ class IPNRequestDto
         return $this->email;
     }
 
-    public function getEvent(): ?string
+    public function getEvent(): ?Event
     {
         return $this->event;
     }
@@ -3563,7 +3563,7 @@ class IPNRequestDto
         return $this->eticket_count;
     }
 
-    public function getEticketCreatedAt(): ?string
+    public function getEticketCreatedAt(): ?DateTimeImmutable
     {
         return $this->eticket_created_at;
     }
@@ -4578,7 +4578,7 @@ class IPNRequestDto
         return $this->eticket_is_blocked;
     }
 
-    public function getEticketModifiedAt(): ?string
+    public function getEticketModifiedAt(): ?DateTimeImmutable
     {
         return $this->eticket_modified_at;
     }
@@ -5143,7 +5143,7 @@ class IPNRequestDto
         return $this->ipn_version;
     }
 
-    public function getIsCancelledFor(): ?string
+    public function getIsCancelledFor(): ?DateTimeImmutable
     {
         return $this->is_cancelled_for;
     }
@@ -5748,7 +5748,7 @@ class IPNRequestDto
         return $this->merchant_name;
     }
 
-    public function getNextPaymentAt(): ?string
+    public function getNextPaymentAt(): ?DateTimeImmutable
     {
         return $this->next_payment_at;
     }
@@ -5773,17 +5773,17 @@ class IPNRequestDto
         return $this->number_of_installments;
     }
 
-    public function getOrderBillingStatus(): ?string
+    public function getOrderBillingStatus(): ?BillingStatus
     {
         return $this->order_billing_status;
     }
 
-    public function getOrderDate(): ?string
+    public function getOrderDate(): ?DateTimeImmutable
     {
         return $this->order_date;
     }
 
-    public function getOrderDateTime(): ?string
+    public function getOrderDateTime(): ?DateTimeImmutable
     {
         return $this->order_date_time;
     }
@@ -5808,7 +5808,7 @@ class IPNRequestDto
         return $this->order_time;
     }
 
-    public function getOrderType(): ?string
+    public function getOrderType(): ?OrderType
     {
         return $this->order_type;
     }
@@ -5833,7 +5833,7 @@ class IPNRequestDto
         return $this->other_vat_amounts;
     }
 
-    public function getPayMethod(): ?string
+    public function getPayMethod(): ?PayMethod
     {
         return $this->pay_method;
     }
@@ -5858,7 +5858,7 @@ class IPNRequestDto
         return $this->product_amount;
     }
 
-    public function getProductDeliveryType(): ?string
+    public function getProductDeliveryType(): ?ProductDeliveryType
     {
         return $this->product_delivery_type;
     }
@@ -6418,7 +6418,7 @@ class IPNRequestDto
         return $this->quantity;
     }
 
-    public function getRebillStopNotedAt(): ?string
+    public function getRebillStopNotedAt(): ?DateTimeImmutable
     {
         return $this->rebill_stop_noted_at;
     }
@@ -6993,17 +6993,17 @@ class IPNRequestDto
         return $this->transaction_id;
     }
 
-    public function getTransactionDate(): ?string
+    public function getTransactionDate(): ?DateTimeImmutable
     {
         return $this->transaction_date;
     }
 
-    public function getTransactionProcessedAt(): ?string
+    public function getTransactionProcessedAt(): ?DateTimeImmutable
     {
         return $this->transaction_processed_at;
     }
 
-    public function getTransactionType(): ?string
+    public function getTransactionType(): ?TransactionType
     {
         return $this->transaction_type;
     }
@@ -7018,7 +7018,7 @@ class IPNRequestDto
         return $this->upgrade_key;
     }
 
-    public function getUpgradeType(): ?string
+    public function getUpgradeType(): ?UpgradeType
     {
         return $this->upgrade_type;
     }
