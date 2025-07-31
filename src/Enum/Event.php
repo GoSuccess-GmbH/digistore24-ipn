@@ -26,7 +26,7 @@ enum Event: string
     /**
      * The credit card company processed a chargeback.
      */
-    case CHARGEBACK = 'on_chargeback';
+    case ON_CHARGEBACK = 'on_chargeback';
 
     /**
      * For a subscription or installment payment, a payment is missing
