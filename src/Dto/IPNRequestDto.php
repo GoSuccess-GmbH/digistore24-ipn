@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace GoSuccess\Digistore24IPN\Dto;
 
 use DateTimeImmutable;
-use GoSuccess\Digistore24IPN\DHelper\DtoHelper;
+use GoSuccess\Digistore24IPN\Helper\DtoHelper;
 use GoSuccess\Digistore24IPN\Enum\Action;
 use GoSuccess\Digistore24IPN\Enum\BillingStatus;
 use GoSuccess\Digistore24IPN\Enum\BillingStopReason;

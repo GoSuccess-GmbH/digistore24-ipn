@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GoSuccess\Digistore24IPN\DHelper;
+namespace GoSuccess\Digistore24IPN\Helper;
 
 use DateTime;
 use DateTimeImmutable;
