@@ -25,22 +25,22 @@ try {
     SignatureHelper::validateSignature($secret, $_POST);
     
     // Get IPN data
-    $ipn = IPNRequestDto::map();
+    $ipn = IPNRequestDto::fromPost();
     
     // Handle payment
-    if ($ipn->getEvent() === Event::ON_PAYMENT) {
+    if ($ipn->event === Event::ON_PAYMENT) {
         
         // Get order details
-        $orderId = $ipn->getOrderId();
-        $email = $ipn->getEmail();
-        $amount = $ipn->getAmountBrutto();
+        $orderId = $ipn->order_id;
+        $email = $ipn->email;
+        $amount = $ipn->amount_brutto;
         
         // Your code: Create user, grant access, etc.
         // ...
         
         // Optional: Return login credentials
         $response = new IPNResponseDto();
-        $response->setHeadline('Welcome!');
+        $response->headline = 'Welcome!';
         $response->addLoginBlock(
             'username',
             'password',

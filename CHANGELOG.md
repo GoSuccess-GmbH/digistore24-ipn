@@ -5,45 +5,68 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.0.0] - 2025-01-XX
+
+### 🚨 BREAKING CHANGES
+
+This is a **major version update** with breaking changes. Please read the [UPGRADE.md](docs/UPGRADE.md) guide before updating.
+
+#### Changed
+- **BREAKING**: Minimum PHP version is now **8.4** (was 8.0+)
+- **BREAKING**: All properties now use **snake_case** names matching Digistore24 IPN API exactly (e.g., `order_id`, `amount_brutto`, `address_first_name`)
+- **BREAKING**: Replaced all getter methods with **direct property access** using PHP 8.4 Property Hooks
+  - Old: `$ipn->getOrderId()`
+  - New: `$ipn->order_id`
+- **BREAKING**: Replaced all setter methods with **direct property assignment**
+  - Old: `$response->setHeadline('text')`
+  - New: `$response->headline = 'text'`
+- **BREAKING**: Changed static factory method `IPNRequestDto::map()` to:
+  - `IPNRequestDto::fromPost()` - For $_POST data
+  - `IPNRequestDto::fromGet()` - For $_GET data
+  - `IPNRequestDto::fromArray($data)` - For custom array
+- **BREAKING**: Removed `tag1` through `tag100` properties, replaced with single `tags` property
+  - Old: `$ipn->getTag1()`, `$ipn->getTag2()`, etc.
+  - New: `$ipn->tags` (array with automatic comma-split conversion)
+
+#### Removed
+- **BREAKING**: Removed all array helper methods (use direct property access instead):
+  - `getAllProductIds()` - Use `$ipn->product_id` and `$ipn->product_ids`
+  - `getAllCouponCodes()` - Use `$ipn->coupon_code`
+  - `getAllTags()` - Use `$ipn->tags` (now returns array directly)
+  - `getAllLicenseKeys()` - Use `$ipn->license_key`
+  - `getAllEticketUrls()` - Use `$ipn->eticket_url`
+  - `getAllUpgradedProductIds()` - Use `$ipn->upgraded_product_id`
+  - `getAllCouponAmountsLeft()` - Use `$ipn->coupon_amount_left`
+  - `getAllCouponAmountsTotal()` - Use `$ipn->coupon_amount_total`
+- **BREAKING**: Removed `__call()` magic method (no longer needed with Property Hooks)
 
 ### Added
-- Comprehensive PHPUnit test suite covering all major components
-- Magic method `__call()` in `IPNRequestDto` for dynamic getters (reduces code duplication)
-- Array helper methods for convenient access to grouped data:
-  - `getAllCouponCodes()` - Get all coupon codes as array
-  - `getAllProductIds()` - Get all product IDs as array
-  - `getAllTags()` - Get all tags as array
-  - `getAllEticketUrls()` - Get all e-ticket URLs as array
-  - `getAllLicenseKeys()` - Get all license keys as array
-  - `getAllUpgradedProductIds()` - Get all upgraded product IDs as array
-  - `getAllCouponAmountsLeft()` - Get remaining coupon amounts as array
-  - `getAllCouponAmountsTotal()` - Get total coupon amounts as array
-- URL validation in `IPNResponseDto` for `setThankyouUrl()` and `addLoginBlock()`
-- Enhanced DateTime parsing with multiple format support and error handling
-- GitHub Actions CI/CD pipeline for automated testing (PHP 8.1, 8.2, 8.3)
-- PHPStan static analysis support
-- PHP CS Fixer configuration for code style consistency
-- Comprehensive composer scripts for testing and code quality
-- Extended `composer.json` with keywords, support links, and dev dependencies
-- Complete documentation in `docs/` directory:
-  - Upgrade guide
-  - Optimizations overview
-  - Test results
-  - PHPStan analysis
-  - Project summary
+- **PHP 8.4 Property Hooks** for automatic type conversion and validation
+- Automatic type conversions in Property Hooks:
+  - String → float, int, bool, DateTimeImmutable, Enum
+  - Comma-separated string → array (for `tags` property)
+- Zero-reflection architecture for better performance
+- Static factory methods: `fromPost()`, `fromGet()`, `fromArray()`
+- Comprehensive documentation updates for v2.0
+- Migration guide in [docs/UPGRADE.md](docs/UPGRADE.md)
 
-### Changed
-- **Security**: Replaced string comparison with `hash_equals()` in `SignatureHelper` to prevent timing attacks
-- Improved `DtoHelper::parseDateTime()` with support for multiple date formats
-- Enhanced error handling for invalid date strings (returns null instead of throwing)
-- Updated `composer.json` with autoload-dev, scripts, and additional metadata
+### Performance
+- 🚀 **92.2% code reduction** in IPNRequestDto (7616 → 597 lines)
+- 🚀 **52% code reduction** in DtoHelper (130 → 62 lines)
+- ⚡ **No reflection overhead** - direct property access
+- ⚡ Property Hooks are compiled for optimal performance
 
-### Fixed
-- DateTime parsing no longer throws exceptions for invalid date strings
-- Boolean parsing handles more edge cases correctly
-- Return types for `getEticketIsBlocked()`, `getIsGdprCountry()`, and `getOrderIsPaid()` corrected to `?bool`
-- PHPStan warnings resolved (0 errors at level 6)
+### Documentation
+- Updated README.md with PHP 8.4 examples
+- Completely rewritten [docs/UPGRADE.md](docs/UPGRADE.md) for v2.0 migration
+- Updated all examples in `examples/` directory
+- Updated examples/README.md with Property Hooks explanation
+- All code examples now use snake_case properties and direct access
+
+### Migration
+See [docs/UPGRADE.md](docs/UPGRADE.md) for complete migration instructions from v1.x to v2.0.
+
+---
 
 ## [1.1.2] - 2025-07-31
 
@@ -79,7 +102,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Exception handling for invalid IPN data
 - MIT License
 
-[Unreleased]: https://github.com/GoSuccess-GmbH/digistore24-ipn/compare/v1.1.2...HEAD
+[2.0.0]: https://github.com/GoSuccess-GmbH/digistore24-ipn/compare/v1.1.2...v2.0.0
 [1.1.2]: https://github.com/GoSuccess-GmbH/digistore24-ipn/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/GoSuccess-GmbH/digistore24-ipn/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/GoSuccess-GmbH/digistore24-ipn/compare/v1.0.0...v1.1.0

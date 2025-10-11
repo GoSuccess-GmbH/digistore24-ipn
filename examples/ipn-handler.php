@@ -45,14 +45,14 @@ try {
     SignatureHelper::validateSignature($shaPassphrase, $ipnData);
     logIpn('Signature validated successfully');
 
-    // Map to DTO
-    $ipnRequest = IPNRequestDto::map();
+    // Create DTO from IPN data
+    $ipnRequest = IPNRequestDto::fromArray($ipnData);
 
     // Extract common fields
-    $event = $ipnRequest->getEvent();
-    $orderId = $ipnRequest->getOrderId();
-    $email = $ipnRequest->getEmail();
-    $amount = $ipnRequest->getAmountBrutto();
+    $event = $ipnRequest->event;
+    $orderId = $ipnRequest->order_id;
+    $email = $ipnRequest->email;
+    $amount = $ipnRequest->amount_brutto;
 
     logIpn('Processing event', [
         'event' => $event->value,
@@ -123,9 +123,15 @@ try {
  */
 function handlePayment(IPNRequestDto $ipn): void
 {
-    $orderId = $ipn->getOrderId();
-    $email = $ipn->getEmail();
-    $productIds = $ipn->getAllProductIds();
+    $orderId = $ipn->order_id;
+    $email = $ipn->email;
+    
+    // Get all product IDs (supports multiple products in one order)
+    $productIds = [];
+    if ($ipn->product_id) $productIds[] = $ipn->product_id;
+    if ($ipn->product_id_2) $productIds[] = $ipn->product_id_2;
+    if ($ipn->product_id_3) $productIds[] = $ipn->product_id_3;
+    // ... continue for product_id_4 to product_id_100 if needed
     
     logIpn('Processing payment', [
         'order_id' => $orderId,
@@ -141,7 +147,7 @@ function handlePayment(IPNRequestDto $ipn): void
 
     // Example: Generate and return login credentials
     $response = new IPNResponseDto();
-    $response->setHeadline('Your Access Details');
+    $response->headline = 'Your Access Details';
     
     // Generate login credentials (example)
     $username = generateUsername($email);
@@ -172,8 +178,8 @@ function handlePayment(IPNRequestDto $ipn): void
  */
 function handleRefund(IPNRequestDto $ipn): void
 {
-    $orderId = $ipn->getOrderId();
-    $email = $ipn->getEmail();
+    $orderId = $ipn->order_id;
+    $email = $ipn->email;
     
     logIpn('Processing refund', [
         'order_id' => $orderId,
@@ -197,7 +203,7 @@ function handleRefund(IPNRequestDto $ipn): void
  */
 function handleChargeback(IPNRequestDto $ipn): void
 {
-    $orderId = $ipn->getOrderId();
+    $orderId = $ipn->order_id;
     
     logIpn('Processing chargeback', ['order_id' => $orderId]);
 
@@ -213,8 +219,8 @@ function handleChargeback(IPNRequestDto $ipn): void
  */
 function handlePaymentMissed(IPNRequestDto $ipn): void
 {
-    $orderId = $ipn->getOrderId();
-    $email = $ipn->getEmail();
+    $orderId = $ipn->order_id;
+    $email = $ipn->email;
     
     logIpn('Processing missed payment', [
         'order_id' => $orderId,
@@ -237,7 +243,7 @@ function handlePaymentMissed(IPNRequestDto $ipn): void
  */
 function handleRebillCancelled(IPNRequestDto $ipn): void
 {
-    $orderId = $ipn->getOrderId();
+    $orderId = $ipn->order_id;
     
     logIpn('Processing rebill cancellation', ['order_id' => $orderId]);
 
@@ -252,7 +258,7 @@ function handleRebillCancelled(IPNRequestDto $ipn): void
  */
 function handleRebillResumed(IPNRequestDto $ipn): void
 {
-    $orderId = $ipn->getOrderId();
+    $orderId = $ipn->order_id;
     
     logIpn('Processing rebill resumption', ['order_id' => $orderId]);
 
@@ -271,8 +277,8 @@ function handleRebillResumed(IPNRequestDto $ipn): void
  */
 function handleLastPaidDay(IPNRequestDto $ipn): void
 {
-    $orderId = $ipn->getOrderId();
-    $email = $ipn->getEmail();
+    $orderId = $ipn->order_id;
+    $email = $ipn->email;
     
     logIpn('Processing last paid day', [
         'order_id' => $orderId,

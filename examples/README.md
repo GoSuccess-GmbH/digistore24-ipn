@@ -1,6 +1,6 @@
 # Examples
 
-This directory contains practical examples for using the Digistore24 IPN PHP Library.
+This directory contains practical examples for using the Digistore24 IPN PHP Library with **PHP 8.4 Property Hooks**.
 
 ## 📁 Available Examples
 
@@ -10,6 +10,7 @@ The simplest possible IPN handler. Great for getting started quickly.
 **Features:**
 - Basic signature validation
 - Simple event handling
+- Direct property access
 - Login credentials response
 
 **Use this when:** You need a quick, minimal implementation.
@@ -41,17 +42,15 @@ Complete, production-ready IPN handler with full event handling.
 ---
 
 ### 3. `array-helpers.php`
-Demonstrates the convenient array helper methods.
+Demonstrates direct property access and automatic type conversions.
 
 **Features:**
-- `getAllProductIds()` - Get all products as array
-- `getAllCouponCodes()` - Get all coupons as array
-- `getAllTags()` - Get all tags as array
-- `getAllLicenseKeys()` - Get all licenses as array
-- `getAllEticketUrls()` - Get all e-tickets as array
-- And more...
+- Direct property access: `$ipn->order_id`, `$ipn->product_id`
+- Automatic array conversion for tags: `$ipn->tags` returns array
+- Type conversions: integers, floats, booleans, dates, enums
+- Working with comma-separated values
 
-**Use this when:** You need to work with multiple products, coupons, or other grouped data.
+**Use this when:** You need to understand how Property Hooks work.
 
 ---
 
@@ -78,7 +77,42 @@ https://yoursite.com/ipn-handler.php
 
 ---
 
-## 🔒 Security Notes
+## � PHP 8.4 Property Hooks
+
+This library uses PHP 8.4's Property Hooks feature for automatic type conversion and validation.
+
+### Direct Property Access
+```php
+// v2.x - Direct property access (PHP 8.4)
+$orderId = $ipn->order_id;
+$amount = $ipn->amount_brutto;
+$email = $ipn->email;
+
+// ❌ NO LONGER: $ipn->getOrderId(), $ipn->getAmountBrutto()
+```
+
+### Automatic Type Conversions
+```php
+$ipn->amount_brutto;      // Automatically converted to float
+$ipn->buyer_id;           // Automatically converted to int
+$ipn->order_is_paid;      // Automatically converted to bool
+$ipn->order_date;         // Automatically converted to DateTimeImmutable
+$ipn->event;              // Automatically converted to Event enum
+```
+
+### Tags as Array
+```php
+// Tags are automatically split from comma-separated string to array
+$ipn->tags;               // ['premium', 'vip', 'annual']
+$ipn->tags[0];            // 'premium'
+$ipn->tags[1];            // 'vip'
+
+// ❌ NO LONGER: $ipn->tag1, $ipn->tag2, $ipn->tag3, etc.
+```
+
+---
+
+## �🔒 Security Notes
 
 ### Always validate signatures!
 ```php
@@ -117,7 +151,7 @@ function logIpn(string $message, array $context = []): void
 ### Test Connection
 Use Digistore24's "Test Connection" button to verify your endpoint:
 ```php
-if ($ipn->getEvent() === Event::CONNECTION_TEST) {
+if ($ipn->event === Event::CONNECTION_TEST) {
     echo "OK";
     exit;
 }
@@ -158,18 +192,21 @@ curl -X POST https://yoursite.com/ipn-handler.php \
 
 ### Working with Multiple Products
 ```php
-$productIds = $ipn->getAllProductIds();
-foreach ($productIds as $index => $productId) {
-    grantAccessToProduct($productId);
+// product_ids contains comma-separated list
+if ($ipn->product_ids) {
+    $productIdsArray = array_map('intval', explode(',', $ipn->product_ids));
+    foreach ($productIdsArray as $productId) {
+        grantAccessToProduct($productId);
+    }
 }
 ```
 
 ### Handling Subscriptions
 ```php
-switch ($ipn->getEvent()) {
+switch ($ipn->event) {
     case Event::ON_PAYMENT:
         // First payment or rebill
-        if ($ipn->getPaySequenceNo() === 1) {
+        if ($ipn->pay_sequence_no === 1) {
             echo "First payment";
         } else {
             echo "Rebill payment";
@@ -181,10 +218,10 @@ switch ($ipn->getEvent()) {
 ### Getting Customer Data
 ```php
 $customer = [
-    'email' => $ipn->getEmail(),
-    'first_name' => $ipn->getAddressFirstName(),
-    'last_name' => $ipn->getAddressLastName(),
-    'country' => $ipn->getAddressCountry(),
+    'email' => $ipn->email,
+    'first_name' => $ipn->address_first_name,
+    'last_name' => $ipn->address_last_name,
+    'country' => $ipn->address_country,
 ];
 ```
 

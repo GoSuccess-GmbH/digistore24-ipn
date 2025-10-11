@@ -1,10 +1,9 @@
 <?php
 
 /**
- * Example: Using Array Helpers
+ * Example: Working with IPN Data
  * 
- * Demonstrates how to use the convenient array helper methods
- * to work with grouped data (coupons, products, tags, etc.)
+ * Demonstrates how to access IPN properties with PHP 8.4 Property Hooks
  */
 
 declare(strict_types=1);
@@ -12,75 +11,42 @@ declare(strict_types=1);
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use GoSuccess\Digistore24IPN\Dto\IPNRequestDto;
-use GoSuccess\Digistore24IPN\Helper\DtoHelper;
 
-// Example IPN data with multiple products and coupons
+// Example IPN data
 $ipnData = [
     'order_id' => 'ORDER123',
     'product_id' => 12345,
-    'product_id_2' => 67890,
-    'product_id_3' => 11111,
+    'product_ids' => '12345,67890,11111', // Comma-separated list
     'coupon_code' => 'SAVE10',
-    'coupon_code_2' => 'BONUS20',
-    'coupon_amount_left' => '50.00',
-    'coupon_amount_left_2' => '25.00',
-    'tag1' => 'premium',
-    'tag2' => 'vip',
-    'tag3' => 'annual',
+    'tags' => 'premium, vip, annual', // Now comma-separated string
     'license_key' => 'LIC-001-ABC',
-    'license_key_2' => 'LIC-002-XYZ',
     'eticket_url' => 'https://tickets.example.com/1',
-    'eticket_url_2' => 'https://tickets.example.com/2',
+    'amount_brutto' => '99.99',
+    'email' => 'customer@example.com',
 ];
 
-$ipn = DtoHelper::fromArray(IPNRequestDto::class, $ipnData);
+$ipn = IPNRequestDto::fromArray($ipnData);
 
-// Get all product IDs as array
-echo "=== Products in Order ===\n";
-$productIds = $ipn->getAllProductIds();
-foreach ($productIds as $index => $productId) {
-    echo "Product #$index: $productId\n";
-}
+// Access properties directly (no getter methods!)
+echo "=== Order Information ===\n";
+echo "Order ID: " . $ipn->order_id . "\n";
+echo "Product ID: " . $ipn->product_id . "\n";
+echo "Product IDs: " . $ipn->product_ids . "\n";
+echo "Coupon Code: " . $ipn->coupon_code . "\n";
+echo "License Key: " . $ipn->license_key . "\n";
+echo "E-Ticket URL: " . $ipn->eticket_url . "\n";
+echo "Amount: €" . $ipn->amount_brutto . "\n";
+echo "Email: " . $ipn->email . "\n";
 echo "\n";
 
-// Get all coupon codes
-echo "=== Coupon Codes Used ===\n";
-$couponCodes = $ipn->getAllCouponCodes();
-foreach ($couponCodes as $index => $code) {
-    echo "Coupon #$index: $code\n";
-}
-echo "\n";
-
-// Get remaining coupon amounts
-echo "=== Coupon Amounts Left ===\n";
-$amountsLeft = $ipn->getAllCouponAmountsLeft();
-foreach ($amountsLeft as $index => $amount) {
-    echo "Coupon #$index remaining: €$amount\n";
-}
-echo "\n";
-
-// Get all tags
-echo "=== Order Tags ===\n";
-$tags = $ipn->getAllTags();
-foreach ($tags as $index => $tag) {
-    echo "Tag #$index: $tag\n";
-}
-echo "\n";
-
-// Get all license keys
-echo "=== License Keys ===\n";
-$licenseKeys = $ipn->getAllLicenseKeys();
-foreach ($licenseKeys as $index => $key) {
-    echo "License #$index: $key\n";
-}
-echo "\n";
-
-// Get all e-ticket URLs
-echo "=== E-Ticket URLs ===\n";
-$eticketUrls = $ipn->getAllEticketUrls();
-foreach ($eticketUrls as $index => $url) {
-    echo "Ticket #$index: $url\n";
-}
+// Tags are automatically converted to array!
+echo "=== Order Tags (Automatic Array Conversion) ===\n";
+$tags = $ipn->tags ?? []; // Array is automatically created from comma-separated string
+echo "All tags: " . implode(', ', $tags) . "\n";
+echo "First tag: " . ($tags[0] ?? 'N/A') . "\n";
+echo "Second tag: " . ($tags[1] ?? 'N/A') . "\n";
+echo "Third tag: " . ($tags[2] ?? 'N/A') . "\n";
+echo "Total tags: " . count($tags) . "\n";
 echo "\n";
 
 // Check if specific tags exist
@@ -91,49 +57,59 @@ echo "Has VIP tag: " . ($hasVipTag ? 'Yes' : 'No') . "\n";
 echo "Has Premium tag: " . ($hasPremiumTag ? 'Yes' : 'No') . "\n";
 echo "\n";
 
-// Count items
-echo "=== Summary ===\n";
-echo "Total products: " . count($productIds) . "\n";
-echo "Total coupons: " . count($couponCodes) . "\n";
-echo "Total tags: " . count($tags) . "\n";
-echo "Total licenses: " . count($licenseKeys) . "\n";
-echo "Total tickets: " . count($eticketUrls) . "\n";
+// Working with product IDs from comma-separated string
+echo "=== Product IDs (Manual Split) ===\n";
+if ($ipn->product_ids) {
+    $productIdsArray = array_map('intval', explode(',', $ipn->product_ids));
+    foreach ($productIdsArray as $index => $productId) {
+        echo "Product #" . ($index + 1) . ": $productId\n";
+    }
+    echo "Total products: " . count($productIdsArray) . "\n";
+}
+echo "\n";
+
+// Automatic type conversions
+echo "=== Automatic Type Conversions ===\n";
+echo "Amount (float): " . var_export($ipn->amount_brutto, true) . "\n";
+echo "Product ID (int): " . var_export($ipn->product_id, true) . "\n";
+echo "Product IDs (string): " . var_export($ipn->product_ids, true) . "\n";
+echo "Tags (array): " . var_export($ipn->tags, true) . "\n";
 
 /* Output:
-=== Products in Order ===
-Product #1: 12345
-Product #2: 67890
-Product #3: 11111
+=== Order Information ===
+Order ID: ORDER123
+Product ID: 12345
+Product IDs: 12345,67890,11111
+Coupon Code: SAVE10
+License Key: LIC-001-ABC
+E-Ticket URL: https://tickets.example.com/1
+Amount: €99.99
+Email: customer@example.com
 
-=== Coupon Codes Used ===
-Coupon #1: SAVE10
-Coupon #2: BONUS20
-
-=== Coupon Amounts Left ===
-Coupon #1 remaining: €50.00
-Coupon #2 remaining: €25.00
-
-=== Order Tags ===
-Tag #1: premium
-Tag #2: vip
-Tag #3: annual
-
-=== License Keys ===
-License #1: LIC-001-ABC
-License #2: LIC-002-XYZ
-
-=== E-Ticket URLs ===
-Ticket #1: https://tickets.example.com/1
-Ticket #2: https://tickets.example.com/2
+=== Order Tags (Automatic Array Conversion) ===
+All tags: premium, vip, annual
+First tag: premium
+Second tag: vip
+Third tag: annual
+Total tags: 3
 
 === Tag Checks ===
 Has VIP tag: Yes
 Has Premium tag: Yes
 
-=== Summary ===
+=== Product IDs (Manual Split) ===
+Product #1: 12345
+Product #2: 67890
+Product #3: 11111
 Total products: 3
-Total coupons: 2
-Total tags: 3
-Total licenses: 2
-Total tickets: 2
+
+=== Automatic Type Conversions ===
+Amount (float): 99.99
+Product ID (int): 12345
+Product IDs (string): '12345,67890,11111'
+Tags (array): array (
+  0 => 'premium',
+  1 => 'vip',
+  2 => 'annual',
+)
 */
