@@ -39,14 +39,13 @@ use GoSuccess\Digistore24IPN\Exception\FormatException;
 require_once __DIR__ . '/vendor/autoload.php';
 
 $shaPassphrase = 'your-secret-passphrase';
-$ipnData = $_POST ?: $_GET;
 
 try {
-    // Validate the signature
-    SignatureHelper::validateSignature($shaPassphrase, $ipnData);
-
-    // Create DTO from IPN data
-    $ipn = IPNRequestDto::fromArray($ipnData);
+    // Validate the signature first
+    SignatureHelper::validateSignature($shaPassphrase, $_POST);
+    
+    // Create DTO from IPN data after validation
+    $ipn = IPNRequestDto::fromPost();
 
     // Access fields directly (no getter methods!)
     $event = $ipn->event;
