@@ -30,8 +30,8 @@ composer require gosuccess/digistore24-ipn
 ```php
 <?php
 
-use GoSuccess\Digistore24IPN\Dto\IPNRequestDto;
-use GoSuccess\Digistore24IPN\Dto\IPNResponseDto;
+use GoSuccess\Digistore24IPN\Request;
+use GoSuccess\Digistore24IPN\Response;
 use GoSuccess\Digistore24IPN\Enum\Event;
 use GoSuccess\Digistore24IPN\Helper\SignatureHelper;
 use GoSuccess\Digistore24IPN\Exception\FormatException;
@@ -45,7 +45,7 @@ try {
     SignatureHelper::validateSignature($shaPassphrase, $_POST);
     
     // Create DTO from IPN data after validation
-    $ipn = IPNRequestDto::fromPost();
+    $ipn = Request::fromPost();
 
     // Access fields directly (no getter methods!)
     $event = $ipn->event;
@@ -63,7 +63,7 @@ try {
             // Handle payment event
             
             // Create response
-            $response = new IPNResponseDto();
+            $response = new Response();
             $response->headline = 'Login Details';
             $response->addLoginBlock(
                 'username',
