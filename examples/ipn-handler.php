@@ -11,10 +11,9 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use GoSuccess\Digistore24IPN\Dto\Request;
-use GoSuccess\Digistore24IPN\Dto\Response;
+use GoSuccess\Digistore24IPN\{Request, Response};
 use GoSuccess\Digistore24IPN\Enum\Event;
-use GoSuccess\Digistore24IPN\Helper\SignatureHelper;
+use GoSuccess\Digistore24IPN\Security\Signature;
 use GoSuccess\Digistore24IPN\Exception\FormatException;
 
 // Configuration
@@ -42,7 +41,7 @@ try {
     logIpn('IPN received', ['data' => $ipnData]);
 
     // Validate signature
-    SignatureHelper::validateSignature($shaPassphrase, $ipnData);
+    Signature::validateSignature($shaPassphrase, $ipnData);
     logIpn('Signature validated successfully');
 
     // Create DTO from IPN data

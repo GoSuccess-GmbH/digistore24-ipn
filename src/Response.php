@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GoSuccess\Digistore24IPN\Dto;
+namespace GoSuccess\Digistore24IPN;
 
 use GoSuccess\Digistore24IPN\Exception\FormatException;
 

@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace GoSuccess\Digistore24IPN\Helper;
+namespace GoSuccess\Digistore24IPN\Security;
 
 use GoSuccess\Digistore24IPN\Exception\FormatException;
 
 /**
- * Helper class for generating and validating signatures.
+ * Signature validation and generation for Digistore24 IPN.
  *
  * This class provides methods to calculate the expected signature based on
  * a passphrase and parameters, and to validate a received signature against
  * the expected one.
  */
-final class SignatureHelper
+final class Signature
 {
     /**
      * Generates the expected signature for the given parameters.

@@ -11,10 +11,9 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use GoSuccess\Digistore24IPN\Dto\Request;
-use GoSuccess\Digistore24IPN\Dto\Response;
+use GoSuccess\Digistore24IPN\{Request, Response};
 use GoSuccess\Digistore24IPN\Enum\Event;
-use GoSuccess\Digistore24IPN\Helper\SignatureHelper;
+use GoSuccess\Digistore24IPN\Security\Signature;
 use GoSuccess\Digistore24IPN\Exception\FormatException;
 
 // Your IPN secret from Digistore24
@@ -22,7 +21,7 @@ $secret = 'YOUR_SECRET_HERE';
 
 try {
     // Validate signature
-    SignatureHelper::validateSignature($secret, $_POST);
+    Signature::validateSignature($secret, $_POST);
     
     // Get IPN data
     $ipn = Request::fromPost();
