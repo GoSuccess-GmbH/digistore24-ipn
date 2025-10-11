@@ -6,18 +6,13 @@ namespace GoSuccess\Digistore24IPN\Dto;
 
 use DateTimeImmutable;
 use GoSuccess\Digistore24IPN\Enum\Action;
-use GoSuccess\Digistore24IPN\Enum\AddressCharacterType;
 use GoSuccess\Digistore24IPN\Enum\BillingStatus;
 use GoSuccess\Digistore24IPN\Enum\BillingStopReason;
 use GoSuccess\Digistore24IPN\Enum\BillingType;
-use GoSuccess\Digistore24IPN\Enum\ConnectionType;
 use GoSuccess\Digistore24IPN\Enum\Event;
-use GoSuccess\Digistore24IPN\Enum\NewsletterSendingPolicy;
 use GoSuccess\Digistore24IPN\Enum\OrderType;
 use GoSuccess\Digistore24IPN\Enum\PayMethod;
 use GoSuccess\Digistore24IPN\Enum\ProductDeliveryType;
-use GoSuccess\Digistore24IPN\Enum\SuccessDetectionType;
-use GoSuccess\Digistore24IPN\Enum\TransactionCategory;
 use GoSuccess\Digistore24IPN\Enum\TransactionType;
 use GoSuccess\Digistore24IPN\Enum\UpgradeType;
 
