@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use GoSuccess\Digistore24IPN\Dto\IPNRequestDto;
+use GoSuccess\Digistore24IPN\Dto\Request;
 
 // Example IPN data
 $ipnData = [
@@ -25,7 +25,7 @@ $ipnData = [
     'email' => 'customer@example.com',
 ];
 
-$ipn = IPNRequestDto::fromArray($ipnData);
+$ipn = Request::fromArray($ipnData);
 
 // Access properties directly (no getter methods!)
 echo "=== Order Information ===\n";

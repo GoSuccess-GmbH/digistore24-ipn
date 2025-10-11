@@ -25,7 +25,7 @@ use GoSuccess\Digistore24IPN\Enum\UpgradeType;
  * BREAKING CHANGE: No getter methods - use direct property access.
  * Example: $ipn->order_id instead of $ipn->getOrderId()
  */
-final class IPNRequestDto
+final class Request
 {
     public ?Action $action = null {
         set(mixed $value) => $value !== null ? Action::from($value) : null;
@@ -721,7 +721,7 @@ final class IPNRequestDto
     }
 
     /**
-     * Parse boolean value similar to DtoHelper logic.
+     * Parse boolean value from various formats.
      */
     private static function parseBool(mixed $value): ?bool
     {

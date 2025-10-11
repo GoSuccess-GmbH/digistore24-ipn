@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GoSuccess\Digistore24IPN\Helper;
 
-use GoSuccess\Digistore24IPN\Exception\IPNResponseFormatException;
+use GoSuccess\Digistore24IPN\Exception\FormatException;
 
 /**
  * Helper class for generating and validating signatures.
@@ -33,11 +33,11 @@ final class SignatureHelper
         $algorithm = 'sha512';
 
         if (!$shaPassphrase) {
-            throw new IPNResponseFormatException('No signature passphrase provided');
+            throw new FormatException('No signature passphrase provided');
         }
 
         if (empty($parameters)) {
-            throw new IPNResponseFormatException('No parameters provided for signature calculation');
+            throw new FormatException('No parameters provided for signature calculation');
         }
 
         unset($parameters['sha_sign'], $parameters['SHASIGN']);
@@ -81,7 +81,7 @@ final class SignatureHelper
      * @param array $data The data containing the received signature.
      * @param bool $convertKeysToUppercase Whether to convert parameter keys to uppercase.
      * @param bool $doHtmlDecode Whether to HTML decode parameter values.
-     * @throws IPNResponseFormatException if the signature is invalid or not received.
+     * @throws FormatException if the signature is invalid or not received.
      */
     public static function validateSignature(
         string $shaPassphrase,
@@ -94,7 +94,7 @@ final class SignatureHelper
             ?? null;
 
         if ($receivedSignature === null) {
-            throw new IPNResponseFormatException('No signature received.');
+            throw new FormatException('No signature received.');
         }
 
         $expectedSignature = self::getExpectedSignature(
@@ -105,7 +105,7 @@ final class SignatureHelper
         );
 
         if ($receivedSignature !== $expectedSignature) {
-            throw new IPNResponseFormatException(
+            throw new FormatException(
                 "Signature is invalid. Expected: {$expectedSignature}, Received: {$receivedSignature}"
             );
         }

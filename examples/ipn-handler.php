@@ -11,11 +11,11 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use GoSuccess\Digistore24IPN\Dto\IPNRequestDto;
-use GoSuccess\Digistore24IPN\Dto\IPNResponseDto;
+use GoSuccess\Digistore24IPN\Dto\Request;
+use GoSuccess\Digistore24IPN\Dto\Response;
 use GoSuccess\Digistore24IPN\Enum\Event;
 use GoSuccess\Digistore24IPN\Helper\SignatureHelper;
-use GoSuccess\Digistore24IPN\Exception\IPNResponseFormatException;
+use GoSuccess\Digistore24IPN\Exception\FormatException;
 
 // Configuration
 $shaPassphrase = getenv('DIGISTORE24_IPN_SECRET') ?: 'your-secret-passphrase';
@@ -36,7 +36,7 @@ try {
     $ipnData = $_POST ?: $_GET;
 
     if (empty($ipnData)) {
-        throw new IPNResponseFormatException('No IPN data received');
+        throw new FormatException('No IPN data received');
     }
 
     logIpn('IPN received', ['data' => $ipnData]);
@@ -46,7 +46,7 @@ try {
     logIpn('Signature validated successfully');
 
     // Create DTO from IPN data
-    $ipnRequest = IPNRequestDto::fromArray($ipnData);
+    $ipnRequest = Request::fromArray($ipnData);
 
     // Extract common fields
     $event = $ipnRequest->event;
@@ -105,7 +105,7 @@ try {
     // Default response
     echo "OK";
 
-} catch (IPNResponseFormatException $e) {
+} catch (FormatException $e) {
     logIpn("IPN Error: {$e->getMessage()}");
     http_response_code(400);
     echo "ERROR: " . htmlspecialchars($e->getMessage());
@@ -121,7 +121,7 @@ try {
 /**
  * Handle successful payment
  */
-function handlePayment(IPNRequestDto $ipn): void
+function handlePayment(Request $ipn): void
 {
     $orderId = $ipn->order_id;
     $email = $ipn->email;
@@ -154,7 +154,7 @@ function handlePayment(IPNRequestDto $ipn): void
     // 4. Generate license keys if needed
 
     // Example: Generate and return login credentials
-    $response = new IPNResponseDto();
+    $response = new Response();
     $response->headline = 'Your Access Details';
     
     // Generate login credentials (example)
@@ -184,7 +184,7 @@ function handlePayment(IPNRequestDto $ipn): void
 /**
  * Handle refund
  */
-function handleRefund(IPNRequestDto $ipn): void
+function handleRefund(Request $ipn): void
 {
     $orderId = $ipn->order_id;
     $email = $ipn->email;
@@ -209,7 +209,7 @@ function handleRefund(IPNRequestDto $ipn): void
 /**
  * Handle chargeback
  */
-function handleChargeback(IPNRequestDto $ipn): void
+function handleChargeback(Request $ipn): void
 {
     $orderId = $ipn->order_id;
     
@@ -225,7 +225,7 @@ function handleChargeback(IPNRequestDto $ipn): void
 /**
  * Handle missed payment
  */
-function handlePaymentMissed(IPNRequestDto $ipn): void
+function handlePaymentMissed(Request $ipn): void
 {
     $orderId = $ipn->order_id;
     $email = $ipn->email;
@@ -249,7 +249,7 @@ function handlePaymentMissed(IPNRequestDto $ipn): void
 /**
  * Handle rebilling cancelled
  */
-function handleRebillCancelled(IPNRequestDto $ipn): void
+function handleRebillCancelled(Request $ipn): void
 {
     $orderId = $ipn->order_id;
     
@@ -264,7 +264,7 @@ function handleRebillCancelled(IPNRequestDto $ipn): void
 /**
  * Handle rebilling resumed
  */
-function handleRebillResumed(IPNRequestDto $ipn): void
+function handleRebillResumed(Request $ipn): void
 {
     $orderId = $ipn->order_id;
     
@@ -283,7 +283,7 @@ function handleRebillResumed(IPNRequestDto $ipn): void
 /**
  * Handle last paid day
  */
-function handleLastPaidDay(IPNRequestDto $ipn): void
+function handleLastPaidDay(Request $ipn): void
 {
     $orderId = $ipn->order_id;
     $email = $ipn->email;

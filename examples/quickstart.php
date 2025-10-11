@@ -11,11 +11,11 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use GoSuccess\Digistore24IPN\Dto\IPNRequestDto;
-use GoSuccess\Digistore24IPN\Dto\IPNResponseDto;
+use GoSuccess\Digistore24IPN\Dto\Request;
+use GoSuccess\Digistore24IPN\Dto\Response;
 use GoSuccess\Digistore24IPN\Enum\Event;
 use GoSuccess\Digistore24IPN\Helper\SignatureHelper;
-use GoSuccess\Digistore24IPN\Exception\IPNResponseFormatException;
+use GoSuccess\Digistore24IPN\Exception\FormatException;
 
 // Your IPN secret from Digistore24
 $secret = 'YOUR_SECRET_HERE';
@@ -25,7 +25,7 @@ try {
     SignatureHelper::validateSignature($secret, $_POST);
     
     // Get IPN data
-    $ipn = IPNRequestDto::fromPost();
+    $ipn = Request::fromPost();
     
     // Handle payment
     if ($ipn->event === Event::ON_PAYMENT) {
@@ -39,7 +39,7 @@ try {
         // ...
         
         // Optional: Return login credentials
-        $response = new IPNResponseDto();
+        $response = new Response();
         $response->headline = 'Welcome!';
         $response->addLoginBlock(
             'username',
@@ -51,7 +51,7 @@ try {
     
     echo "OK";
     
-} catch (IPNResponseFormatException $e) {
+} catch (FormatException $e) {
     http_response_code(400);
     die('ERROR');
 }

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace GoSuccess\Digistore24IPN\Dto;
 
-use GoSuccess\Digistore24IPN\Exception\IPNResponseFormatException;
+use GoSuccess\Digistore24IPN\Exception\FormatException;
 
 /**
- * Class IPNResponseDto
+ * Class Response
  *
  * This class represents the response structure for an IPN (Instant Payment Notification) response.
  * It uses PHP 8.4 Property Hooks for clean, direct property access with validation.
  */
-class IPNResponseDto
+class Response
 {
     /**
      * Thank you URL to redirect the customer after payment.
@@ -20,7 +20,7 @@ class IPNResponseDto
     public ?string $thankyouUrl = null {
         set {
             if ($value !== null && !filter_var($value, FILTER_VALIDATE_URL)) {
-                throw new IPNResponseFormatException("Invalid URL format: $value");
+                throw new FormatException("Invalid URL format: $value");
             }
             $this->thankyouUrl = $value;
         }
@@ -64,7 +64,7 @@ class IPNResponseDto
      *
      * @param string $key
      * @param string $value
-     * @throws IPNResponseFormatException if the key is reserved
+     * @throws FormatException if the key is reserved
      */
     public function setAdditionalData(string $key, string $value): void
     {
@@ -78,7 +78,7 @@ class IPNResponseDto
 
         foreach ($reservedKeys as $reserved) {
             if ($key === $reserved || preg_match('/^' . preg_quote($reserved, '/') . '_\d+$/', $key)) {
-                throw new IPNResponseFormatException("Key '$key' is reserved and cannot be set via additionalData. Please use direct property assignment for thankyouUrl/headline or addLoginBlock method.");
+                throw new FormatException("Key '$key' is reserved and cannot be set via additionalData. Please use direct property assignment for thankyouUrl/headline or addLoginBlock method.");
             }
         }
 
@@ -89,7 +89,7 @@ class IPNResponseDto
      * Convert the response data to a string format.
      *
      * @return string
-     * @throws IPNResponseFormatException if any login block is missing required fields
+     * @throws FormatException if any login block is missing required fields
      */
     public function toString(): string
     {
@@ -106,7 +106,7 @@ class IPNResponseDto
                 $block['password'] === '' ||
                 $block['loginurl'] === ''
             ) {
-                throw new IPNResponseFormatException("All of username, password, and loginurl must be set in each login block.");
+                throw new FormatException("All of username, password, and loginurl must be set in each login block.");
             }
 
             $index = $i === 0 ? '' : '_' . ($i + 1);
