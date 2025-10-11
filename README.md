@@ -110,7 +110,7 @@ All properties use **snake_case** names matching the Digistore24 IPN API exactly
 // Direct property access (PHP 8.4 Property Hooks)
 $ipn->order_id          // instead of getOrderId()
 $ipn->amount_brutto     // instead of getAmountBrutto()
-$ipn->address_email     // instead of getAddressEmail()
+$ipn->email             // instead of getEmail()
 $ipn->product_name      // instead of getProductName()
 
 // Automatic type conversion
@@ -149,7 +149,8 @@ $ipn->tags[1]           // 'premium'
    // Property names match Digistore24 IPN field names
    $ipn->order_id           // not $ipn->orderId
    $ipn->amount_brutto      // not $ipn->amountBrutto
-   $ipn->address_first_name // not $ipn->addressFirstName
+   $ipn->email              // buyer's email address
+   $ipn->address_first_name // billing address first name
    ```
 
 3. **Tags as array** - No more `tag1` through `tag100`:
