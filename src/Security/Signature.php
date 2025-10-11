@@ -19,7 +19,7 @@ final class Signature
      * Generates the expected signature for the given parameters.
      *
      * @param string $shaPassphrase The passphrase used for generating the signature.
-     * @param array $parameters The parameters to include in the signature.
+     * @param array<string, mixed> $parameters The parameters to include in the signature.
      * @param bool $convertKeysToUppercase Whether to convert parameter keys to uppercase.
      * @param bool $doHtmlDecode Whether to HTML decode parameter values.
      * @return string The expected signature.
@@ -30,13 +30,11 @@ final class Signature
         bool $convertKeysToUppercase = false,
         bool $doHtmlDecode = false
     ): string {
-        $algorithm = 'sha512';
-
-        if (!$shaPassphrase) {
+        if ($shaPassphrase === '') {
             throw new FormatException('No signature passphrase provided');
         }
 
-        if (empty($parameters)) {
+        if ($parameters === []) {
             throw new FormatException('No parameters provided for signature calculation');
         }
 
@@ -44,10 +42,9 @@ final class Signature
 
         $keys = array_keys($parameters);
 
-        $keysToSort = array_map(
-            $convertKeysToUppercase ? 'strtoupper' : fn($k) => $k,
-            $keys
-        );
+        $keysToSort = $convertKeysToUppercase
+            ? array_map(strtoupper(...), $keys)
+            : $keys;
 
         array_multisort(
             $keysToSort,
@@ -60,7 +57,7 @@ final class Signature
             $value = $parameters[$key];
 
             if ($doHtmlDecode && is_string($value)) {
-                $value = html_entity_decode($value);
+                $value = html_entity_decode($value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5);
             }
 
             if ($value === null || $value === '' || $value === false) {
@@ -71,14 +68,14 @@ final class Signature
             $shaString .= "{$outKey}={$value}{$shaPassphrase}";
         }
 
-        return strtoupper(hash($algorithm, $shaString));
+        return strtoupper(hash('sha512', $shaString));
     }
 
     /**
      * Validates the received signature against the expected signature.
      *
      * @param string $shaPassphrase The passphrase used for generating the signature.
-     * @param array $data The data containing the received signature.
+     * @param array<string, mixed> $data The data containing the received signature.
      * @param bool $convertKeysToUppercase Whether to convert parameter keys to uppercase.
      * @param bool $doHtmlDecode Whether to HTML decode parameter values.
      * @throws FormatException if the signature is invalid or not received.
@@ -91,11 +88,7 @@ final class Signature
     ): void {
         $receivedSignature = $data['sha_sign']
             ?? $data['SHASIGN']
-            ?? null;
-
-        if ($receivedSignature === null) {
-            throw new FormatException('No signature received.');
-        }
+            ?? throw new FormatException('No signature received.');
 
         $expectedSignature = self::getExpectedSignature(
             $shaPassphrase,
