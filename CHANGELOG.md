@@ -5,22 +5,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-### Changed
-- Updated GitHub Actions workflows to support PHP 8.4
-- Added PHP 8.4 to CI/CD test matrix (8.1, 8.2, 8.3, 8.4)
-- Code quality checks now use PHP 8.4
-
-### Fixed
-- Fixed integration tests to use authentic Digistore24 field names
-- Corrected field names: `email`, `transaction_amount`, `address_first_name`, `pay_method`
-- Fixed enum values to match actual Digistore24 enums
-
-### Documentation
-- Cleaned up documentation folder (removed internal test summaries and reports)
-- Kept only user-facing documentation: UPGRADE.md and README.md
-
 ## [2.0.0] - 2025-01-XX
 
 ### 🚨 BREAKING CHANGES
@@ -78,6 +62,20 @@ This is a **major version update** with breaking changes. Please read the [UPGRA
 - Updated all examples in `examples/` directory
 - Updated examples/README.md with Property Hooks explanation
 - All code examples now use snake_case properties and direct access
+- Cleaned up documentation folder (removed internal test summaries and reports)
+- Kept only user-facing documentation: UPGRADE.md and README.md
+
+### Testing
+- All 69 PHPUnit tests passing (100% success rate)
+- Fixed integration tests to use authentic Digistore24 field names
+- Corrected field names: `email`, `transaction_amount`, `address_first_name`, `pay_method`
+- Fixed enum values to match actual Digistore24 enums
+- Configured PHPStan to exclude Request.php and Response.php (Property Hooks not yet supported in PHPStan 1.12.32)
+
+### CI/CD
+- Updated GitHub Actions workflows to support PHP 8.4
+- Added PHP 8.4 to CI/CD test matrix (8.1, 8.2, 8.3, 8.4)
+- Code quality checks now use PHP 8.4
 
 ### Migration
 See [docs/UPGRADE.md](docs/UPGRADE.md) for complete migration instructions from v1.x to v2.0.
