@@ -128,10 +128,18 @@ function handlePayment(IPNRequestDto $ipn): void
     
     // Get all product IDs (supports multiple products in one order)
     $productIds = [];
-    if ($ipn->product_id) $productIds[] = $ipn->product_id;
-    if ($ipn->product_id_2) $productIds[] = $ipn->product_id_2;
-    if ($ipn->product_id_3) $productIds[] = $ipn->product_id_3;
-    // ... continue for product_id_4 to product_id_100 if needed
+    if ($ipn->product_id) {
+        $productIds[] = $ipn->product_id;
+    }
+    
+    // If there are multiple products, they're in product_ids as comma-separated string
+    if ($ipn->product_ids) {
+        $additionalIds = array_map('intval', explode(',', $ipn->product_ids));
+        $productIds = array_merge($productIds, $additionalIds);
+    }
+    
+    // Remove duplicates and reindex
+    $productIds = array_values(array_unique($productIds));
     
     logIpn('Processing payment', [
         'order_id' => $orderId,
