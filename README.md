@@ -34,7 +34,7 @@ use GoSuccess\Digistore24IPN\Dto\IPNRequestDto;
 use GoSuccess\Digistore24IPN\Dto\IPNResponseDto;
 use GoSuccess\Digistore24IPN\Enum\Event;
 use GoSuccess\Digistore24IPN\Helper\SignatureHelper;
-use GoSuccess\Digistore24IPN\Exception\IPNResponseFormatException;
+use GoSuccess\Digistore24IPN\Exception\FormatException;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -90,10 +90,10 @@ try {
             break;
             
         default:
-            throw new IPNResponseFormatException('Unknown event type!');
+            throw new FormatException('Unknown event type!');
     }
     
-} catch (IPNResponseFormatException $e) {
+} catch (FormatException $e) {
     // Handle invalid signature or data
     http_response_code(400);
     error_log('IPN Error: ' . $e->getMessage());
@@ -178,7 +178,7 @@ See [UPGRADE.md](docs/UPGRADE.md) for detailed migration instructions.
 
 ## Error Handling
 
-All signature and format errors throw `GoSuccess\Digistore24IPN\Exception\IPNResponseFormatException`.
+All signature and format errors throw `GoSuccess\Digistore24IPN\Exception\FormatException`.
 
 ## License
 
