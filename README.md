@@ -33,7 +33,7 @@ composer require gosuccess/digistore24-ipn
 use GoSuccess\Digistore24IPN\Request;
 use GoSuccess\Digistore24IPN\Response;
 use GoSuccess\Digistore24IPN\Enum\Event;
-use GoSuccess\Digistore24IPN\Helper\SignatureHelper;
+use GoSuccess\Digistore24IPN\Security\Signature;
 use GoSuccess\Digistore24IPN\Exception\FormatException;
 
 require_once __DIR__ . '/vendor/autoload.php';
@@ -42,7 +42,7 @@ $shaPassphrase = 'your-secret-passphrase';
 
 try {
     // Validate the signature first
-    SignatureHelper::validateSignature($shaPassphrase, $_POST);
+    Signature::validateSignature($shaPassphrase, $_POST);
     
     // Create DTO from IPN data after validation
     $ipn = Request::fromPost();
