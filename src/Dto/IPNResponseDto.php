@@ -10,36 +10,38 @@ use GoSuccess\Digistore24IPN\Exception\IPNResponseFormatException;
  * Class IPNResponseDto
  *
  * This class represents the response structure for an IPN (Instant Payment Notification) response.
- * It allows setting a thank you URL, headline, login blocks, and additional data.
+ * It uses PHP 8.4 Property Hooks for clean, direct property access with validation.
  */
 class IPNResponseDto
 {
-    public function __construct(
-        private ?string $thankyouUrl = null,
-        private ?string $headline = null,
-        private array $loginBlocks = [],
-        private array $additionalData = []
-    ) {}
-
     /**
-     * Set the thank you URL.
-     *
-     * @param string $url
+     * Thank you URL to redirect the customer after payment.
      */
-    public function setThankyouUrl(string $url): void
-    {
-        $this->thankyouUrl = $url;
+    public ?string $thankyouUrl = null {
+        set {
+            if ($value !== null && !filter_var($value, FILTER_VALIDATE_URL)) {
+                throw new IPNResponseFormatException("Invalid URL format: $value");
+            }
+            $this->thankyouUrl = $value;
+        }
     }
 
     /**
-     * Set the headline.
-     *
-     * @param string $headline
+     * Headline text to display to the customer.
      */
-    public function setHeadline(string $headline): void
-    {
-        $this->headline = $headline;
-    }
+    public ?string $headline = null;
+
+    /**
+     * Array of login blocks containing username, password, and loginurl.
+     * @var array<int, array{username: string, password: string, loginurl: string}>
+     */
+    private array $loginBlocks = [];
+
+    /**
+     * Additional custom data fields.
+     * @var array<string, string>
+     */
+    private array $additionalData = [];
 
     /**
      * Add a login block with username, password, and login URL.
@@ -76,7 +78,7 @@ class IPNResponseDto
 
         foreach ($reservedKeys as $reserved) {
             if ($key === $reserved || preg_match('/^' . preg_quote($reserved, '/') . '_\d+$/', $key)) {
-                throw new IPNResponseFormatException("Key '$key' is reserved and cannot be set via additionalData. Please use setThankyouUrl, setHeadline, or addLoginBlock methods.");
+                throw new IPNResponseFormatException("Key '$key' is reserved and cannot be set via additionalData. Please use direct property assignment for thankyouUrl/headline or addLoginBlock method.");
             }
         }
 
