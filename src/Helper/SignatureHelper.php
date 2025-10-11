@@ -105,9 +105,9 @@ final class SignatureHelper
         );
 
         if ($receivedSignature !== $expectedSignature) {
-            throw new IPNResponseFormatException((string) 'Signature is invalid.'
-                . ' Expected: ' . $expectedSignature
-                . ', Received: ' . $receivedSignature);
+            throw new IPNResponseFormatException(
+                "Signature is invalid. Expected: {$expectedSignature}, Received: {$receivedSignature}"
+            );
         }
     }
 }

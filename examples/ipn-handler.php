@@ -106,13 +106,13 @@ try {
     echo "OK";
 
 } catch (IPNResponseFormatException $e) {
-    logIpn('IPN Error: ' . $e->getMessage());
+    logIpn("IPN Error: {$e->getMessage()}");
     http_response_code(400);
-    echo 'ERROR: ' . htmlspecialchars($e->getMessage());
+    echo "ERROR: " . htmlspecialchars($e->getMessage());
     exit;
 
 } catch (\Exception $e) {
-    logIpn('Unexpected error: ' . $e->getMessage());
+    logIpn("Unexpected error: {$e->getMessage()}");
     http_response_code(500);
     echo 'ERROR: Internal server error';
     exit;
@@ -309,7 +309,9 @@ function handleLastPaidDay(IPNRequestDto $ipn): void
 
 function generateUsername(string $email): string
 {
-    return explode('@', $email)[0] . rand(1000, 9999);
+    $localPart = explode('@', $email)[0];
+    $randomNumber = rand(1000, 9999);
+    return "{$localPart}{$randomNumber}";
 }
 
 function generatePassword(): string

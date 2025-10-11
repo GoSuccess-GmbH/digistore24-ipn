@@ -29,23 +29,23 @@ $ipn = IPNRequestDto::fromArray($ipnData);
 
 // Access properties directly (no getter methods!)
 echo "=== Order Information ===\n";
-echo "Order ID: " . $ipn->order_id . "\n";
-echo "Product ID: " . $ipn->product_id . "\n";
-echo "Product IDs: " . $ipn->product_ids . "\n";
-echo "Coupon Code: " . $ipn->coupon_code . "\n";
-echo "License Key: " . $ipn->license_key . "\n";
-echo "E-Ticket URL: " . $ipn->eticket_url . "\n";
-echo "Amount: €" . $ipn->amount_brutto . "\n";
-echo "Email: " . $ipn->email . "\n";
+echo "Order ID: {$ipn->order_id}\n";
+echo "Product ID: {$ipn->product_id}\n";
+echo "Product IDs: {$ipn->product_ids}\n";
+echo "Coupon Code: {$ipn->coupon_code}\n";
+echo "License Key: {$ipn->license_key}\n";
+echo "E-Ticket URL: {$ipn->eticket_url}\n";
+echo "Amount: €{$ipn->amount_brutto}\n";
+echo "Email: {$ipn->email}\n";
 echo "\n";
 
 // Tags are automatically converted to array!
 echo "=== Order Tags (Automatic Array Conversion) ===\n";
 $tags = $ipn->tags ?? []; // Array is automatically created from comma-separated string
 echo "All tags: " . implode(', ', $tags) . "\n";
-echo "First tag: " . ($tags[0] ?? 'N/A') . "\n";
-echo "Second tag: " . ($tags[1] ?? 'N/A') . "\n";
-echo "Third tag: " . ($tags[2] ?? 'N/A') . "\n";
+echo "First tag: {$tags[0]}\n";
+echo "Second tag: {$tags[1]}\n";
+echo "Third tag: {$tags[2]}\n";
 echo "Total tags: " . count($tags) . "\n";
 echo "\n";
 
