@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GoSuccess\Digistore24IPN\Tests\Integration;
 
+use GoSuccess\Digistore24IPN\Enum\BillingType;
 use GoSuccess\Digistore24IPN\Exception\FormatException;
 use GoSuccess\Digistore24IPN\Request;
 use GoSuccess\Digistore24IPN\Response;
@@ -39,8 +40,8 @@ final class IPNWorkflowTest extends TestCase
 
         // 4. Verify request data
         $this->assertSame('on_payment', $request->event->value);
-        $this->assertSame('john.doe@example.com', $request->buyer_email);
-        $this->assertSame(49.99, $request->amount);
+        $this->assertSame('john.doe@example.com', $request->email);
+        $this->assertSame(49.99, $request->transaction_amount);
 
         // 5. Create response
         $response = new Response();
@@ -82,9 +83,9 @@ final class IPNWorkflowTest extends TestCase
             'event' => 'on_refund',
             'product_id' => '123456',
             'order_id' => 'ORD-12345',
-            'buyer_email' => 'john.doe@example.com',
+            'email' => 'john.doe@example.com',
             'transaction_id' => 'TXN-REF-999',
-            'amount' => '-49.99',
+            'transaction_amount' => '-49.99',
             'currency' => 'EUR',
         ];
 
@@ -96,7 +97,7 @@ final class IPNWorkflowTest extends TestCase
         $request = Request::fromArray($ipnData);
 
         $this->assertSame('on_refund', $request->event->value);
-        $this->assertSame(-49.99, $request->amount);
+        $this->assertSame(-49.99, $request->transaction_amount);
     }
 
     #[Test]
@@ -106,11 +107,11 @@ final class IPNWorkflowTest extends TestCase
             'event' => 'on_payment',
             'product_id' => '999888',
             'order_id' => 'SUB-67890',
-            'buyer_email' => 'subscriber@example.com',
+            'email' => 'subscriber@example.com',
             'transaction_id' => 'TXN-SUB-111',
-            'amount' => '29.99',
+            'transaction_amount' => '29.99',
             'currency' => 'USD',
-            'billing_type' => 'installment_invoice',
+            'billing_type' => 'subscription',
             'is_first_payment' => '1',
         ];
 
@@ -120,8 +121,8 @@ final class IPNWorkflowTest extends TestCase
         Signature::validateSignature(self::PASSPHRASE, $ipnData);
         $request = Request::fromArray($ipnData);
 
-        $this->assertSame('subscriber@example.com', $request->buyer_email);
-        $this->assertTrue($request->is_first_payment);
+        $this->assertSame('subscriber@example.com', $request->email);
+        $this->assertSame(BillingType::SUBSCRIPTION, $request->billing_type);
     }
 
     #[Test]
@@ -132,9 +133,9 @@ final class IPNWorkflowTest extends TestCase
             'product_id' => '111',
             'product_ids' => '111,222,333',
             'order_id' => 'MULTI-99999',
-            'buyer_email' => 'buyer@example.com',
+            'email' => 'buyer@example.com',
             'transaction_id' => 'TXN-MULTI-555',
-            'amount' => '149.97',
+            'transaction_amount' => '149.97',
             'currency' => 'EUR',
         ];
 
@@ -144,7 +145,12 @@ final class IPNWorkflowTest extends TestCase
         Signature::validateSignature(self::PASSPHRASE, $ipnData);
         $request = Request::fromArray($ipnData);
 
-        $this->assertSame(['111', '222', '333'], $request->product_ids);
+        // product_ids is a comma-separated string from Digistore24
+        $this->assertSame('111,222,333', $request->product_ids);
+        
+        // Can be split into array if needed
+        $productArray = explode(',', $request->product_ids);
+        $this->assertSame(['111', '222', '333'], $productArray);
     }
 
     #[Test]
@@ -217,12 +223,12 @@ final class IPNWorkflowTest extends TestCase
             'event' => 'on_payment',
             'product_id' => '123456',
             'order_id' => 'ORD-UNICODE-1',
-            'buyer_email' => 'günther.müller@example.de',
-            'buyer_first_name' => 'Günther',
-            'buyer_last_name' => 'Müller',
-            'buyer_city' => 'München',
+            'email' => 'günther.müller@example.de',
+            'address_first_name' => 'Günther',
+            'address_last_name' => 'Müller',
+            'address_city' => 'München',
             'transaction_id' => 'TXN-UNI-123',
-            'amount' => '79.99',
+            'transaction_amount' => '79.99',
             'currency' => 'EUR',
         ];
 
@@ -232,9 +238,9 @@ final class IPNWorkflowTest extends TestCase
         Signature::validateSignature(self::PASSPHRASE, $ipnData);
         $request = Request::fromArray($ipnData);
 
-        $this->assertSame('Günther', $request->buyer_first_name);
-        $this->assertSame('Müller', $request->buyer_last_name);
-        $this->assertSame('München', $request->buyer_city);
+        $this->assertSame('Günther', $request->address_first_name);
+        $this->assertSame('Müller', $request->address_last_name);
+        $this->assertSame('München', $request->address_city);
     }
 
     #[Test]
@@ -244,7 +250,7 @@ final class IPNWorkflowTest extends TestCase
             'event' => 'on_payment',
             'product_id' => '123',
             'order_id' => 'ORD-MIN-1',
-            'buyer_email' => 'minimal@example.com',
+            'email' => 'minimal@example.com',
         ];
 
         $signature = Signature::getExpectedSignature(self::PASSPHRASE, $ipnData);
@@ -254,9 +260,9 @@ final class IPNWorkflowTest extends TestCase
         $request = Request::fromArray($ipnData);
 
         $this->assertSame('on_payment', $request->event->value);
-        $this->assertSame('123', $request->product_id);
+        $this->assertSame(123, $request->product_id); // Should be int after type casting
         $this->assertSame('ORD-MIN-1', $request->order_id);
-        $this->assertSame('minimal@example.com', $request->buyer_email);
+        $this->assertSame('minimal@example.com', $request->email);
     }
 
     /**
@@ -268,13 +274,13 @@ final class IPNWorkflowTest extends TestCase
             'event' => 'on_payment',
             'product_id' => '123456',
             'order_id' => 'ORD-12345',
-            'buyer_email' => 'john.doe@example.com',
-            'buyer_first_name' => 'John',
-            'buyer_last_name' => 'Doe',
+            'email' => 'john.doe@example.com',
+            'address_first_name' => 'John',
+            'address_last_name' => 'Doe',
             'transaction_id' => 'TXN-999888',
-            'amount' => '49.99',
+            'transaction_amount' => '49.99',
             'currency' => 'EUR',
-            'payment_method' => 'credit_card',
+            'pay_method' => 'creditcard',
         ];
 
         $signature = Signature::getExpectedSignature(self::PASSPHRASE, $data);
