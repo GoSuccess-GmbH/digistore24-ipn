@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- Updated GitHub Actions workflows to support PHP 8.4
+- Added PHP 8.4 to CI/CD test matrix (8.1, 8.2, 8.3, 8.4)
+- Code quality checks now use PHP 8.4
+
+### Fixed
+- Fixed integration tests to use authentic Digistore24 field names
+- Corrected field names: `email`, `transaction_amount`, `address_first_name`, `pay_method`
+- Fixed enum values to match actual Digistore24 enums
+
+### Documentation
+- Cleaned up documentation folder (removed internal test summaries and reports)
+- Kept only user-facing documentation: UPGRADE.md and README.md
+
 ## [2.0.0] - 2025-01-XX
 
 ### 🚨 BREAKING CHANGES

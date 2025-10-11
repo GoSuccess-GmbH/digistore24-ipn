@@ -8,17 +8,8 @@ Welcome to the Digistore24 IPN PHP Library documentation!
 
 - **[UPGRADE.md](UPGRADE.md)** - Upgrade guide from v1.x to v2.0
   - New features
-  - Breaking changes (none!)
-  - Recommended changes
+  - Breaking changes
   - Migration steps
-
-### For Developers
-
-- **[CONTRIBUTING.md](../CONTRIBUTING.md)** - Contribution guidelines
-  - How to contribute
-  - Coding standards
-  - Test requirements
-  - Commit messages
 
 ### Project Information
 
@@ -27,29 +18,6 @@ Welcome to the Digistore24 IPN PHP Library documentation!
   - New features
   - Bug fixes
   - Breaking changes
-
-- **[OPTIMIZATIONS.md](OPTIMIZATIONS.md)** - Optimizations overview
-  - All implemented optimizations
-  - Before/after comparisons
-  - Impact analysis
-  - Metrics
-
-- **[TEST_RESULTS.md](TEST_RESULTS.md)** - Test results
-  - Test statistics
-  - Test suites overview
-  - Code coverage
-  - CI/CD status
-
-- **[PHPSTAN_WARNINGS.md](PHPSTAN_WARNINGS.md)** - PHPStan analysis
-  - Resolved warnings
-  - Type-safety improvements
-  - Static analysis results
-
-- **[FINAL_SUMMARY.md](FINAL_SUMMARY.md)** - Project summary
-  - Complete overview of all optimizations
-  - Final metrics
-  - Project status
-  - Release information
 
 ## 🚀 Quick Start
 
@@ -66,19 +34,12 @@ New to this library? Start here:
 - [Examples](../examples/README.md)
 
 ### Features & Usage
-- [Array Helpers](../README.md#using-array-helpers)
-- [Dynamic Getters](../README.md#dynamic-getters)
+- [Property Hooks](../README.md) - Direct property access with PHP 8.4
 - [Signature Validation](../README.md#receiving-and-validating-an-ipn)
 
 ### Development
-- [Running Tests](../CONTRIBUTING.md#testing)
-- [Code Style](../CONTRIBUTING.md#coding-standards)
-- [Development Setup](../CONTRIBUTING.md#development-setup)
-
-### Quality & Security
-- [Security Features](../README.md#security)
-- [Test Coverage](TEST_RESULTS.md)
-- [Type Safety](PHPSTAN_WARNINGS.md)
+- [Running Tests](../README.md#testing)
+- [Code Style](../README.md#code-style)
 
 ## 🔧 Development Commands
 
@@ -98,10 +59,10 @@ composer test && composer cs:fix && composer analyze
 
 ## 📊 Project Status
 
-**Version**: 2.0.0 (Production Ready)  
-**PHP**: >= 8.1  
-**Tests**: 49/49 passing ✅  
-**PHPStan**: Level 6, 0 errors ✅  
+**Version**: 2.0.0 (In Development)  
+**PHP**: >= 8.4  
+**Tests**: 69/69 passing ✅  
+**PHPStan**: Level 8 (with Property Hooks exclusions) ✅  
 **Code Style**: PSR-12 ✅
 
 ## 💬 Questions?
