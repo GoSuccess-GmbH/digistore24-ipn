@@ -18,7 +18,7 @@ class Response
      * Thank you URL to redirect the customer after payment.
      */
     public ?string $thankyouUrl = null {
-        set {
+        set(string|null $value) {
             if ($value !== null && !filter_var($value, FILTER_VALIDATE_URL)) {
                 throw new FormatException("Invalid URL format: $value");
             }
