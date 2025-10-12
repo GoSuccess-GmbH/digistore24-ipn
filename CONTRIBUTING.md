@@ -59,17 +59,18 @@ composer analyze
 ## Coding Standards
 
 - Follow PSR-12 coding standards
-- Use PHP 8.1+ features (typed properties, enums, etc.)
-- Write PHPDoc comments for public methods
+- Use PHP 8.4+ features (Property Hooks, typed properties, enums, etc.)
+- Write PHPDoc comments for public methods and Property Hooks
 - Ensure all public APIs are type-safe
 - Add tests for new functionality
+- Use `snake_case` for property names (matching Digistore24 IPN API)
 
 ## Testing
 
 - Write unit tests for new features
 - Ensure all tests pass before submitting PR
 - Aim for high code coverage
-- Test with multiple PHP versions (8.1, 8.2, 8.3)
+- Test with PHP 8.4 only (minimum required version)
 
 ```bash
 # Run all tests
@@ -88,11 +89,11 @@ composer test:coverage
 
 Examples:
 ```
-Add array helper methods for grouped data
+Add Salutation enum for address fields
 
-- getAllCouponCodes()
-- getAllProductIds()
-- getAllTags()
+- Supports 'M' (Mr), 'F' (Mrs), '' (None)
+- Type-safe with Property Hooks
+- Auto-conversion from string values
 
 Closes #123
 ```
@@ -103,10 +104,10 @@ The maintainers will review your pull request and may request changes. Once appr
 
 ## Documentation
 
-When adding new features, please update the relevant documentation in the `docs/` directory:
-- [docs/UPGRADE.md](docs/UPGRADE.md) - For user-facing changes
-- [docs/OPTIMIZATIONS.md](docs/OPTIMIZATIONS.md) - For optimization details
-- [docs/TEST_RESULTS.md](docs/TEST_RESULTS.md) - For test coverage updates
+When adding new features, please update the relevant documentation:
+- [docs/UPGRADE.md](docs/UPGRADE.md) - For breaking changes and migration guides
+- [README.md](README.md) - For general usage and examples
+- [CHANGELOG.md](CHANGELOG.md) - Document all changes
 
 ## Questions?
 
