@@ -100,6 +100,11 @@ final class Signature
         foreach ($keys as $key) {
             $value = $parameters[$key];
 
+            // Skip array values (they cannot be used in signature)
+            if (is_array($value)) {
+                continue;
+            }
+
             // Optionally decode HTML entities in values
             if ($doHtmlDecode && is_string($value)) {
                 $value = html_entity_decode($value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5);
