@@ -6,7 +6,7 @@ namespace GoSuccess\Digistore24IPN\Tests\Integration;
 
 use GoSuccess\Digistore24IPN\Enum\BillingType;
 use GoSuccess\Digistore24IPN\Exception\FormatException;
-use GoSuccess\Digistore24IPN\Request;
+use GoSuccess\Digistore24IPN\Notification;
 use GoSuccess\Digistore24IPN\Response;
 use GoSuccess\Digistore24IPN\Security\Signature;
 use PHPUnit\Framework\Attributes\Test;
@@ -35,13 +35,13 @@ final class IPNWorkflowTest extends TestCase
         $this->assertNotNull($ipnData['sha_sign']);
         Signature::validateSignature(self::PASSPHRASE, $ipnData);
 
-        // 3. Parse into Request object
-        $request = Request::fromArray($ipnData);
+        // 3. Parse into Notification object
+        $notification = Notification::fromArray($ipnData);
 
-        // 4. Verify request data
-        $this->assertSame('on_payment', $request->event->value);
-        $this->assertSame('john.doe@example.com', $request->email);
-        $this->assertSame(49.99, $request->transaction_amount);
+        // 4. Verify notification data
+        $this->assertSame('on_payment', $notification->event->value);
+        $this->assertSame('john.doe@example.com', $notification->email);
+        $this->assertSame(49.99, $notification->transaction_amount);
 
         // 5. Create response
         $response = new Response();
@@ -94,10 +94,10 @@ final class IPNWorkflowTest extends TestCase
 
         // Validate and parse
         Signature::validateSignature(self::PASSPHRASE, $ipnData);
-        $request = Request::fromArray($ipnData);
+        $notification = Notification::fromArray($ipnData);
 
-        $this->assertSame('on_refund', $request->event->value);
-        $this->assertSame(-49.99, $request->transaction_amount);
+        $this->assertSame('on_refund', $notification->event->value);
+        $this->assertSame(-49.99, $notification->transaction_amount);
     }
 
     #[Test]
@@ -119,10 +119,10 @@ final class IPNWorkflowTest extends TestCase
         $ipnData['sha_sign'] = $signature;
 
         Signature::validateSignature(self::PASSPHRASE, $ipnData);
-        $request = Request::fromArray($ipnData);
+        $notification = Notification::fromArray($ipnData);
 
-        $this->assertSame('subscriber@example.com', $request->email);
-        $this->assertSame(BillingType::SUBSCRIPTION, $request->billing_type);
+        $this->assertSame('subscriber@example.com', $notification->email);
+        $this->assertSame(BillingType::SUBSCRIPTION, $notification->billing_type);
     }
 
     #[Test]
@@ -143,13 +143,13 @@ final class IPNWorkflowTest extends TestCase
         $ipnData['sha_sign'] = $signature;
 
         Signature::validateSignature(self::PASSPHRASE, $ipnData);
-        $request = Request::fromArray($ipnData);
+        $notification = Notification::fromArray($ipnData);
 
         // product_ids is a comma-separated string from Digistore24
-        $this->assertSame('111,222,333', $request->product_ids);
+        $this->assertSame('111,222,333', $notification->product_ids);
         
         // Can be split into array if needed
-        $productArray = explode(',', $request->product_ids);
+        $productArray = explode(',', $notification->product_ids);
         $this->assertSame(['111', '222', '333'], $productArray);
     }
 
@@ -159,7 +159,7 @@ final class IPNWorkflowTest extends TestCase
         $ipnData = $this->createSimulatedIPNData();
         
         Signature::validateSignature(self::PASSPHRASE, $ipnData);
-        $request = Request::fromArray($ipnData);
+        $notification = Notification::fromArray($ipnData);
 
         // Create response with multiple login accounts
         $response = new Response();
@@ -196,14 +196,14 @@ final class IPNWorkflowTest extends TestCase
         $ipnData = $this->createSimulatedIPNData();
         
         Signature::validateSignature(self::PASSPHRASE, $ipnData);
-        $request = Request::fromArray($ipnData);
+        $notification = Notification::fromArray($ipnData);
 
         $response = new Response();
         $response->thankyouUrl = 'https://example.com/thanks';
         $response->addLoginBlock('user', 'pass', 'https://example.com/login');
         
         // Add custom fields
-        $response->setAdditionalData('order_reference', $request->order_id ?? 'N/A');
+        $response->setAdditionalData('order_reference', $notification->order_id ?? 'N/A');
         $response->setAdditionalData('customer_id', 'CUST-12345');
         $response->setAdditionalData('support_email', 'help@example.com');
         $response->setAdditionalData('activation_date', date('Y-m-d'));
@@ -236,11 +236,11 @@ final class IPNWorkflowTest extends TestCase
         $ipnData['sha_sign'] = $signature;
 
         Signature::validateSignature(self::PASSPHRASE, $ipnData);
-        $request = Request::fromArray($ipnData);
+        $notification = Notification::fromArray($ipnData);
 
-        $this->assertSame('Günther', $request->address_first_name);
-        $this->assertSame('Müller', $request->address_last_name);
-        $this->assertSame('München', $request->address_city);
+        $this->assertSame('Günther', $notification->address_first_name);
+        $this->assertSame('Müller', $notification->address_last_name);
+        $this->assertSame('München', $notification->address_city);
     }
 
     #[Test]
@@ -257,12 +257,12 @@ final class IPNWorkflowTest extends TestCase
         $ipnData['sha_sign'] = $signature;
 
         Signature::validateSignature(self::PASSPHRASE, $ipnData);
-        $request = Request::fromArray($ipnData);
+        $notification = Notification::fromArray($ipnData);
 
-        $this->assertSame('on_payment', $request->event->value);
-        $this->assertSame(123, $request->product_id); // Should be int after type casting
-        $this->assertSame('ORD-MIN-1', $request->order_id);
-        $this->assertSame('minimal@example.com', $request->email);
+        $this->assertSame('on_payment', $notification->event->value);
+        $this->assertSame(123, $notification->product_id); // Should be int after type casting
+        $this->assertSame('ORD-MIN-1', $notification->order_id);
+        $this->assertSame('minimal@example.com', $notification->email);
     }
 
     /**

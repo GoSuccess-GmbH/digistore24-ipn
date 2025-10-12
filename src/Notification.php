@@ -17,15 +17,16 @@ use GoSuccess\Digistore24IPN\Enum\TransactionType;
 use GoSuccess\Digistore24IPN\Enum\UpgradeType;
 
 /**
- * Data Transfer Object for handling IPN requests from Digistore24.
+ * Data Transfer Object for handling IPN notifications from Digistore24.
  *
- * This class uses PHP 8.4 Property Hooks for automatic type conversion.
+ * This class represents the notification data sent by Digistore24 to your webhook endpoint.
+ * It uses PHP 8.4 Property Hooks for automatic type conversion.
  * All property names match the exact Digistore24 IPN field names (snake_case).
  * 
  * BREAKING CHANGE: No getter methods - use direct property access.
- * Example: $ipn->order_id instead of $ipn->getOrderId()
+ * Example: $notification->order_id instead of $notification->getOrderId()
  */
-final class Request
+final class Notification
 {
     public ?Action $action = null {
         set(mixed $value) => $value !== null ? Action::from($value) : null;

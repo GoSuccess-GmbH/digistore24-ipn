@@ -30,7 +30,7 @@ composer require gosuccess/digistore24-ipn
 ```php
 <?php
 
-use GoSuccess\Digistore24IPN\Request;
+use GoSuccess\Digistore24IPN\Notification;
 use GoSuccess\Digistore24IPN\Response;
 use GoSuccess\Digistore24IPN\Enum\Event;
 use GoSuccess\Digistore24IPN\Security\Signature;
@@ -44,18 +44,18 @@ try {
     // Validate the signature first
     Signature::validateSignature($shaPassphrase, $_POST);
     
-    // Create DTO from IPN data after validation
-    $ipn = Request::fromPost();
+    // Create notification object from IPN data
+    $notification = Notification::fromPost();
 
     // Access fields directly (no getter methods!)
-    $event = $ipn->event;
-    $orderId = $ipn->order_id;
-    $amount = $ipn->amount_brutto;
-    $email = $ipn->email;
+    $event = $notification->event;
+    $orderId = $notification->order_id;
+    $amount = $notification->amount_brutto;
+    $email = $notification->email;
     
     // Tags are automatically converted to array
-    $tags = $ipn->tags; // ['tag1', 'tag2', 'tag3']
-    $firstTag = $ipn->tags[0] ?? null;
+    $tags = $notification->tags; // ['tag1', 'tag2', 'tag3']
+    $firstTag = $notification->tags[0] ?? null;
 
     // Process the event
     switch ($event) {
@@ -107,23 +107,23 @@ All properties use **snake_case** names matching the Digistore24 IPN API exactly
 
 ```php
 // Direct property access (PHP 8.4 Property Hooks)
-$ipn->order_id          // instead of getOrderId()
-$ipn->amount_brutto     // instead of getAmountBrutto()
-$ipn->email             // instead of getEmail()
-$ipn->product_name      // instead of getProductName()
+$notification->order_id          // instead of getOrderId()
+$notification->amount_brutto     // instead of getAmountBrutto()
+$notification->email             // instead of getEmail()
+$notification->product_name      // instead of getProductName()
 
 // Automatic type conversion
-$ipn->amount_brutto     // float
-$ipn->buyer_id          // int
-$ipn->order_is_paid     // bool
-$ipn->order_date        // DateTimeImmutable
-$ipn->event             // Event enum
-$ipn->billing_status    // BillingStatus enum
+$notification->amount_brutto     // float
+$notification->buyer_id          // int
+$notification->order_is_paid     // bool
+$notification->order_date        // DateTimeImmutable
+$notification->event             // Event enum
+$notification->billing_status    // BillingStatus enum
 
 // Tags are converted to array
-$ipn->tags              // ['webinar', 'premium', 'vip']
-$ipn->tags[0]           // 'webinar'
-$ipn->tags[1]           // 'premium'
+$notification->tags              // ['webinar', 'premium', 'vip']
+$notification->tags[0]           // 'webinar'
+$notification->tags[1]           // 'premium'
 ```
 
 ## Migration from v1.x
@@ -139,17 +139,17 @@ $ipn->tags[1]           // 'premium'
    $amount = $ipn->getAmountBrutto();
    
    // NEW (v2.x)
-   $orderId = $ipn->order_id;
-   $amount = $ipn->amount_brutto;
+   $orderId = $notification->order_id;
+   $amount = $notification->amount_brutto;
    ```
 
 2. **snake_case property names** (matching DS24 API exactly):
    ```php
    // Property names match Digistore24 IPN field names
-   $ipn->order_id           // not $ipn->orderId
-   $ipn->amount_brutto      // not $ipn->amountBrutto
-   $ipn->email              // buyer's email address
-   $ipn->address_first_name // billing address first name
+   $notification->order_id           // not $ipn->orderId
+   $notification->amount_brutto      // not $ipn->amountBrutto
+   $notification->email              // buyer's email address
+   $notification->address_first_name // billing address first name
    ```
 
 3. **Tags as array** - No more `tag1` through `tag100`:
@@ -159,9 +159,9 @@ $ipn->tags[1]           // 'premium'
    $tag2 = $ipn->getTag2();
    
    // NEW (v2.x)
-   $tags = $ipn->tags;     // ['tag1', 'tag2', 'tag3']
-   $firstTag = $ipn->tags[0];
-   $secondTag = $ipn->tags[1];
+   $tags = $notification->tags;     // ['tag1', 'tag2', 'tag3']
+   $firstTag = $notification->tags[0];
+   $secondTag = $notification->tags[1];
    ```
 
 4. **Response DTO** - Direct property assignment:
