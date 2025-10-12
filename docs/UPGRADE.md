@@ -23,10 +23,10 @@ $event = $ipn->getEvent();
 
 **After (v2.0):**
 ```php
-$orderId = $ipn->order_id;
-$amount = $ipn->amount_brutto;
-$email = $ipn->email;
-$event = $ipn->event;
+$orderId = $notification->order_id;
+$amount = $notification->amount_brutto;
+$email = $notification->email;
+$event = $notification->event;
 ```
 
 **Why?** PHP 8.4 Property Hooks eliminate the need for getter methods. Properties are now directly accessible with automatic type conversion and validation.
@@ -44,9 +44,9 @@ $ipn->getOrderId();           // camelCase method
 
 **After (v2.0):**
 ```php
-$ipn->amount_brutto;          // snake_case property
-$ipn->address_first_name;     // snake_case property
-$ipn->order_id;               // snake_case property
+$notification->amount_brutto;          // snake_case property
+$notification->address_first_name;     // snake_case property
+$notification->order_id;               // snake_case property
 ```
 
 **Why?** This matches the exact field names from Digistore24, making debugging and API documentation comparison easier.
@@ -62,9 +62,9 @@ $response->setForwardToUrl('https://example.com');
 
 **After (v2.0):**
 ```php
-$response = new IPNResponseDto();
+$response = new Response();
 $response->headline = 'Welcome!';
-$response->forward_to_url = 'https://example.com';
+$response->thankyouUrl = 'https://example.com';
 ```
 
 **Note:** Helper methods like `addLoginBlock()` and `setAdditionalData()` still exist.
@@ -81,12 +81,12 @@ $tag3 = $ipn->getTag3();
 
 **After (v2.0):**
 ```php
-$tags = $ipn->tags;           // ['tag1', 'tag2', 'tag3']
-$firstTag = $ipn->tags[0];    // 'tag1'
-$secondTag = $ipn->tags[1];   // 'tag2'
+$tags = $notification->tags;           // ['tag1', 'tag2', 'tag3']
+$firstTag = $notification->tags[0];    // 'tag1'
+$secondTag = $notification->tags[1];   // 'tag2'
 
 // OR check if specific tag exists
-if (in_array('premium', $ipn->tags ?? [])) {
+if (in_array('premium', $notification->tags ?? [])) {
     // Handle premium tag
 }
 ```
@@ -102,11 +102,11 @@ $ipn = IPNRequestDto::map();
 
 **After (v2.0):**
 ```php
-$ipn = IPNRequestDto::fromPost();  // For $_POST data
+$notification = Notification::fromPost();  // For $_POST data
 // OR
-$ipn = IPNRequestDto::fromGet();   // For $_GET data
+$notification = Notification::fromGet();   // For $_GET data
 // OR
-$ipn = IPNRequestDto::fromArray($data);  // For custom array
+$notification = Notification::fromArray($data);  // For custom array
 ```
 
 **Why?** More explicit about the data source.
@@ -118,7 +118,7 @@ The following helper methods **no longer exist**:
 **Removed in v2.0:**
 - `getAllProductIds()` - Use direct property access
 - `getAllCouponCodes()` - Use direct property access
-- `getAllTags()` - Use `$ipn->tags` array
+- `getAllTags()` - Use `$notification->tags` array
 - `getAllLicenseKeys()` - Use direct property access
 - `getAllEticketUrls()` - Use direct property access
 - `getAllUpgradedProductIds()` - Use direct property access
@@ -186,7 +186,7 @@ if ($tag1 === 'premium') {
 
 **After:**
 ```php
-$tags = $ipn->tags ?? [];
+$tags = $notification->tags ?? [];
 if (in_array('premium', $tags)) {
     // ...
 }
@@ -201,7 +201,7 @@ $ipn = IPNRequestDto::map();
 
 **After:**
 ```php
-$ipn = IPNRequestDto::fromPost();
+$notification = Notification::fromPost();
 ```
 
 #### Step 7: Test Your Integration
@@ -227,19 +227,19 @@ $amount = $ipn->getAmountBrutto();
 $email = $ipn->getEmail();
 
 // v2.0 - Clean
-$orderId = $ipn->order_id;
-$amount = $ipn->amount_brutto;
-$email = $ipn->email;
+$orderId = $notification->order_id;
+$amount = $notification->amount_brutto;
+$email = $notification->email;
 ```
 
 #### 3. Automatic Type Conversion
 ```php
-$ipn->amount_brutto;      // Automatically float
-$ipn->buyer_id;           // Automatically int
-$ipn->order_is_paid;      // Automatically bool
-$ipn->order_date;         // Automatically DateTimeImmutable
-$ipn->event;              // Automatically Event enum
-$ipn->tags;               // Automatically array
+$notification->amount_brutto;      // Automatically float
+$notification->buyer_id;           // Automatically int
+$notification->order_is_paid;      // Automatically bool
+$notification->order_date;         // Automatically DateTimeImmutable
+$notification->event;              // Automatically Event enum
+$notification->tags;               // Automatically array
 ```
 
 #### 4. IDE Support
@@ -282,26 +282,26 @@ if ($ipn->getEvent() === Event::ON_PAYMENT) {
 **After (v2.0):**
 ```php
 <?php
-use GoSuccess\Digistore24IPN\Dto\IPNRequestDto;
-use GoSuccess\Digistore24IPN\Dto\IPNResponseDto;
+use GoSuccess\Digistore24IPN\Notification;
+use GoSuccess\Digistore24IPN\Response;
 use GoSuccess\Digistore24IPN\Enum\Event;
-use GoSuccess\Digistore24IPN\Helper\SignatureHelper;
+use GoSuccess\Digistore24IPN\Security\Signature;
 
 $secret = 'your-secret';
 
-SignatureHelper::validateSignature($secret, $_POST);
-$ipn = IPNRequestDto::fromPost();
+Signature::validateSignature($secret, $_POST);
+$notification = Notification::fromPost();
 
-if ($ipn->event === Event::ON_PAYMENT) {
-    $orderId = $ipn->order_id;
-    $email = $ipn->email;
-    $amount = $ipn->amount_brutto;
+if ($notification->event === Event::ON_PAYMENT) {
+    $orderId = $notification->order_id;
+    $email = $notification->email;
+    $amount = $notification->amount_brutto;
     
     // Get tags (now array!)
-    $tags = $ipn->tags ?? [];
+    $tags = $notification->tags ?? [];
     
     // Create response
-    $response = new IPNResponseDto();
+    $response = new Response();
     $response->headline = 'Welcome!';
     die($response->toString());
 }
