@@ -48,6 +48,9 @@ This is a **major version update** with breaking changes. Please read the [UPGRA
 - Zero-reflection architecture for better performance
 - Static factory methods: `fromPost()`, `fromGet()`, `fromArray()`
 - New `Salutation` enum for type-safe address salutation values ('M', 'F', '')
+- Comprehensive inline code documentation with examples and best practices
+- Detailed PHPDoc comments explaining Property Hooks and type conversions
+- Security notes and usage examples in all major classes
 - Comprehensive documentation updates for v2.0
 - Migration guide in [docs/UPGRADE.md](docs/UPGRADE.md)
 
