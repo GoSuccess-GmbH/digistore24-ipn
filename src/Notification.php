@@ -13,6 +13,7 @@ use GoSuccess\Digistore24IPN\Enum\Event;
 use GoSuccess\Digistore24IPN\Enum\OrderType;
 use GoSuccess\Digistore24IPN\Enum\PayMethod;
 use GoSuccess\Digistore24IPN\Enum\ProductDeliveryType;
+use GoSuccess\Digistore24IPN\Enum\Salutation;
 use GoSuccess\Digistore24IPN\Enum\TransactionType;
 use GoSuccess\Digistore24IPN\Enum\UpgradeType;
 
@@ -108,8 +109,8 @@ final class Notification
         set(mixed $value) => $value !== null ? $value : null;
     }
 
-    public ?string $address_salutation = null {
-        set(mixed $value) => $value !== null ? $value : null;
+    public ?Salutation $address_salutation = null {
+        set(mixed $value) => $value !== null ? Salutation::from($value) : null;
     }
 
     public ?string $address_state = null {

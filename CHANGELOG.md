@@ -47,6 +47,7 @@ This is a **major version update** with breaking changes. Please read the [UPGRA
   - Comma-separated string → array (for `tags` property)
 - Zero-reflection architecture for better performance
 - Static factory methods: `fromPost()`, `fromGet()`, `fromArray()`
+- New `Salutation` enum for type-safe address salutation values ('M', 'F', '')
 - Comprehensive documentation updates for v2.0
 - Migration guide in [docs/UPGRADE.md](docs/UPGRADE.md)
 
