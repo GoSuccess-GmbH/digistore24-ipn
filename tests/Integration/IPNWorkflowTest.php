@@ -39,6 +39,7 @@ final class IPNWorkflowTest extends TestCase
         $notification = Notification::fromArray($ipnData);
 
         // 4. Verify notification data
+        $this->assertNotNull($notification->event);
         $this->assertSame('on_payment', $notification->event->value);
         $this->assertSame('john.doe@example.com', $notification->email);
         $this->assertSame(49.99, $notification->transaction_amount);
@@ -96,6 +97,7 @@ final class IPNWorkflowTest extends TestCase
         Signature::validateSignature(self::PASSPHRASE, $ipnData);
         $notification = Notification::fromArray($ipnData);
 
+        $this->assertNotNull($notification->event);
         $this->assertSame('on_refund', $notification->event->value);
         $this->assertSame(-49.99, $notification->transaction_amount);
     }
@@ -259,6 +261,7 @@ final class IPNWorkflowTest extends TestCase
         Signature::validateSignature(self::PASSPHRASE, $ipnData);
         $notification = Notification::fromArray($ipnData);
 
+        $this->assertNotNull($notification->event);
         $this->assertSame('on_payment', $notification->event->value);
         $this->assertSame(123, $notification->product_id); // Should be int after type casting
         $this->assertSame('ORD-MIN-1', $notification->order_id);

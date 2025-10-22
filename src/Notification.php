@@ -646,13 +646,24 @@ final class Notification
      * Tags as array (converted from comma-separated string).
      * Index starts at 0 (standard PHP array).
      * Example: $dto->tags[0] for first tag, $dto->tags[1] for second tag, etc.
-     * 
-     * @var string[]|null
      */
     public ?array $tags = null {
-        set(mixed $value) => $value !== null && $value !== '' 
-            ? array_filter(array_map('trim', explode(',', $value)), fn($tag) => $tag !== '')
-            : null;
+        set(mixed $value) {
+            if ($value === null || $value === '') {
+                $this->tags = null;
+                return;
+            }
+            
+            // If already an array, use it directly
+            if (is_array($value)) {
+                /** @var string[] $value */
+                $this->tags = array_filter(array_map('trim', $value), fn($tag) => $tag !== '');
+                return;
+            }
+            
+            // Convert comma-separated string to array
+            $this->tags = array_filter(array_map('trim', explode(',', (string) $value)), fn($tag) => $tag !== '');
+        }
     }
 
     public ?float $transaction_amount = null {

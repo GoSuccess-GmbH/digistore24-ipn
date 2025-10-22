@@ -1,15 +1,11 @@
 parameters:
-    level: 6
+    level: 8
     phpVersion: 80400
     paths:
         - src
         - tests
     excludePaths:
         - vendor
-        # Temporary: PHPStan 1.12.32 doesn't fully support PHP 8.4 Property Hooks syntax
-        # Once PHPStan is updated to support Property Hooks, these exclusions can be removed
-        - src/Request.php
-        - src/Response.php
     ignoreErrors:
         -
             identifier: missingType.iterableValue

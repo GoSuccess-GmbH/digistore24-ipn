@@ -199,7 +199,6 @@ class Response
         foreach ($this->loginBlocks as $i => $block) {
             // Validate that all required fields are present and non-empty
             if (
-                !isset($block['username'], $block['password'], $block['loginurl']) ||
                 $block['username'] === '' ||
                 $block['password'] === '' ||
                 $block['loginurl'] === ''

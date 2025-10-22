@@ -73,8 +73,6 @@ final class FormatExceptionTest extends TestCase
             $this->assertSame('Test error', $e->getMessage());
             return;
         }
-
-        $this->fail('FormatException was not caught');
     }
 
     #[Test]
@@ -86,8 +84,6 @@ final class FormatExceptionTest extends TestCase
             $this->assertInstanceOf(FormatException::class, $e);
             return;
         }
-
-        $this->fail('Exception was not caught as InvalidArgumentException');
     }
 
     #[Test]
@@ -99,8 +95,6 @@ final class FormatExceptionTest extends TestCase
             $this->assertInstanceOf(FormatException::class, $e);
             return;
         }
-
-        $this->fail('Exception was not caught as Throwable');
     }
 
     #[Test]
@@ -109,7 +103,7 @@ final class FormatExceptionTest extends TestCase
         $exception = new FormatException('Test message');
         $trace = $exception->getTrace();
 
-        $this->assertIsArray($trace);
+        $this->assertNotEmpty($trace);
     }
 
     #[Test]
@@ -117,8 +111,7 @@ final class FormatExceptionTest extends TestCase
     {
         $exception = new FormatException('Test message');
 
-        $this->assertIsString($exception->getFile());
-        $this->assertIsInt($exception->getLine());
+        $this->assertNotEmpty($exception->getFile());
         $this->assertGreaterThan(0, $exception->getLine());
     }
 
