@@ -16,6 +16,8 @@ use GoSuccess\Digistore24\Ipn\Enum\ProductDeliveryType;
 use GoSuccess\Digistore24\Ipn\Enum\Salutation;
 use GoSuccess\Digistore24\Ipn\Enum\TransactionType;
 use GoSuccess\Digistore24\Ipn\Enum\UpgradeType;
+use GoSuccess\Digistore24\Ipn\Util\NotificationSerializer;
+use GoSuccess\Digistore24\Ipn\Util\NotificationValidator;
 use GoSuccess\Digistore24\Ipn\Util\TypeConverter;
 
 /**
@@ -982,14 +984,7 @@ final class Notification
     /**
      * Validate notification data for business logic errors.
      *
-     * This method checks for common data integrity issues that could indicate
-     * problems with the IPN data, even if the signature is valid.
-     *
-     * Validation checks:
-     * - Email format validation
-     * - Positive monetary amounts
-     * - Positive order ID
-     * - Required event field
+     * Delegates to NotificationValidator utility class for validation logic.
      *
      * @return array<string> Array of error messages (empty array if valid)
      *
@@ -1006,51 +1001,12 @@ final class Notification
      *     exit('Invalid data');
      * }
      * ```
+     *
+     * @see NotificationValidator::validate()
      */
     public function validate(): array
     {
-        $errors = [];
-
-        // Validate email format if present
-        if ($this->email !== null && !filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
-            $errors[] = "Invalid email format: {$this->email}";
-        }
-
-        // Validate monetary amounts are not negative
-        $amountFields = [
-            'amount_brutto',
-            'amount_netto',
-            'amount_affiliate',
-            'amount_credited',
-            'amount_fee',
-            'amount_partner',
-            'amount_payout',
-            'amount_provider',
-            'transaction_amount',
-        ];
-
-        foreach ($amountFields as $field) {
-            if ($this->$field !== null && $this->$field < 0) {
-                $errors[] = "{$field} must not be negative: {$this->$field}";
-            }
-        }
-
-        // Validate order_id is positive if present
-        if ($this->order_id !== null && $this->order_id <= 0) {
-            $errors[] = "order_id must be positive: {$this->order_id}";
-        }
-
-        // Validate product_id is positive if present
-        if ($this->product_id !== null && $this->product_id <= 0) {
-            $errors[] = "product_id must be positive: {$this->product_id}";
-        }
-
-        // Validate event is set (required field)
-        if ($this->event === null) {
-            $errors[] = 'event field is required';
-        }
-
-        return $errors;
+        return NotificationValidator::validate($this);
     }
 
     // ========================================
@@ -1060,8 +1016,7 @@ final class Notification
     /**
      * Convert notification to array.
      *
-     * Returns all properties as an associative array, converting objects
-     * to their string representations (Enums → value, DateTime → string).
+     * Delegates to NotificationSerializer utility class for serialization.
      *
      * @return array<string, mixed> Notification data as array
      *
@@ -1073,31 +1028,18 @@ final class Notification
      * // Store in cache/queue
      * file_put_contents('cache.json', json_encode($array));
      * ```
+     *
+     * @see NotificationSerializer::toArray()
      */
     public function toArray(): array
     {
-        $data = [];
-
-        foreach (get_object_vars($this) as $property => $value) {
-            // Convert enums to their scalar values
-            if ($value instanceof \BackedEnum) {
-                $data[$property] = $value->value;
-            }
-            // Convert DateTimeImmutable to ISO 8601 string
-            elseif ($value instanceof \DateTimeImmutable) {
-                $data[$property] = $value->format('c');
-            }
-            // Keep everything else as-is
-            else {
-                $data[$property] = $value;
-            }
-        }
-
-        return $data;
+        return NotificationSerializer::toArray($this);
     }
 
     /**
      * Convert notification to JSON string.
+     *
+     * Delegates to NotificationSerializer utility class for JSON serialization.
      *
      * @return string JSON representation of the notification
      *
@@ -1111,14 +1053,18 @@ final class Notification
      * // Send to queue system
      * $redis->rpush('ipn_queue', $json);
      * ```
+     *
+     * @see NotificationSerializer::toJson()
      */
     public function toJson(): string
     {
-        return json_encode($this->toArray(), JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
+        return NotificationSerializer::toJson($this);
     }
 
     /**
      * Create notification from JSON string.
+     *
+     * Delegates to NotificationSerializer utility class for JSON deserialization.
      *
      * @param string $json JSON string representing notification data
      *
@@ -1137,11 +1083,11 @@ final class Notification
      *     // Grant access
      * }
      * ```
+     *
+     * @see NotificationSerializer::fromJson()
      */
     public static function fromJson(string $json): self
     {
-        $data = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
-
-        return self::fromArray($data);
+        return NotificationSerializer::fromJson($json);
     }
 }
