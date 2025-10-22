@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace GoSuccess\Digistore24\Ipn\Enum;
 
+use GoSuccess\Digistore24\Ipn\Contract\StringBackedEnum;
+use GoSuccess\Digistore24\Ipn\Trait\StringBackedEnumTrait;
+
 /**
  * Enum representing the newsletter sending policy.
  *
  * This enum defines the policies for sending newsletters based on user opt-in and opt-out status.
  */
-enum NewsletterSendingPolicy: string
+enum NewsletterSendingPolicy: string implements StringBackedEnum
 {
+    use StringBackedEnumTrait;
+
     /**
      * Send newsletter if the user has not opted out.
      */
@@ -30,4 +35,14 @@ enum NewsletterSendingPolicy: string
      * Send newsletter if the user has opted in.
      */
     case SEND_IF_OPTIN = 'send_if_optin';
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::SEND_IF_NOT_OPTOUT => 'Send If Not Opted Out',
+            self::SEND_ALWAYS => 'Send Always',
+            self::SEND_IF_OPTOUT => 'Send If Opted Out',
+            self::SEND_IF_OPTIN => 'Send If Opted In',
+        };
+    }
 }

@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace GoSuccess\Digistore24\Ipn\Enum;
 
+use GoSuccess\Digistore24\Ipn\Contract\StringBackedEnum;
+use GoSuccess\Digistore24\Ipn\Trait\StringBackedEnumTrait;
+
 /**
  * Enum representing various actions in the Digistore24 IPN system.
  *
  * This enum defines the actions that can be performed, such as creating,
  * updating, using, canceling use, revoking, and canceling revocation.
  */
-enum Action: string
+enum Action: string implements StringBackedEnum
 {
+    use StringBackedEnumTrait;
+
     /**
      * Action to create a resource.
      */
@@ -41,4 +46,16 @@ enum Action: string
      * Action to cancel the revocation of a resource.
      */
     case CANCEL_REVOKE = 'cancel_revoke';
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::CREATE => 'Create',
+            self::UPDATE => 'Update',
+            self::USE => 'Use',
+            self::CANCEL_USE => 'Cancel Use',
+            self::REVOKE => 'Revoke',
+            self::CANCEL_REVOKE => 'Cancel Revoke',
+        };
+    }
 }

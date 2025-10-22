@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace GoSuccess\Digistore24\Ipn\Enum;
 
+use GoSuccess\Digistore24\Ipn\Contract\StringBackedEnum;
+use GoSuccess\Digistore24\Ipn\Trait\StringBackedEnumTrait;
+
 /**
  * Enum representing various billing statuses in the Digistore24 IPN system.
  *
  * This enum defines the billing statuses that can be associated with a transaction,
  * such as paying, aborted, unpaid, reminding, and completed.
  */
-enum BillingStatus: string
+enum BillingStatus: string implements StringBackedEnum
 {
+    use StringBackedEnumTrait;
+
     /**
      * Billing status indicating that the transaction is currently being paid.
      */
@@ -36,4 +41,15 @@ enum BillingStatus: string
      * Billing status indicating that the transaction has been completed.
      */
     case COMPLETED = 'completed';
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::PAYING => 'Paying',
+            self::ABORTED => 'Aborted',
+            self::UNPAID => 'Unpaid',
+            self::REMINDING => 'Reminding',
+            self::COMPLETED => 'Completed',
+        };
+    }
 }

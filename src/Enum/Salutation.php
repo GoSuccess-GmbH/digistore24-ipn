@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace GoSuccess\Digistore24\Ipn\Enum;
 
+use GoSuccess\Digistore24\Ipn\Contract\StringBackedEnum;
+use GoSuccess\Digistore24\Ipn\Trait\StringBackedEnumTrait;
+
 /**
  * Enum representing salutation types in the Digistore24 IPN system.
  *
@@ -25,8 +28,10 @@ namespace GoSuccess\Digistore24\Ipn\Enum;
  * }
  * ```
  */
-enum Salutation: string
+enum Salutation: string implements StringBackedEnum
 {
+    use StringBackedEnumTrait;
+
     /**
      * Male salutation (Mr).
      * Digistore24 value: 'M'
@@ -44,4 +49,13 @@ enum Salutation: string
      * Digistore24 value: '' (empty string)
      */
     case NONE = '';
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::MR => 'Mr',
+            self::MRS => 'Mrs',
+            self::NONE => 'None',
+        };
+    }
 }

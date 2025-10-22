@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace GoSuccess\Digistore24\Ipn\Enum;
 
+use GoSuccess\Digistore24\Ipn\Contract\StringBackedEnum;
+use GoSuccess\Digistore24\Ipn\Trait\StringBackedEnumTrait;
+
 /**
  * Enum representing various events in the Digistore24 IPN system.
  *
  * Each case corresponds to a specific event that can occur during
  * transactions, such as payments, refunds, chargebacks, and more.
  */
-enum Event: string
+enum Event: string implements StringBackedEnum
 {
+    use StringBackedEnumTrait;
     /**
      * The buyer makes a successful payment.
      */
@@ -104,7 +108,7 @@ enum Event: string
     /**
      * Our server sends this event to test the connection to your
      * server, e.g. if you hit the "Test connection" button in the
-     * vendor’s IPN settings section. The response should always be
+     * vendor's IPN settings section. The response should always be
      * "OK".
      * If the test fails, check again the above points of this
      * integration guide and if the server is reachable with the script.
@@ -112,4 +116,22 @@ enum Event: string
      * @link https://dev.digistore24.com/hc/en-us/articles/32480217565969-Quick-Integration-Guide
      */
     case CONNECTION_TEST = 'connection_test';
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::ON_PAYMENT => 'Payment',
+            self::ON_REFUND => 'Refund',
+            self::ON_CHARGEBACK => 'Chargeback',
+            self::ON_PAYMENT_MISSED => 'Payment Missed',
+            self::PAYMENT_DENIAL => 'Payment Denial',
+            self::ON_REBILL_CANCELLED => 'Rebill Cancelled',
+            self::ON_REBILL_RESUMED => 'Rebill Resumed',
+            self::LAST_PAID_DAY => 'Last Paid Day',
+            self::ON_AFFILIATION => 'Affiliation',
+            self::ETICKET => 'E-Ticket',
+            self::CUSTOM_FORM => 'Custom Form',
+            self::CONNECTION_TEST => 'Connection Test',
+        };
+    }
 }

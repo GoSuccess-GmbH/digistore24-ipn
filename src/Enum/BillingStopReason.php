@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace GoSuccess\Digistore24\Ipn\Enum;
 
+use GoSuccess\Digistore24\Ipn\Contract\StringBackedEnum;
+use GoSuccess\Digistore24\Ipn\Trait\StringBackedEnumTrait;
+
 /**
  * Enum representing various reasons for stopping billing in the Digistore24 IPN system.
  *
  * This enum defines the reasons that can be associated with stopping billing,
  * such as by operator, by buyer, by refund, by chargeback, and more.
  */
-enum BillingStopReason: string
+enum BillingStopReason: string implements StringBackedEnum
 {
+    use StringBackedEnumTrait;
+
     /**
      * Billing stopped by the operator.
      */
@@ -66,4 +71,21 @@ enum BillingStopReason: string
      * Billing stopped for an unknown reason.
      */
     case UNKNOWN = 'unknown';
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::BY_OPERATOR => 'By Operator',
+            self::BY_BUYER => 'By Buyer',
+            self::BY_REFUND => 'By Refund',
+            self::BY_CHARGEBACK => 'By Chargeback',
+            self::BY_PAYMENT_DENIAL => 'By Payment Denial',
+            self::BY_PAYMENT_UNCERTAIN => 'By Payment Uncertain',
+            self::PAY_ALIAS_INVALID => 'Pay Alias Invalid',
+            self::UPGRADED => 'Upgraded',
+            self::NO_PRODUCT => 'No Product',
+            self::MERCHANT_INACTIVE => 'Merchant Inactive',
+            self::UNKNOWN => 'Unknown',
+        };
+    }
 }
