@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace GoSuccess\Digistore24IPN\Tests\Unit\Security;
+namespace GoSuccess\Digistore24\Ipn\Tests\Unit\Security;
 
-use GoSuccess\Digistore24IPN\Exception\FormatException;
-use GoSuccess\Digistore24IPN\Security\Signature;
+use GoSuccess\Digistore24\Ipn\Exception\FormatException;
+use GoSuccess\Digistore24\Ipn\Security\Signature;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;

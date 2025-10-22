@@ -30,11 +30,11 @@ composer require gosuccess/digistore24-ipn
 ```php
 <?php
 
-use GoSuccess\Digistore24IPN\Notification;
-use GoSuccess\Digistore24IPN\Response;
-use GoSuccess\Digistore24IPN\Enum\Event;
-use GoSuccess\Digistore24IPN\Security\Signature;
-use GoSuccess\Digistore24IPN\Exception\FormatException;
+use GoSuccess\Digistore24\Ipn\Notification;
+use GoSuccess\Digistore24\Ipn\Response;
+use GoSuccess\Digistore24\Ipn\Enum\Event;
+use GoSuccess\Digistore24\Ipn\Security\Signature;
+use GoSuccess\Digistore24\Ipn\Exception\FormatException;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -215,7 +215,7 @@ composer test && composer cs:fix && composer analyze
 
 ## Error Handling
 
-All signature and format errors throw `GoSuccess\Digistore24IPN\Exception\FormatException`.
+All signature and format errors throw `GoSuccess\Digistore24\Ipn\Exception\FormatException`.
 
 ## License
 

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace GoSuccess\Digistore24IPN;
+namespace GoSuccess\Digistore24\Ipn;
 
-use GoSuccess\Digistore24IPN\Exception\FormatException;
+use GoSuccess\Digistore24\Ipn\Exception\FormatException;
 
 /**
  * Response builder for Digistore24 IPN callbacks.

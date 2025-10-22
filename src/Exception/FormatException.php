@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GoSuccess\Digistore24IPN\Exception;
+namespace GoSuccess\Digistore24\Ipn\Exception;
 
 use InvalidArgumentException;
 

@@ -253,10 +253,10 @@ Property names are now **identical** to Digistore24's IPN field names, making do
 **Before (v1.x):**
 ```php
 <?php
-use GoSuccess\Digistore24IPN\Dto\IPNRequestDto;
-use GoSuccess\Digistore24IPN\Dto\IPNResponseDto;
-use GoSuccess\Digistore24IPN\Enum\Event;
-use GoSuccess\Digistore24IPN\Helper\SignatureHelper;
+use GoSuccess\Digistore24\Ipn\Dto\IPNRequestDto;
+use GoSuccess\Digistore24\Ipn\Dto\IPNResponseDto;
+use GoSuccess\Digistore24\Ipn\Enum\Event;
+use GoSuccess\Digistore24\Ipn\Helper\SignatureHelper;
 
 $secret = 'your-secret';
 
@@ -282,10 +282,10 @@ if ($ipn->getEvent() === Event::ON_PAYMENT) {
 **After (v2.0):**
 ```php
 <?php
-use GoSuccess\Digistore24IPN\Notification;
-use GoSuccess\Digistore24IPN\Response;
-use GoSuccess\Digistore24IPN\Enum\Event;
-use GoSuccess\Digistore24IPN\Security\Signature;
+use GoSuccess\Digistore24\Ipn\Notification;
+use GoSuccess\Digistore24\Ipn\Response;
+use GoSuccess\Digistore24\Ipn\Enum\Event;
+use GoSuccess\Digistore24\Ipn\Security\Signature;
 
 $secret = 'your-secret';
 

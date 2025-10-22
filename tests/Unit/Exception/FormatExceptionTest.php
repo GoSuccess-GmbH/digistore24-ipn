@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace GoSuccess\Digistore24IPN\Tests\Unit\Exception;
+namespace GoSuccess\Digistore24\Ipn\Tests\Unit\Exception;
 
-use GoSuccess\Digistore24IPN\Exception\FormatException;
+use GoSuccess\Digistore24\Ipn\Exception\FormatException;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;

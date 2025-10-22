@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace GoSuccess\Digistore24IPN\Tests\Unit;
+namespace GoSuccess\Digistore24\Ipn\Tests\Unit;
 
-use GoSuccess\Digistore24IPN\Exception\FormatException;
-use GoSuccess\Digistore24IPN\Response;
+use GoSuccess\Digistore24\Ipn\Exception\FormatException;
+use GoSuccess\Digistore24\Ipn\Response;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

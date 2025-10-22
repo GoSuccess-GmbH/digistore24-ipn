@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GoSuccess\Digistore24IPN\Enum;
+namespace GoSuccess\Digistore24\Ipn\Enum;
 
 /**
  * Enum representing the newsletter sending policy.

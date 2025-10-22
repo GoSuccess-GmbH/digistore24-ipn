@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace GoSuccess\Digistore24IPN;
+namespace GoSuccess\Digistore24\Ipn;
 
 use DateTimeImmutable;
-use GoSuccess\Digistore24IPN\Enum\Action;
-use GoSuccess\Digistore24IPN\Enum\BillingStatus;
-use GoSuccess\Digistore24IPN\Enum\BillingStopReason;
-use GoSuccess\Digistore24IPN\Enum\BillingType;
-use GoSuccess\Digistore24IPN\Enum\Event;
-use GoSuccess\Digistore24IPN\Enum\OrderType;
-use GoSuccess\Digistore24IPN\Enum\PayMethod;
-use GoSuccess\Digistore24IPN\Enum\ProductDeliveryType;
-use GoSuccess\Digistore24IPN\Enum\Salutation;
-use GoSuccess\Digistore24IPN\Enum\TransactionType;
-use GoSuccess\Digistore24IPN\Enum\UpgradeType;
+use GoSuccess\Digistore24\Ipn\Enum\Action;
+use GoSuccess\Digistore24\Ipn\Enum\BillingStatus;
+use GoSuccess\Digistore24\Ipn\Enum\BillingStopReason;
+use GoSuccess\Digistore24\Ipn\Enum\BillingType;
+use GoSuccess\Digistore24\Ipn\Enum\Event;
+use GoSuccess\Digistore24\Ipn\Enum\OrderType;
+use GoSuccess\Digistore24\Ipn\Enum\PayMethod;
+use GoSuccess\Digistore24\Ipn\Enum\ProductDeliveryType;
+use GoSuccess\Digistore24\Ipn\Enum\Salutation;
+use GoSuccess\Digistore24\Ipn\Enum\TransactionType;
+use GoSuccess\Digistore24\Ipn\Enum\UpgradeType;
 
 /**
  * Data Transfer Object for handling IPN notifications from Digistore24.

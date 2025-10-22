@@ -11,10 +11,10 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use GoSuccess\Digistore24IPN\{Request, Response};
-use GoSuccess\Digistore24IPN\Enum\Event;
-use GoSuccess\Digistore24IPN\Security\Signature;
-use GoSuccess\Digistore24IPN\Exception\FormatException;
+use GoSuccess\Digistore24\Ipn\{Request, Response};
+use GoSuccess\Digistore24\Ipn\Enum\Event;
+use GoSuccess\Digistore24\Ipn\Security\Signature;
+use GoSuccess\Digistore24\Ipn\Exception\FormatException;
 
 // Your IPN secret from Digistore24
 $secret = 'YOUR_SECRET_HERE';

@@ -5,7 +5,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "GoSuccess\\Digistore24IPN\\": "src/"
+            "GoSuccess\\Digistore24\\Ipn\\": "src/"
         }
     },
     "authors": [

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace GoSuccess\Digistore24IPN\Security;
+namespace GoSuccess\Digistore24\Ipn\Security;
 
-use GoSuccess\Digistore24IPN\Exception\FormatException;
+use GoSuccess\Digistore24\Ipn\Exception\FormatException;
 
 /**
  * SHA-512 signature validation and generation for Digistore24 IPN.

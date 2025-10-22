@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace GoSuccess\Digistore24IPN\Tests\Integration;
+namespace GoSuccess\Digistore24\Ipn\Tests\Integration;
 
-use GoSuccess\Digistore24IPN\Enum\BillingType;
-use GoSuccess\Digistore24IPN\Exception\FormatException;
-use GoSuccess\Digistore24IPN\Notification;
-use GoSuccess\Digistore24IPN\Response;
-use GoSuccess\Digistore24IPN\Security\Signature;
+use GoSuccess\Digistore24\Ipn\Enum\BillingType;
+use GoSuccess\Digistore24\Ipn\Exception\FormatException;
+use GoSuccess\Digistore24\Ipn\Notification;
+use GoSuccess\Digistore24\Ipn\Response;
+use GoSuccess\Digistore24\Ipn\Security\Signature;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
