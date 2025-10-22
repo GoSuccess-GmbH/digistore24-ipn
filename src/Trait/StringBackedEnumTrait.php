@@ -76,12 +76,14 @@ trait StringBackedEnumTrait
      */
     public static function labels(): array
     {
-        $labels = [];
+        return array_reduce(
+            static::cases(),
+            static function (array $labels, self $case): array {
+                $labels[$case->value] = $case->label();
 
-        foreach (static::cases() as $case) {
-            $labels[(string) $case->value] = $case->label();
-        }
-
-        return $labels;
+                return $labels;
+            },
+            []
+        );
     }
 }

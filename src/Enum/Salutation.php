@@ -20,11 +20,11 @@ use GoSuccess\Digistore24\Ipn\Trait\StringBackedEnumTrait;
  * ```php
  * // Check salutation
  * if ($notification->address_salutation === Salutation::MR) {
- *     echo "Sehr geehrter Herr {$notification->address_last_name}";
+ *     echo "Dear Mr. {$notification->address_last_name}";
  * } elseif ($notification->address_salutation === Salutation::MRS) {
- *     echo "Sehr geehrte Frau {$notification->address_last_name}";
+ *     echo "Dear Mrs. {$notification->address_last_name}";
  * } else {
- *     echo "Hallo {$notification->address_first_name}";
+ *     echo "Hello {$notification->address_first_name}";
  * }
  * ```
  */

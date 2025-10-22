@@ -14,6 +14,8 @@ namespace GoSuccess\Digistore24\Ipn\Trait;
  * - Enum must be backed by int
  * - Enum must implement IntBackedEnum interface
  * - Enum must implement label() method (cannot be provided by trait)
+ *
+ * @phpstan-ignore trait.unused
  */
 trait IntBackedEnumTrait
 {
