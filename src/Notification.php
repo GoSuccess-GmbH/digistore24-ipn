@@ -113,89 +113,51 @@ final class Notification
         set(mixed $value) => TypeConverter::toFloat($value);
     }
 
-    public ?string $address_city = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $address_city = null;
 
-    public ?string $address_company = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $address_company = null;
 
-    public ?string $address_country = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $address_country = null;
 
-    public ?string $address_country_name = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $address_country_name = null;
 
-    public ?string $address_email = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $address_email = null;
 
-    public ?string $address_first_name = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $address_first_name = null;
 
-    public ?string $address_id = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $address_id = null;
 
-    public ?string $address_last_name = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $address_last_name = null;
 
-    public ?string $address_phone_no = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $address_phone_no = null;
 
     public ?Salutation $address_salutation = null {
         set(mixed $value) => TypeConverter::toEnum(Salutation::class, $value);
     }
 
-    public ?string $address_state = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $address_state = null;
 
-    public ?string $address_street = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $address_street = null;
 
-    public ?string $address_street2 = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $address_street2 = null;
 
-    public ?string $address_street_name = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $address_street_name = null;
 
-    public ?string $address_street_number = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $address_street_number = null;
 
-    public ?string $address_tax_id = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $address_tax_id = null;
 
-    public ?string $address_title = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $address_title = null;
 
-    public ?string $address_zipcode = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $address_zipcode = null;
 
-    public ?string $affiliate_name = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $affiliate_name = null;
 
     public ?int $affiliate_id = null {
         set(mixed $value) => TypeConverter::toInt($value);
     }
 
-    public ?string $affiliate_link = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $affiliate_link = null;
 
     public ?BillingStatus $billing_status = null {
         set(mixed $value) => TypeConverter::toEnum(BillingStatus::class, $value);
@@ -213,17 +175,11 @@ final class Notification
         set(mixed $value) => TypeConverter::toInt($value);
     }
 
-    public ?string $campaignkey = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $campaignkey = null;
 
-    public ?string $country = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $country = null;
 
-    public ?string $coupon_code = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $coupon_code = null;
 
     public ?float $coupon_amount_left = null {
         set(mixed $value) => TypeConverter::toFloat($value);
@@ -233,49 +189,31 @@ final class Notification
         set(mixed $value) => TypeConverter::toFloat($value);
     }
 
-    public ?string $coupon_currency = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $coupon_currency = null;
 
     public ?int $coupon_id = null {
         set(mixed $value) => TypeConverter::toInt($value);
     }
 
-    public ?string $currency = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $currency = null;
 
-    public ?string $custom = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $custom = null;
 
-    public ?string $custom_key = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $custom_key = null;
 
-    public ?string $customer_affiliate_url = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $customer_affiliate_url = null;
 
-    public ?string $customer_affiliate_name = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $customer_affiliate_name = null;
 
-    public ?string $customer_affiliate_promo_url = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $customer_affiliate_promo_url = null;
 
-    public ?string $customer_to_affiliate_url = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $customer_to_affiliate_url = null;
 
     public ?DateTimeImmutable $delivery_date = null {
         set(mixed $value) => TypeConverter::toDateTime($value);
     }
 
-    public ?string $email = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $email = null;
 
     public ?DateTimeImmutable $eticket_created_at = null {
         set(mixed $value) => TypeConverter::toDateTime($value);
@@ -289,13 +227,9 @@ final class Notification
         set(mixed $value) => TypeConverter::toInt($value);
     }
 
-    public ?string $eticket_date = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $eticket_date = null;
 
-    public ?string $eticket_hint = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $eticket_hint = null;
 
     public ?int $eticket_id = null {
         set(mixed $value) => TypeConverter::toInt($value);
@@ -313,13 +247,9 @@ final class Notification
         set(mixed $value) => TypeConverter::toInt($value);
     }
 
-    public ?string $eticket_url = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $eticket_url = null;
 
-    public ?string $eticket_used_at = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $eticket_used_at = null;
 
     public ?Event $event = null {
         set(mixed $value) => match (true) {
@@ -329,33 +259,23 @@ final class Notification
         };
     }
 
-    public ?string $event_label = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $event_label = null;
 
     public ?float $first_amount = null {
         set(mixed $value) => TypeConverter::toFloat($value);
     }
 
-    public ?string $first_billing_interval = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $first_billing_interval = null;
 
     public ?float $first_vat_amount = null {
         set(mixed $value) => TypeConverter::toFloat($value);
     }
 
-    public ?string $form_count = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $form_count = null;
 
-    public ?string $form_no = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $form_no = null;
 
-    public ?string $ipn_config_api_key_id = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $ipn_config_api_key_id = null;
 
     public ?int $ipn_config_domain_id = null {
         set(mixed $value) => TypeConverter::toInt($value);
@@ -365,9 +285,7 @@ final class Notification
         set(mixed $value) => TypeConverter::toInt($value);
     }
 
-    public ?string $ipn_config_products_ids = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $ipn_config_products_ids = null;
 
     public ?float $ipn_version = null {
         set(mixed $value) => TypeConverter::toFloat($value);
@@ -381,81 +299,47 @@ final class Notification
         set(mixed $value) => TypeConverter::toBool($value);
     }
 
-    public ?string $language = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $language = null;
 
-    public ?string $license_created = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $license_created = null;
 
-    public ?string $license_data_email = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $license_data_email = null;
 
-    public ?string $license_data_first_name = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $license_data_first_name = null;
 
-    public ?string $license_data_last_name = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $license_data_last_name = null;
 
-    public ?string $license_data_product = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $license_data_product = null;
 
-    public ?string $license_key = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $license_key = null;
 
-    public ?string $license_key_type = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $license_key_type = null;
 
     public ?int $license_id = null {
         set(mixed $value) => TypeConverter::toInt($value);
     }
 
-    public ?string $location_address = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $location_address = null;
 
-    public ?string $location_country = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $location_country = null;
 
-    public ?string $location_directions = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $location_directions = null;
 
     public ?int $location_id = null {
         set(mixed $value) => TypeConverter::toInt($value);
     }
 
-    public ?string $location_latitude = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $location_latitude = null;
 
-    public ?string $location_longitude = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $location_longitude = null;
 
-    public ?string $location_map_image_url = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $location_map_image_url = null;
 
-    public ?string $location_name = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $location_name = null;
 
-    public ?string $location_note = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $location_note = null;
 
-    public ?string $merchant_name = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $merchant_name = null;
 
     public ?int $merchant_id = null {
         set(mixed $value) => TypeConverter::toInt($value);
@@ -465,17 +349,11 @@ final class Notification
         set(mixed $value) => TypeConverter::toDateTime($value);
     }
 
-    public ?string $newsletter_choice = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $newsletter_choice = null;
 
-    public ?string $newsletter_choice_msg = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $newsletter_choice_msg = null;
 
-    public ?string $note = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $note = null;
 
     public ?int $number_of_installments = null {
         set(mixed $value) => TypeConverter::toInt($value);
@@ -493,21 +371,15 @@ final class Notification
         set(mixed $value) => TypeConverter::toDateTime($value);
     }
 
-    public ?string $order_details_url = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $order_details_url = null;
 
-    public ?string $order_id = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $order_id = null;
 
     public ?bool $order_is_paid = null {
         set(mixed $value) => TypeConverter::toBool($value);
     }
 
-    public ?string $order_time = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $order_time = null;
 
     public ?OrderType $order_type = null {
         set(mixed $value) => TypeConverter::toEnum(OrderType::class, $value);
@@ -521,9 +393,7 @@ final class Notification
         set(mixed $value) => TypeConverter::toFloat($value);
     }
 
-    public ?string $other_billing_intervals = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $other_billing_intervals = null;
 
     public ?float $other_vat_amounts = null {
         set(mixed $value) => TypeConverter::toFloat($value);
@@ -541,9 +411,7 @@ final class Notification
         set(mixed $value) => TypeConverter::toInt($value);
     }
 
-    public ?string $payment_id = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $payment_id = null;
 
     public ?ProductDeliveryType $product_delivery_type = null {
         set(mixed $value) => TypeConverter::toEnum(ProductDeliveryType::class, $value);
@@ -557,21 +425,15 @@ final class Notification
         set(mixed $value) => TypeConverter::toInt($value);
     }
 
-    public ?string $product_ids = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $product_ids = null;
 
-    public ?string $product_language = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $product_language = null;
 
     public ?float $product_netto_amount = null {
         set(mixed $value) => TypeConverter::toFloat($value);
     }
 
-    public ?string $product_name = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $product_name = null;
 
     public ?float $product_shipping_amount = null {
         set(mixed $value) => TypeConverter::toFloat($value);
@@ -605,49 +467,29 @@ final class Notification
         set(mixed $value) => TypeConverter::toDateTime($value);
     }
 
-    public ?string $rebilling_stop_url = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $rebilling_stop_url = null;
 
-    public ?string $receipt_url = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $receipt_url = null;
 
-    public ?string $referring_affiliate_name = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $referring_affiliate_name = null;
 
-    public ?string $refund_days = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $refund_days = null;
 
-    public ?string $renew_url = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $renew_url = null;
 
-    public ?string $request_refund_url = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $request_refund_url = null;
 
-    public ?string $salesteam_name = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $salesteam_name = null;
 
     public ?int $salesteam_id = null {
         set(mixed $value) => TypeConverter::toInt($value);
     }
 
-    public ?string $sha_sign = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $sha_sign = null;
 
-    public ?string $SHASIGN = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $SHASIGN = null;
 
-    public ?string $support_url = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $support_url = null;
 
     /**
      * Tags as array (converted from comma-separated string).
@@ -664,9 +506,7 @@ final class Notification
         set(mixed $value) => TypeConverter::toFloat($value);
     }
 
-    public ?string $transaction_currency = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $transaction_currency = null;
 
     public ?int $transaction_id = null {
         set(mixed $value) => TypeConverter::toInt($value);
@@ -684,81 +524,51 @@ final class Notification
         set(mixed $value) => TypeConverter::toEnum(TransactionType::class, $value);
     }
 
-    public ?string $trackingkey = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $trackingkey = null;
 
-    public ?string $upgrade_key = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $upgrade_key = null;
 
     public ?UpgradeType $upgrade_type = null {
         set(mixed $value) => TypeConverter::toEnum(UpgradeType::class, $value);
     }
 
-    public ?string $upgraded_address_first_name = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $upgraded_address_first_name = null;
 
-    public ?string $upgraded_address_last_name = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $upgraded_address_last_name = null;
 
     public ?int $upgraded_buyer_id = null {
         set(mixed $value) => TypeConverter::toInt($value);
     }
 
-    public ?string $upgraded_email = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $upgraded_email = null;
 
-    public ?string $upgraded_order_date = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $upgraded_order_date = null;
 
-    public ?string $upgraded_order_date_time = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $upgraded_order_date_time = null;
 
-    public ?string $upgraded_order_id = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $upgraded_order_id = null;
 
-    public ?string $upgraded_order_paid_until = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $upgraded_order_paid_until = null;
 
-    public ?string $upgraded_order_time = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $upgraded_order_time = null;
 
     public ?int $upgraded_product_id = null {
         set(mixed $value) => TypeConverter::toInt($value);
     }
 
-    public ?string $upgraded_product_name = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $upgraded_product_name = null;
 
-    public ?string $variant_id = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $variant_id = null;
 
-    public ?string $variant_name = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $variant_name = null;
 
     public ?float $vat_rate = null {
         set(mixed $value) => TypeConverter::toFloat($value);
     }
 
-    public ?string $voucher_code = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $voucher_code = null;
 
-    public ?string $used_coupon_code = null {
-        set(mixed $value) => $value !== null ? $value : null;
-    }
+    public ?string $used_coupon_code = null;
 
     public ?int $used_coupon_id = null {
         set(mixed $value) => TypeConverter::toInt($value);
