@@ -80,8 +80,8 @@ class IPNTestDataFactory
     public static function createSubscriptionNotification(array $overrides = []): Notification
     {
         return self::createPaymentNotification(array_merge([
-            'order_type' => 'rebilling',
-            'billing_status' => 'active',
+            'order_type' => 'regular',
+            'billing_status' => 'completed',
         ], $overrides));
     }
 
@@ -93,7 +93,7 @@ class IPNTestDataFactory
         return self::createPaymentNotification([
             'event' => 'on_payment_missed',
             'order_id' => $orderId,
-            'billing_status' => 'payment_missed',
+            'billing_status' => 'unpaid',
         ]);
     }
 
@@ -202,8 +202,8 @@ class IPNHandlerTest
         ]);
 
         // Test subscription logic
-        $this->assertEquals(OrderType::REBILLING, $notification->order_type);
-        $this->assertEquals(BillingStatus::ACTIVE, $notification->billing_status);
+        $this->assertEquals(OrderType::REGULAR, $notification->order_type);
+        $this->assertEquals(BillingStatus::COMPLETED, $notification->billing_status);
 
         echo "  ✓ Subscription payment test passed\n\n";
     }
@@ -216,7 +216,7 @@ class IPNHandlerTest
 
         // Verify event type
         $this->assertEquals(Event::ON_PAYMENT_MISSED, $notification->event);
-        $this->assertEquals(BillingStatus::PAYMENT_MISSED, $notification->billing_status);
+        $this->assertEquals(BillingStatus::UNPAID, $notification->billing_status);
 
         echo "  ✓ Payment missed test passed\n\n";
     }
@@ -366,10 +366,10 @@ class IPNHandlerUnitTest extends TestCase
         // Test automatic type conversion
         $this->assertIsBool($notification->is_test);
         $this->assertTrue($notification->is_test);
-        
+
         $this->assertIsFloat($notification->amount_brutto);
         $this->assertEquals(49.99, $notification->amount_brutto);
-        
+
         $this->assertIsInt($notification->order_id);
         $this->assertEquals(12345, $notification->order_id);
     }
@@ -392,8 +392,8 @@ class IPNHandlerUnitTest extends TestCase
      * @dataProvider paymentDataProvider
      */
     public function testPaymentWithDataProvider(
-        int $orderId, 
-        string $email, 
+        int $orderId,
+        string $email,
         float $amount
     ): void {
         $data = [
@@ -432,12 +432,12 @@ class IPNHandlerIntegrationTest extends TestCase
 {
     private $databaseMock;
     private $emailServiceMock;
-    
+
     protected function setUp(): void
     {
         // Mock database
         $this->databaseMock = $this->createMock(Database::class);
-        
+
         // Mock email service
         $this->emailServiceMock = $this->createMock(EmailService::class);
     }
