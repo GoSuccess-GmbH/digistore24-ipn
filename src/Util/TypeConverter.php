@@ -6,7 +6,6 @@ namespace GoSuccess\Digistore24\Ipn\Util;
 
 use BackedEnum;
 use DateTimeImmutable;
-use Exception;
 
 /**
  * Utility class for type conversions in Property Hooks.
@@ -133,7 +132,7 @@ final class TypeConverter
 
         try {
             return $enumClass::from($value);
-        } catch (Exception) {
+        } catch (\ValueError) {
             // Invalid enum value - return null
             return null;
         }

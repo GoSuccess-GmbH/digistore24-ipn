@@ -9,7 +9,4 @@ parameters:
     ignoreErrors:
         -
             identifier: missingType.iterableValue
-        -
-            message: '#Dead catch - Exception is never thrown in the try block\.#'
-            path: src/Util/TypeConverter.php
 
