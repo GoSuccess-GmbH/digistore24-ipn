@@ -16,6 +16,7 @@ use GoSuccess\Digistore24\Ipn\Enum\ProductDeliveryType;
 use GoSuccess\Digistore24\Ipn\Enum\Salutation;
 use GoSuccess\Digistore24\Ipn\Enum\TransactionType;
 use GoSuccess\Digistore24\Ipn\Enum\UpgradeType;
+use GoSuccess\Digistore24\Ipn\Helper\PropertyConversions;
 
 /**
  * Data Transfer Object for handling IPN notifications from Digistore24.
@@ -66,8 +67,10 @@ use GoSuccess\Digistore24\Ipn\Enum\UpgradeType;
  */
 final class Notification
 {
+    use PropertyConversions;
+
     public ?Action $action = null {
-        set(mixed $value) => $value !== null ? Action::from($value) : null;
+        set(mixed $value) => $this->toEnum(Action::class, $value);
     }
 
     public ?float $amount_affiliate = null {
@@ -147,7 +150,7 @@ final class Notification
     }
 
     public ?Salutation $address_salutation = null {
-        set(mixed $value) => $value !== null ? Salutation::from($value) : null;
+        set(mixed $value) => $this->toEnum(Salutation::class, $value);
     }
 
     public ?string $address_state = null {
@@ -195,15 +198,15 @@ final class Notification
     }
 
     public ?BillingStatus $billing_status = null {
-        set(mixed $value) => $value !== null ? BillingStatus::from($value) : null;
+        set(mixed $value) => $this->toEnum(BillingStatus::class, $value);
     }
 
     public ?BillingStopReason $billing_stop_reason = null {
-        set(mixed $value) => $value !== null ? BillingStopReason::from($value) : null;
+        set(mixed $value) => $this->toEnum(BillingStopReason::class, $value);
     }
 
     public ?BillingType $billing_type = null {
-        set(mixed $value) => $value !== null ? BillingType::from($value) : null;
+        set(mixed $value) => $this->toEnum(BillingType::class, $value);
     }
 
     public ?int $buyer_id = null {
@@ -319,7 +322,11 @@ final class Notification
     }
 
     public ?Event $event = null {
-        set(mixed $value) => $value !== null ? Event::from($value) : null;
+        set(mixed $value) => match (true) {
+            $value === null => null,
+            $value instanceof Event => $value,
+            default => Event::from($value),
+        };
     }
 
     public ?string $event_label = null {
@@ -475,15 +482,15 @@ final class Notification
     }
 
     public ?BillingStatus $order_billing_status = null {
-        set(mixed $value) => $value !== null ? BillingStatus::from($value) : null;
+        set(mixed $value) => $this->toEnum(BillingStatus::class, $value);
     }
 
     public ?DateTimeImmutable $order_date = null {
-        set(mixed $value) => $value !== null ? DateTimeImmutable::createFromFormat(DATE_ATOM, $value) ?: new DateTimeImmutable($value) : null;
+        set(mixed $value) => $this->toDateTime($value);
     }
 
     public ?DateTimeImmutable $order_date_time = null {
-        set(mixed $value) => $value !== null ? DateTimeImmutable::createFromFormat(DATE_ATOM, $value) ?: new DateTimeImmutable($value) : null;
+        set(mixed $value) => $this->toDateTime($value);
     }
 
     public ?string $order_details_url = null {
@@ -503,7 +510,7 @@ final class Notification
     }
 
     public ?OrderType $order_type = null {
-        set(mixed $value) => $value !== null ? OrderType::from($value) : null;
+        set(mixed $value) => $this->toEnum(OrderType::class, $value);
     }
 
     public ?int $orderform_id = null {
@@ -523,7 +530,7 @@ final class Notification
     }
 
     public ?PayMethod $pay_method = null {
-        set(mixed $value) => $value !== null ? PayMethod::from($value) : null;
+        set(mixed $value) => $this->toEnum(PayMethod::class, $value);
     }
 
     public ?int $pay_sequence_no = null {
@@ -539,7 +546,7 @@ final class Notification
     }
 
     public ?ProductDeliveryType $product_delivery_type = null {
-        set(mixed $value) => $value !== null ? ProductDeliveryType::from($value) : null;
+        set(mixed $value) => $this->toEnum(ProductDeliveryType::class, $value);
     }
 
     public ?float $product_amount = null {
@@ -689,7 +696,7 @@ final class Notification
     }
 
     public ?TransactionType $transaction_type = null {
-        set(mixed $value) => $value !== null ? TransactionType::from($value) : null;
+        set(mixed $value) => $this->toEnum(TransactionType::class, $value);
     }
 
     public ?string $trackingkey = null {
@@ -701,7 +708,7 @@ final class Notification
     }
 
     public ?UpgradeType $upgrade_type = null {
-        set(mixed $value) => $value !== null ? UpgradeType::from($value) : null;
+        set(mixed $value) => $this->toEnum(UpgradeType::class, $value);
     }
 
     public ?string $upgraded_address_first_name = null {
@@ -903,5 +910,289 @@ final class Notification
     public static function fromGet(): self
     {
         return self::fromArray($_GET);
+    }
+
+    // ========================================
+    // Convenience Methods
+    // ========================================
+
+    /**
+     * Check if this is a payment event.
+     *
+     * @return bool True if event is ON_PAYMENT
+     */
+    public function isPayment(): bool
+    {
+        return $this->event === Event::ON_PAYMENT;
+    }
+
+    /**
+     * Check if this is a refund event.
+     *
+     * @return bool True if event is ON_REFUND
+     */
+    public function isRefund(): bool
+    {
+        return $this->event === Event::ON_REFUND;
+    }
+
+    /**
+     * Check if this is a chargeback event.
+     *
+     * @return bool True if event is ON_CHARGEBACK
+     */
+    public function isChargeback(): bool
+    {
+        return $this->event === Event::ON_CHARGEBACK;
+    }
+
+    /**
+     * Check if this is a payment missed event.
+     *
+     * @return bool True if event is ON_PAYMENT_MISSED
+     */
+    public function isPaymentMissed(): bool
+    {
+        return $this->event === Event::ON_PAYMENT_MISSED;
+    }
+
+    /**
+     * Check if this is a rebill cancelled event.
+     *
+     * @return bool True if event is ON_REBILL_CANCELLED
+     */
+    public function isRebillCancelled(): bool
+    {
+        return $this->event === Event::ON_REBILL_CANCELLED;
+    }
+
+    /**
+     * Check if this is a rebill resumed event.
+     *
+     * @return bool True if event is ON_REBILL_RESUMED
+     */
+    public function isRebillResumed(): bool
+    {
+        return $this->event === Event::ON_REBILL_RESUMED;
+    }
+
+    /**
+     * Check if this is the last paid day event.
+     *
+     * @return bool True if event is LAST_PAID_DAY
+     */
+    public function isLastPaidDay(): bool
+    {
+        return $this->event === Event::LAST_PAID_DAY;
+    }
+
+    /**
+     * Check if this is a connection test.
+     *
+     * @return bool True if event is CONNECTION_TEST
+     */
+    public function isConnectionTest(): bool
+    {
+        return $this->event === Event::CONNECTION_TEST;
+    }
+
+    /**
+     * Check if this is an affiliation event.
+     *
+     * @return bool True if event is ON_AFFILIATION
+     */
+    public function isAffiliation(): bool
+    {
+        return $this->event === Event::ON_AFFILIATION;
+    }
+
+    /**
+     * Check if this is an e-ticket event.
+     *
+     * @return bool True if event is ETICKET
+     */
+    public function isEticket(): bool
+    {
+        return $this->event === Event::ETICKET;
+    }
+
+    /**
+     * Check if this is a custom form event.
+     *
+     * @return bool True if event is CUSTOM_FORM
+     */
+    public function isCustomForm(): bool
+    {
+        return $this->event === Event::CUSTOM_FORM;
+    }
+
+    // ========================================
+    // Validation
+    // ========================================
+
+    /**
+     * Validate notification data for business logic errors.
+     *
+     * This method checks for common data integrity issues that could indicate
+     * problems with the IPN data, even if the signature is valid.
+     *
+     * Validation checks:
+     * - Email format validation
+     * - Positive monetary amounts
+     * - Positive order ID
+     * - Required event field
+     *
+     * @return array<string> Array of error messages (empty array if valid)
+     *
+     * @example
+     * ```php
+     * $notification = Notification::fromPost();
+     * $errors = $notification->validate();
+     *
+     * if (!empty($errors)) {
+     *     foreach ($errors as $error) {
+     *         error_log("Validation error: $error");
+     *     }
+     *     http_response_code(400);
+     *     exit('Invalid data');
+     * }
+     * ```
+     */
+    public function validate(): array
+    {
+        $errors = [];
+
+        // Validate email format if present
+        if ($this->email !== null && !filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+            $errors[] = "Invalid email format: {$this->email}";
+        }
+
+        // Validate monetary amounts are not negative
+        $amountFields = [
+            'amount_brutto',
+            'amount_netto',
+            'amount_affiliate',
+            'amount_credited',
+            'amount_fee',
+            'amount_partner',
+            'amount_payout',
+            'amount_provider',
+            'transaction_amount',
+        ];
+
+        foreach ($amountFields as $field) {
+            if ($this->$field !== null && $this->$field < 0) {
+                $errors[] = "{$field} must not be negative: {$this->$field}";
+            }
+        }
+
+        // Validate order_id is positive if present
+        if ($this->order_id !== null && $this->order_id <= 0) {
+            $errors[] = "order_id must be positive: {$this->order_id}";
+        }
+
+        // Validate product_id is positive if present
+        if ($this->product_id !== null && $this->product_id <= 0) {
+            $errors[] = "product_id must be positive: {$this->product_id}";
+        }
+
+        // Validate event is set (required field)
+        if ($this->event === null) {
+            $errors[] = 'event field is required';
+        }
+
+        return $errors;
+    }
+
+    // ========================================
+    // Serialization
+    // ========================================
+
+    /**
+     * Convert notification to array.
+     *
+     * Returns all properties as an associative array, converting objects
+     * to their string representations (Enums → value, DateTime → string).
+     *
+     * @return array<string, mixed> Notification data as array
+     *
+     * @example
+     * ```php
+     * $notification = Notification::fromPost();
+     * $array = $notification->toArray();
+     *
+     * // Store in cache/queue
+     * file_put_contents('cache.json', json_encode($array));
+     * ```
+     */
+    public function toArray(): array
+    {
+        $data = [];
+
+        foreach (get_object_vars($this) as $property => $value) {
+            // Convert enums to their scalar values
+            if ($value instanceof \BackedEnum) {
+                $data[$property] = $value->value;
+            }
+            // Convert DateTimeImmutable to ISO 8601 string
+            elseif ($value instanceof \DateTimeImmutable) {
+                $data[$property] = $value->format('c');
+            }
+            // Keep everything else as-is
+            else {
+                $data[$property] = $value;
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Convert notification to JSON string.
+     *
+     * @return string JSON representation of the notification
+     *
+     * @throws \JsonException If JSON encoding fails
+     *
+     * @example
+     * ```php
+     * $notification = Notification::fromPost();
+     * $json = $notification->toJson();
+     *
+     * // Send to queue system
+     * $redis->rpush('ipn_queue', $json);
+     * ```
+     */
+    public function toJson(): string
+    {
+        return json_encode($this->toArray(), JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
+    }
+
+    /**
+     * Create notification from JSON string.
+     *
+     * @param string $json JSON string representing notification data
+     *
+     * @return self New Notification instance
+     *
+     * @throws \JsonException If JSON decoding fails
+     *
+     * @example
+     * ```php
+     * // Retrieve from queue
+     * $json = $redis->lpop('ipn_queue');
+     * $notification = Notification::fromJson($json);
+     *
+     * // Process notification
+     * if ($notification->isPayment()) {
+     *     // Grant access
+     * }
+     * ```
+     */
+    public static function fromJson(string $json): self
+    {
+        $data = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+
+        return self::fromArray($data);
     }
 }

@@ -329,4 +329,91 @@ final class ResponseTest extends TestCase
         $lines = explode("\n", $output);
         $this->assertGreaterThan(1, count($lines));
     }
+
+    #[Test]
+    public function it_supports_fluent_interface_with_set_headline(): void
+    {
+        $response = new Response();
+        $result = $response->setHeadline('Welcome!');
+
+        $this->assertSame($response, $result);
+        $this->assertSame('Welcome!', $response->headline);
+    }
+
+    #[Test]
+    public function it_supports_fluent_interface_with_set_thankyou_url(): void
+    {
+        $response = new Response();
+        $result = $response->setThankyouUrl('https://example.com/thanks');
+
+        $this->assertSame($response, $result);
+        $this->assertSame('https://example.com/thanks', $response->thankyouUrl);
+    }
+
+    #[Test]
+    public function it_supports_fluent_interface_with_add_login_block(): void
+    {
+        $response = new Response();
+        $result = $response->addLoginBlock('user', 'pass', 'https://example.com/login');
+
+        $this->assertSame($response, $result);
+    }
+
+    #[Test]
+    public function it_supports_fluent_interface_with_set_additional_data(): void
+    {
+        $response = new Response();
+        $result = $response->setAdditionalData('custom_key', 'custom_value');
+
+        $this->assertSame($response, $result);
+    }
+
+    #[Test]
+    public function it_supports_method_chaining(): void
+    {
+        $response = new Response();
+        $result = $response
+            ->setHeadline('Thank you!')
+            ->setThankyouUrl('https://example.com/thanks')
+            ->addLoginBlock('user1', 'pass1', 'https://example.com/login')
+            ->setAdditionalData('order_id', '12345');
+
+        $this->assertSame($response, $result);
+
+        $output = $response->toString();
+        $this->assertStringContainsString('headline: Thank you!', $output);
+        $this->assertStringContainsString('thankyou_url: https://example.com/thanks', $output);
+        $this->assertStringContainsString('username: user1', $output);
+        $this->assertStringContainsString('order_id: 12345', $output);
+    }
+
+    #[Test]
+    public function it_chains_multiple_login_blocks(): void
+    {
+        $response = new Response();
+        $response
+            ->addLoginBlock('basic_user', 'basic_pass', 'https://example.com/basic')
+            ->addLoginBlock('premium_user', 'premium_pass', 'https://example.com/premium')
+            ->setHeadline('Multiple Access Levels');
+
+        $output = $response->toString();
+        $this->assertStringContainsString('username: basic_user', $output);
+        $this->assertStringContainsString('username_2: premium_user', $output);
+        $this->assertStringContainsString('headline: Multiple Access Levels', $output);
+    }
+
+    #[Test]
+    public function it_chains_multiple_additional_data(): void
+    {
+        $response = new Response();
+        $response
+            ->setAdditionalData('field1', 'value1')
+            ->setAdditionalData('field2', 'value2')
+            ->setAdditionalData('field3', 'value3');
+
+        $output = $response->toString();
+        $this->assertStringContainsString('field1: value1', $output);
+        $this->assertStringContainsString('field2: value2', $output);
+        $this->assertStringContainsString('field3: value3', $output);
+    }
 }

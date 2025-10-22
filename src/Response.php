@@ -93,23 +93,28 @@ class Response
      * @param string $password The password for the member area
      * @param string $loginurl The login URL for the member area
      *
+     * @return self Returns the current instance for method chaining
+     *
      * @example
      * ```php
      * // Single login block
      * $response->addLoginBlock('user123', 'pass456', 'https://example.com/login');
      *
-     * // Multiple login blocks
-     * $response->addLoginBlock('basic_user', 'pass123', 'https://example.com/basic');
-     * $response->addLoginBlock('premium_user', 'pass456', 'https://example.com/premium');
+     * // Multiple login blocks with chaining
+     * $response->addLoginBlock('basic_user', 'pass123', 'https://example.com/basic')
+     *          ->addLoginBlock('premium_user', 'pass456', 'https://example.com/premium')
+     *          ->setHeadline('Welcome!');
      * ```
      */
-    public function addLoginBlock(string $username, string $password, string $loginurl): void
+    public function addLoginBlock(string $username, string $password, string $loginurl): self
     {
         $this->loginBlocks[] = [
             'username' => $username,
             'password' => $password,
             'loginurl' => $loginurl,
         ];
+
+        return $this;
     }
 
     /**
@@ -127,15 +132,18 @@ class Response
      * @param string $key The custom field name
      * @param string $value The custom field value
      *
+     * @return self Returns the current instance for method chaining
+     *
      * @throws FormatException if the key is reserved
      *
      * @example
      * ```php
-     * $response->setAdditionalData('customer_level', 'premium');
-     * $response->setAdditionalData('trial_ends', '2025-12-31');
+     * $response->setAdditionalData('customer_level', 'premium')
+     *          ->setAdditionalData('trial_ends', '2025-12-31')
+     *          ->setHeadline('Thank you!');
      * ```
      */
-    public function setAdditionalData(string $key, string $value): void
+    public function setAdditionalData(string $key, string $value): self
     {
         // Reserved keys that must use dedicated methods/properties
         $reservedKeys = [
@@ -154,6 +162,52 @@ class Response
         }
 
         $this->additionalData[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Set the headline message for the response.
+     *
+     * This message will be displayed to the customer on the thank you page.
+     *
+     * @param string|null $headline The headline message
+     *
+     * @return self Returns the current instance for method chaining
+     *
+     * @example
+     * ```php
+     * $response->setHeadline('Thank you for your purchase!')
+     *          ->setThankyouUrl('https://example.com/thanks');
+     * ```
+     */
+    public function setHeadline(?string $headline): self
+    {
+        $this->headline = $headline;
+
+        return $this;
+    }
+
+    /**
+     * Set the thank you URL for the response.
+     *
+     * This URL will be used to redirect the customer after successful payment.
+     *
+     * @param string|null $url The thank you URL (must be a valid URL if provided)
+     *
+     * @return self Returns the current instance for method chaining
+     *
+     * @example
+     * ```php
+     * $response->setThankyouUrl('https://example.com/thanks')
+     *          ->setHeadline('Welcome!');
+     * ```
+     */
+    public function setThankyouUrl(?string $url): self
+    {
+        $this->thankyouUrl = $url;
+
+        return $this;
     }
 
     /**

@@ -9,3 +9,7 @@ parameters:
     ignoreErrors:
         -
             identifier: missingType.iterableValue
+        -
+            identifier: catch.neverThrown
+            path: src/Helper/PropertyConversions.php
+
