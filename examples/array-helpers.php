@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use GoSuccess\Digistore24\Ipn\Request;
+use GoSuccess\Digistore24\Ipn\Notification;
 
 // Example IPN data
 $ipnData = [
@@ -25,23 +25,23 @@ $ipnData = [
     'email' => 'customer@example.com',
 ];
 
-$ipn = Request::fromArray($ipnData);
+$notification = Notification::fromArray($ipnData);
 
 // Access properties directly (no getter methods!)
 echo "=== Order Information ===\n";
-echo "Order ID: {$ipn->order_id}\n";
-echo "Product ID: {$ipn->product_id}\n";
-echo "Product IDs: {$ipn->product_ids}\n";
-echo "Coupon Code: {$ipn->coupon_code}\n";
-echo "License Key: {$ipn->license_key}\n";
-echo "E-Ticket URL: {$ipn->eticket_url}\n";
-echo "Amount: €{$ipn->amount_brutto}\n";
-echo "Email: {$ipn->email}\n";
+echo "Order ID: {$notification->order_id}\n";
+echo "Product ID: {$notification->product_id}\n";
+echo "Product IDs: {$notification->product_ids}\n";
+echo "Coupon Code: {$notification->coupon_code}\n";
+echo "License Key: {$notification->license_key}\n";
+echo "E-Ticket URL: {$notification->eticket_url}\n";
+echo "Amount: €{$notification->amount_brutto}\n";
+echo "Email: {$notification->email}\n";
 echo "\n";
 
 // Tags are automatically converted to array!
 echo "=== Order Tags (Automatic Array Conversion) ===\n";
-$tags = $ipn->tags ?? []; // Array is automatically created from comma-separated string
+$tags = $notification->tags ?? []; // Array is automatically created from comma-separated string
 echo "All tags: " . implode(', ', $tags) . "\n";
 echo "First tag: {$tags[0]}\n";
 echo "Second tag: {$tags[1]}\n";
@@ -59,8 +59,8 @@ echo "\n";
 
 // Working with product IDs from comma-separated string
 echo "=== Product IDs (Manual Split) ===\n";
-if ($ipn->product_ids) {
-    $productIdsArray = array_map('intval', explode(',', $ipn->product_ids));
+if ($notification->product_ids) {
+    $productIdsArray = array_map('intval', explode(',', $notification->product_ids));
     foreach ($productIdsArray as $index => $productId) {
         echo "Product #" . ($index + 1) . ": $productId\n";
     }
@@ -70,10 +70,10 @@ echo "\n";
 
 // Automatic type conversions
 echo "=== Automatic Type Conversions ===\n";
-echo "Amount (float): " . var_export($ipn->amount_brutto, true) . "\n";
-echo "Product ID (int): " . var_export($ipn->product_id, true) . "\n";
-echo "Product IDs (string): " . var_export($ipn->product_ids, true) . "\n";
-echo "Tags (array): " . var_export($ipn->tags, true) . "\n";
+echo "Amount (float): " . var_export($notification->amount_brutto, true) . "\n";
+echo "Product ID (int): " . var_export($notification->product_id, true) . "\n";
+echo "Product IDs (string): " . var_export($notification->product_ids, true) . "\n";
+echo "Tags (array): " . var_export($notification->tags, true) . "\n";
 
 /* Output:
 === Order Information ===

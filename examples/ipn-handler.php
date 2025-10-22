@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use GoSuccess\Digistore24\Ipn\{Request, Response};
+use GoSuccess\Digistore24\Ipn\{Notification, Response};
 use GoSuccess\Digistore24\Ipn\Enum\Event;
 use GoSuccess\Digistore24\Ipn\Security\Signature;
 use GoSuccess\Digistore24\Ipn\Exception\FormatException;
@@ -45,13 +45,13 @@ try {
     logIpn('Signature validated successfully');
 
     // Create DTO from IPN data
-    $ipnRequest = Request::fromArray($ipnData);
+    $ipnNotification = Notification::fromArray($ipnData);
 
     // Extract common fields
-    $event = $ipnRequest->event;
-    $orderId = $ipnRequest->order_id;
-    $email = $ipnRequest->email;
-    $amount = $ipnRequest->amount_brutto;
+    $event = $ipnNotification->event;
+    $orderId = $ipnNotification->order_id;
+    $email = $ipnNotification->email;
+    $amount = $ipnNotification->amount_brutto;
 
     logIpn('Processing event', [
         'event' => $event->value,
@@ -63,31 +63,31 @@ try {
     // Process based on event type
     switch ($event) {
         case Event::ON_PAYMENT:
-            handlePayment($ipnRequest);
+            handlePayment($ipnNotification);
             break;
 
         case Event::ON_REFUND:
-            handleRefund($ipnRequest);
+            handleRefund($ipnNotification);
             break;
 
         case Event::ON_CHARGEBACK:
-            handleChargeback($ipnRequest);
+            handleChargeback($ipnNotification);
             break;
 
         case Event::ON_PAYMENT_MISSED:
-            handlePaymentMissed($ipnRequest);
+            handlePaymentMissed($ipnNotification);
             break;
 
         case Event::ON_REBILL_CANCELLED:
-            handleRebillCancelled($ipnRequest);
+            handleRebillCancelled($ipnNotification);
             break;
 
         case Event::ON_REBILL_RESUMED:
-            handleRebillResumed($ipnRequest);
+            handleRebillResumed($ipnNotification);
             break;
 
         case Event::LAST_PAID_DAY:
-            handleLastPaidDay($ipnRequest);
+            handleLastPaidDay($ipnNotification);
             break;
 
         case Event::CONNECTION_TEST:
@@ -120,7 +120,7 @@ try {
 /**
  * Handle successful payment
  */
-function handlePayment(Request $ipn): void
+function handlePayment(Notification $ipn): void
 {
     $orderId = $ipn->order_id;
     $email = $ipn->email;
@@ -183,7 +183,7 @@ function handlePayment(Request $ipn): void
 /**
  * Handle refund
  */
-function handleRefund(Request $ipn): void
+function handleRefund(Notification $ipn): void
 {
     $orderId = $ipn->order_id;
     $email = $ipn->email;
@@ -208,7 +208,7 @@ function handleRefund(Request $ipn): void
 /**
  * Handle chargeback
  */
-function handleChargeback(Request $ipn): void
+function handleChargeback(Notification $ipn): void
 {
     $orderId = $ipn->order_id;
     
@@ -224,7 +224,7 @@ function handleChargeback(Request $ipn): void
 /**
  * Handle missed payment
  */
-function handlePaymentMissed(Request $ipn): void
+function handlePaymentMissed(Notification $ipn): void
 {
     $orderId = $ipn->order_id;
     $email = $ipn->email;
@@ -248,7 +248,7 @@ function handlePaymentMissed(Request $ipn): void
 /**
  * Handle rebilling cancelled
  */
-function handleRebillCancelled(Request $ipn): void
+function handleRebillCancelled(Notification $ipn): void
 {
     $orderId = $ipn->order_id;
     
@@ -263,7 +263,7 @@ function handleRebillCancelled(Request $ipn): void
 /**
  * Handle rebilling resumed
  */
-function handleRebillResumed(Request $ipn): void
+function handleRebillResumed(Notification $ipn): void
 {
     $orderId = $ipn->order_id;
     
@@ -282,7 +282,7 @@ function handleRebillResumed(Request $ipn): void
 /**
  * Handle last paid day
  */
-function handleLastPaidDay(Request $ipn): void
+function handleLastPaidDay(Notification $ipn): void
 {
     $orderId = $ipn->order_id;
     $email = $ipn->email;

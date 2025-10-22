@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use GoSuccess\Digistore24\Ipn\{Request, Response};
+use GoSuccess\Digistore24\Ipn\{Notification, Response};
 use GoSuccess\Digistore24\Ipn\Enum\Event;
 use GoSuccess\Digistore24\Ipn\Security\Signature;
 use GoSuccess\Digistore24\Ipn\Exception\FormatException;
@@ -24,15 +24,15 @@ try {
     Signature::validateSignature($secret, $_POST);
     
     // Get IPN data
-    $ipn = Request::fromPost();
+    $notification = Notification::fromPost();
     
     // Handle payment
-    if ($ipn->event === Event::ON_PAYMENT) {
+    if ($notification->event === Event::ON_PAYMENT) {
         
         // Get order details
-        $orderId = $ipn->order_id;
-        $email = $ipn->email;
-        $amount = $ipn->amount_brutto;
+        $orderId = $notification->order_id;
+        $email = $notification->email;
+        $amount = $notification->amount_brutto;
         
         // Your code: Create user, grant access, etc.
         // ...
