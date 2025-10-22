@@ -18,13 +18,6 @@ use JsonException;
 final class NotificationSerializer
 {
     /**
-     * Prevent instantiation of utility class.
-     */
-    private function __construct()
-    {
-    }
-
-    /**
      * Convert notification to array.
      *
      * Returns all properties as an associative array, converting objects

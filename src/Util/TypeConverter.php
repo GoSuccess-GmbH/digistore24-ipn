@@ -19,13 +19,6 @@ use DateTimeImmutable;
 final class TypeConverter
 {
     /**
-     * Prevent instantiation of utility class.
-     */
-    private function __construct()
-    {
-    }
-
-    /**
      * Convert value to float or null.
      *
      * @param mixed $value The value to convert (typically string from IPN)

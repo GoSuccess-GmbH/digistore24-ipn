@@ -15,13 +15,6 @@ use GoSuccess\Digistore24\Ipn\Notification;
 final class NotificationValidator
 {
     /**
-     * Prevent instantiation of utility class.
-     */
-    private function __construct()
-    {
-    }
-
-    /**
      * Validate notification data for business logic errors.
      *
      * This method checks for common data integrity issues that could indicate
