@@ -72,43 +72,43 @@ final class Notification
     }
 
     public ?float $amount_affiliate = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?float $amount_brutto = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?float $amount_credited = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?float $amount_fee = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?float $amount_netto = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?float $amount_partner = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?float $amount_payout = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?float $amount_provider = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?float $amount_vendor = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?float $amount_vat = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?string $address_city = null {
@@ -188,7 +188,7 @@ final class Notification
     }
 
     public ?int $affiliate_id = null {
-        set(mixed $value) => $value !== null ? (int) $value : null;
+        set(mixed $value) => TypeConverter::toInt($value);
     }
 
     public ?string $affiliate_link = null {
@@ -208,7 +208,7 @@ final class Notification
     }
 
     public ?int $buyer_id = null {
-        set(mixed $value) => $value !== null ? (int) $value : null;
+        set(mixed $value) => TypeConverter::toInt($value);
     }
 
     public ?string $campaignkey = null {
@@ -224,11 +224,11 @@ final class Notification
     }
 
     public ?float $coupon_amount_left = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?float $coupon_amount_total = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?string $coupon_currency = null {
@@ -236,7 +236,7 @@ final class Notification
     }
 
     public ?int $coupon_id = null {
-        set(mixed $value) => $value !== null ? (int) $value : null;
+        set(mixed $value) => TypeConverter::toInt($value);
     }
 
     public ?string $currency = null {
@@ -268,7 +268,7 @@ final class Notification
     }
 
     public ?DateTimeImmutable $delivery_date = null {
-        set(mixed $value) => $value !== null ? DateTimeImmutable::createFromFormat(DATE_ATOM, $value) ?: new DateTimeImmutable($value) : null;
+        set(mixed $value) => TypeConverter::toDateTime($value);
     }
 
     public ?string $email = null {
@@ -276,15 +276,15 @@ final class Notification
     }
 
     public ?DateTimeImmutable $eticket_created_at = null {
-        set(mixed $value) => $value !== null ? DateTimeImmutable::createFromFormat(DATE_ATOM, $value) ?: new DateTimeImmutable($value) : null;
+        set(mixed $value) => TypeConverter::toDateTime($value);
     }
 
     public ?int $eticket_count = null {
-        set(mixed $value) => $value !== null ? (int) $value : null;
+        set(mixed $value) => TypeConverter::toInt($value);
     }
 
     public ?int $eticket_code = null {
-        set(mixed $value) => $value !== null ? (int) $value : null;
+        set(mixed $value) => TypeConverter::toInt($value);
     }
 
     public ?string $eticket_date = null {
@@ -296,19 +296,19 @@ final class Notification
     }
 
     public ?int $eticket_id = null {
-        set(mixed $value) => $value !== null ? (int) $value : null;
+        set(mixed $value) => TypeConverter::toInt($value);
     }
 
     public ?bool $eticket_is_blocked = null {
-        set(mixed $value) => $value !== null ? self::parseBool($value) : null;
+        set(mixed $value) => TypeConverter::toBool($value);
     }
 
     public ?DateTimeImmutable $eticket_modified_at = null {
-        set(mixed $value) => $value !== null ? DateTimeImmutable::createFromFormat(DATE_ATOM, $value) ?: new DateTimeImmutable($value) : null;
+        set(mixed $value) => TypeConverter::toDateTime($value);
     }
 
     public ?int $eticket_no = null {
-        set(mixed $value) => $value !== null ? (int) $value : null;
+        set(mixed $value) => TypeConverter::toInt($value);
     }
 
     public ?string $eticket_url = null {
@@ -332,7 +332,7 @@ final class Notification
     }
 
     public ?float $first_amount = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?string $first_billing_interval = null {
@@ -340,7 +340,7 @@ final class Notification
     }
 
     public ?float $first_vat_amount = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?string $form_count = null {
@@ -356,11 +356,11 @@ final class Notification
     }
 
     public ?int $ipn_config_domain_id = null {
-        set(mixed $value) => $value !== null ? (int) $value : null;
+        set(mixed $value) => TypeConverter::toInt($value);
     }
 
     public ?int $ipn_config_id = null {
-        set(mixed $value) => $value !== null ? (int) $value : null;
+        set(mixed $value) => TypeConverter::toInt($value);
     }
 
     public ?string $ipn_config_products_ids = null {
@@ -368,15 +368,15 @@ final class Notification
     }
 
     public ?float $ipn_version = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?DateTimeImmutable $is_cancelled_for = null {
-        set(mixed $value) => $value !== null ? DateTimeImmutable::createFromFormat(DATE_ATOM, $value) ?: new DateTimeImmutable($value) : null;
+        set(mixed $value) => TypeConverter::toDateTime($value);
     }
 
     public ?bool $is_gdpr_country = null {
-        set(mixed $value) => $value !== null ? self::parseBool($value) : null;
+        set(mixed $value) => TypeConverter::toBool($value);
     }
 
     public ?string $language = null {
@@ -412,7 +412,7 @@ final class Notification
     }
 
     public ?int $license_id = null {
-        set(mixed $value) => $value !== null ? (int) $value : null;
+        set(mixed $value) => TypeConverter::toInt($value);
     }
 
     public ?string $location_address = null {
@@ -428,7 +428,7 @@ final class Notification
     }
 
     public ?int $location_id = null {
-        set(mixed $value) => $value !== null ? (int) $value : null;
+        set(mixed $value) => TypeConverter::toInt($value);
     }
 
     public ?string $location_latitude = null {
@@ -456,11 +456,11 @@ final class Notification
     }
 
     public ?int $merchant_id = null {
-        set(mixed $value) => $value !== null ? (int) $value : null;
+        set(mixed $value) => TypeConverter::toInt($value);
     }
 
     public ?DateTimeImmutable $next_payment_at = null {
-        set(mixed $value) => $value !== null ? DateTimeImmutable::createFromFormat(DATE_ATOM, $value) ?: new DateTimeImmutable($value) : null;
+        set(mixed $value) => TypeConverter::toDateTime($value);
     }
 
     public ?string $newsletter_choice = null {
@@ -476,7 +476,7 @@ final class Notification
     }
 
     public ?int $number_of_installments = null {
-        set(mixed $value) => $value !== null ? (int) $value : null;
+        set(mixed $value) => TypeConverter::toInt($value);
     }
 
     public ?BillingStatus $order_billing_status = null {
@@ -500,7 +500,7 @@ final class Notification
     }
 
     public ?bool $order_is_paid = null {
-        set(mixed $value) => $value !== null ? self::parseBool($value) : null;
+        set(mixed $value) => TypeConverter::toBool($value);
     }
 
     public ?string $order_time = null {
@@ -512,11 +512,11 @@ final class Notification
     }
 
     public ?int $orderform_id = null {
-        set(mixed $value) => $value !== null ? (int) $value : null;
+        set(mixed $value) => TypeConverter::toInt($value);
     }
 
     public ?float $other_amounts = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?string $other_billing_intervals = null {
@@ -524,7 +524,7 @@ final class Notification
     }
 
     public ?float $other_vat_amounts = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?PayMethod $pay_method = null {
@@ -532,11 +532,11 @@ final class Notification
     }
 
     public ?int $pay_sequence_no = null {
-        set(mixed $value) => $value !== null ? (int) $value : null;
+        set(mixed $value) => TypeConverter::toInt($value);
     }
 
     public ?int $payplan_id = null {
-        set(mixed $value) => $value !== null ? (int) $value : null;
+        set(mixed $value) => TypeConverter::toInt($value);
     }
 
     public ?string $payment_id = null {
@@ -548,11 +548,11 @@ final class Notification
     }
 
     public ?float $product_amount = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?int $product_id = null {
-        set(mixed $value) => $value !== null ? (int) $value : null;
+        set(mixed $value) => TypeConverter::toInt($value);
     }
 
     public ?string $product_ids = null {
@@ -564,7 +564,7 @@ final class Notification
     }
 
     public ?float $product_netto_amount = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?string $product_name = null {
@@ -572,35 +572,35 @@ final class Notification
     }
 
     public ?float $product_shipping_amount = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?float $product_txn_amount = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?float $product_txn_netto_amount = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?float $product_txn_shipping = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?float $product_txn_vat_amount = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?float $product_vat_amount = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?int $quantity = null {
-        set(mixed $value) => $value !== null ? (int) $value : null;
+        set(mixed $value) => TypeConverter::toInt($value);
     }
 
     public ?DateTimeImmutable $rebill_stop_noted_at = null {
-        set(mixed $value) => $value !== null ? DateTimeImmutable::createFromFormat(DATE_ATOM, $value) ?: new DateTimeImmutable($value) : null;
+        set(mixed $value) => TypeConverter::toDateTime($value);
     }
 
     public ?string $rebilling_stop_url = null {
@@ -632,7 +632,7 @@ final class Notification
     }
 
     public ?int $salesteam_id = null {
-        set(mixed $value) => $value !== null ? (int) $value : null;
+        set(mixed $value) => TypeConverter::toInt($value);
     }
 
     public ?string $sha_sign = null {
@@ -654,27 +654,12 @@ final class Notification
      */
     public ?array $tags = null {
         set(mixed $value) {
-            if ($value === null || $value === '') {
-                $this->tags = null;
-
-                return;
-            }
-
-            // If already an array, use it directly
-            if (is_array($value)) {
-                /** @var string[] $value */
-                $this->tags = array_filter(array_map('trim', $value), fn ($tag) => $tag !== '');
-
-                return;
-            }
-
-            // Convert comma-separated string to array
-            $this->tags = array_filter(array_map('trim', explode(',', (string) $value)), fn ($tag) => $tag !== '');
+            $this->tags = TypeConverter::toArray($value) ?: null;
         }
     }
 
     public ?float $transaction_amount = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?string $transaction_currency = null {
@@ -682,15 +667,15 @@ final class Notification
     }
 
     public ?int $transaction_id = null {
-        set(mixed $value) => $value !== null ? (int) $value : null;
+        set(mixed $value) => TypeConverter::toInt($value);
     }
 
     public ?DateTimeImmutable $transaction_date = null {
-        set(mixed $value) => $value !== null ? DateTimeImmutable::createFromFormat(DATE_ATOM, $value) ?: new DateTimeImmutable($value) : null;
+        set(mixed $value) => TypeConverter::toDateTime($value);
     }
 
     public ?DateTimeImmutable $transaction_processed_at = null {
-        set(mixed $value) => $value !== null ? DateTimeImmutable::createFromFormat(DATE_ATOM, $value) ?: new DateTimeImmutable($value) : null;
+        set(mixed $value) => TypeConverter::toDateTime($value);
     }
 
     public ?TransactionType $transaction_type = null {
@@ -718,7 +703,7 @@ final class Notification
     }
 
     public ?int $upgraded_buyer_id = null {
-        set(mixed $value) => $value !== null ? (int) $value : null;
+        set(mixed $value) => TypeConverter::toInt($value);
     }
 
     public ?string $upgraded_email = null {
@@ -746,7 +731,7 @@ final class Notification
     }
 
     public ?int $upgraded_product_id = null {
-        set(mixed $value) => $value !== null ? (int) $value : null;
+        set(mixed $value) => TypeConverter::toInt($value);
     }
 
     public ?string $upgraded_product_name = null {
@@ -762,7 +747,7 @@ final class Notification
     }
 
     public ?float $vat_rate = null {
-        set(mixed $value) => $value !== null ? (float) $value : null;
+        set(mixed $value) => TypeConverter::toFloat($value);
     }
 
     public ?string $voucher_code = null {
@@ -774,41 +759,7 @@ final class Notification
     }
 
     public ?int $used_coupon_id = null {
-        set(mixed $value) => $value !== null ? (int) $value : null;
-    }
-
-    /**
-     * Parse boolean values from various string formats.
-     *
-     * This internal method handles Digistore24's different boolean representations
-     * and converts them to proper PHP boolean values.
-     *
-     * Supported TRUE values: '1', 1, 'Y', 'y', 'yes', 'YES', 'Yes', 'T', 't', 'true', 'TRUE', 'True'
-     * Supported FALSE values: '0', 0, 'N', 'n', 'no', 'NO', 'No', 'F', 'f', 'false', 'FALSE', 'False'
-     *
-     * @param mixed $value The value to parse as boolean
-     *
-     * @return bool|null The parsed boolean value, or null if not recognized
-     *
-     * @internal Used by Property Hooks for automatic boolean conversion
-     */
-    private static function parseBool(mixed $value): ?bool
-    {
-        // List of values that represent TRUE
-        $trueValues = ['1', 1, 'Y', 'y', 'yes', 'YES', 'Yes', 'T', 't', 'true', 'TRUE', 'True'];
-        // List of values that represent FALSE
-        $falseValues = ['0', 0, 'N', 'n', 'no', 'NO', 'No', 'F', 'f', 'false', 'FALSE', 'False'];
-
-        if (in_array($value, $trueValues, true)) {
-            return true;
-        }
-
-        if (in_array($value, $falseValues, true)) {
-            return false;
-        }
-
-        // Return null for unrecognized values
-        return null;
+        set(mixed $value) => TypeConverter::toInt($value);
     }
 
     /**
