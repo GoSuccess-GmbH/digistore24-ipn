@@ -175,10 +175,48 @@ $notification->tags[1]           // 'premium'
 
 See [UPGRADE.md](docs/UPGRADE.md) for detailed migration instructions.
 
+## Development
+
+### Development Commands
+
+```bash
+# Run tests
+composer test
+
+# Fix code style
+composer cs:fix
+
+# Static analysis
+composer analyze
+
+# Run all checks
+composer test && composer cs:fix && composer analyze
+```
+
+### Project Status
+
+**Version**: 2.0.0  
+**PHP**: >= 8.4  
+**Tests**: 69/69 passing ✅  
+**PHPStan**: Level 8 ✅  
+**Code Style**: PSR-12 ✅
+
+## Documentation
+
+- **[UPGRADE.md](docs/UPGRADE.md)** - Upgrade guide from v1.x to v2.0
+- **[CHANGELOG.md](CHANGELOG.md)** - Version history and all changes
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contribution guidelines
+- **[examples/](examples/)** - Practical code examples
+
+## Questions?
+
+- **GitHub Issues**: https://github.com/GoSuccess-GmbH/digistore24-ipn/issues
+- **Discussions**: https://github.com/GoSuccess-GmbH/digistore24-ipn/discussions
+
 ## Error Handling
 
 All signature and format errors throw `GoSuccess\Digistore24IPN\Exception\FormatException`.
 
 ## License
 
-MIT License
+MIT License - see [LICENSE](LICENSE)
