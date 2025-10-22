@@ -9,10 +9,10 @@ namespace GoSuccess\Digistore24IPN\Enum;
  *
  * This enum defines the salutation values used for address fields in Digistore24.
  * These are the exact values sent by Digistore24's IPN API.
- * 
+ *
  * Usage in Notification:
  * - $notification->address_salutation
- * 
+ *
  * @example
  * ```php
  * // Check salutation

@@ -11,16 +11,16 @@ use GoSuccess\Digistore24IPN\Exception\FormatException;
  *
  * This class constructs the response that your webhook endpoint sends back to Digistore24.
  * It uses PHP 8.4 Property Hooks for automatic validation and clean syntax.
- * 
+ *
  * The response format follows Digistore24's IPN specification:
  * - Must start with "OK" line
  * - Optional thankyou_url to redirect the customer
  * - Optional login credentials (username, password, loginurl)
  * - Optional headline text
  * - Optional custom data fields
- * 
+ *
  * @link https://dev.digistore24.com/hc/en-us/articles/32480217565969-Quick-Integration-Guide
- * 
+ *
  * Example:
  * ```php
  * $response = new Response();
@@ -34,10 +34,10 @@ class Response
 {
     /**
      * Thank you URL to redirect the customer after successful payment.
-     * 
+     *
      * When set, Digistore24 will redirect the customer to this URL after payment completion.
      * Property Hook validates that the value is a valid URL format.
-     * 
+     *
      * @throws FormatException if the URL format is invalid
      */
     public ?string $thankyouUrl = null {
@@ -51,7 +51,7 @@ class Response
 
     /**
      * Headline text to display on the Digistore24 thank you page.
-     * 
+     *
      * This text will be shown to the customer as a headline message
      * after the payment is completed.
      */
@@ -59,45 +59,45 @@ class Response
 
     /**
      * Array of login credential blocks.
-     * 
+     *
      * Each block contains username, password, and loginurl for member areas.
      * Multiple login blocks are supported (e.g., for different access levels).
      * Use addLoginBlock() method to add login credentials.
-     * 
+     *
      * @var array<int, array{username: string, password: string, loginurl: string}>
      */
     private array $loginBlocks = [];
 
     /**
      * Additional custom data fields to send back to Digistore24.
-     * 
+     *
      * You can use this to pass custom data that will be available in the
      * Digistore24 order details. Keys cannot conflict with reserved field names
      * (thankyou_url, headline, username, password, loginurl).
-     * 
+     *
      * @var array<string, string>
      */
     private array $additionalData = [];
 
     /**
      * Add a login credential block for member area access.
-     * 
+     *
      * This method adds login credentials that will be sent to the customer
      * after successful payment. You can call this multiple times to add
      * multiple login blocks (e.g., for different membership levels).
-     * 
+     *
      * The first block uses keys without suffix: username, password, loginurl
      * Additional blocks get numbered: username_2, password_2, loginurl_2, etc.
      *
      * @param string $username The username for the member area
      * @param string $password The password for the member area
      * @param string $loginurl The login URL for the member area
-     * 
+     *
      * @example
      * ```php
      * // Single login block
      * $response->addLoginBlock('user123', 'pass456', 'https://example.com/login');
-     * 
+     *
      * // Multiple login blocks
      * $response->addLoginBlock('basic_user', 'pass123', 'https://example.com/basic');
      * $response->addLoginBlock('premium_user', 'pass456', 'https://example.com/premium');
@@ -114,10 +114,10 @@ class Response
 
     /**
      * Set custom additional data field.
-     * 
+     *
      * This method allows you to add custom key-value pairs to the response
      * that will be available in Digistore24 order details.
-     * 
+     *
      * IMPORTANT: The following keys are reserved and will throw an exception:
      * - thankyou_url (use $response->thankyouUrl property instead)
      * - headline (use $response->headline property instead)
@@ -126,8 +126,9 @@ class Response
      *
      * @param string $key The custom field name
      * @param string $value The custom field value
+     *
      * @throws FormatException if the key is reserved
-     * 
+     *
      * @example
      * ```php
      * $response->setAdditionalData('customer_level', 'premium');
@@ -142,7 +143,7 @@ class Response
             'headline',
             'username',
             'password',
-            'loginurl'
+            'loginurl',
         ];
 
         // Check if key matches reserved pattern (e.g., username_2, password_3)
@@ -157,22 +158,23 @@ class Response
 
     /**
      * Convert the response to Digistore24 IPN format string.
-     * 
+     *
      * Builds the response string according to Digistore24's IPN specification.
      * The format is line-based with key-value pairs separated by colons.
-     * 
+     *
      * Response structure:
      * 1. Always starts with "OK"
      * 2. thankyou_url (if set)
      * 3. Login blocks (username, password, loginurl) with numbering for multiple blocks
      * 4. headline (if set)
      * 5. Additional custom data fields
-     * 
+     *
      * This string should be echoed/returned from your IPN endpoint.
      *
      * @return string The formatted response string ready to send to Digistore24
+     *
      * @throws FormatException if any login block is missing required fields
-     * 
+     *
      * @example
      * Output format:
      * ```
@@ -203,7 +205,7 @@ class Response
                 $block['password'] === '' ||
                 $block['loginurl'] === ''
             ) {
-                throw new FormatException("All of username, password, and loginurl must be set in each login block.");
+                throw new FormatException('All of username, password, and loginurl must be set in each login block.');
             }
 
             // First block has no suffix, additional blocks get _2, _3, etc.

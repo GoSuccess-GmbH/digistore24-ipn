@@ -18,7 +18,7 @@ final class ResponseTest extends TestCase
     {
         $response = new Response();
 
-        $this->assertSame("OK", $response->toString());
+        $this->assertSame('OK', $response->toString());
     }
 
     #[Test]
@@ -49,7 +49,7 @@ final class ResponseTest extends TestCase
         $response->thankyouUrl = null;
 
         $this->assertNull($response->thankyouUrl);
-        $this->assertSame("OK", $response->toString());
+        $this->assertSame('OK', $response->toString());
     }
 
     #[Test]
@@ -71,7 +71,7 @@ final class ResponseTest extends TestCase
         $expected = "OK\n"
             . "username: john_doe\n"
             . "password: secret123\n"
-            . "loginurl: https://example.com/login";
+            . 'loginurl: https://example.com/login';
 
         $this->assertSame($expected, $response->toString());
     }
@@ -93,7 +93,7 @@ final class ResponseTest extends TestCase
             . "loginurl_2: https://example.com/login2\n"
             . "username_3: user3\n"
             . "password_3: pass3\n"
-            . "loginurl_3: https://example.com/login3";
+            . 'loginurl_3: https://example.com/login3';
 
         $this->assertSame($expected, $response->toString());
     }

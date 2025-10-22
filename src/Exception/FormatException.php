@@ -11,14 +11,14 @@ use InvalidArgumentException;
  *
  * This exception indicates that the IPN request or response data does not
  * conform to the expected Digistore24 format or validation rules.
- * 
+ *
  * Common scenarios:
  * - Invalid URL format in Response::$thankyouUrl
  * - Missing required fields in login blocks
  * - Invalid or missing signature in IPN data
  * - Reserved key names used in additional data
  * - Empty passphrase or parameters in signature validation
- * 
+ *
  * @example
  * ```php
  * try {

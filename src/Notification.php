@@ -22,42 +22,42 @@ use GoSuccess\Digistore24IPN\Enum\UpgradeType;
  *
  * This class represents the notification data sent by Digistore24 to your webhook endpoint.
  * It uses PHP 8.4 Property Hooks for automatic type conversion and zero-reflection overhead.
- * 
+ *
  * KEY FEATURES:
  * - All property names match exact Digistore24 IPN field names (snake_case)
  * - Automatic type conversion via Property Hooks (string → int, float, bool, DateTimeImmutable, Enum)
  * - Direct property access (no getter methods needed)
  * - Tags are automatically converted from comma-separated string to array
- * 
+ *
  * BREAKING CHANGES FROM v1.x:
  * - No getter methods: Use $notification->order_id instead of $notification->getOrderId()
  * - Property names changed to snake_case: order_id instead of orderId
  * - Tags unified: $notification->tags (array) instead of $notification->tag1, $notification->tag2, etc.
- * 
+ *
  * SECURITY:
  * Always validate signatures before processing IPN data:
  * ```php
  * Signature::validateSignature('your-passphrase', $_POST);
  * $notification = Notification::fromPost();
  * ```
- * 
+ *
  * @link https://dev.digistore24.com/hc/en-us/articles/32480217565969-Quick-Integration-Guide
- * 
+ *
  * @example Basic usage:
  * ```php
  * // Create from POST data
  * $notification = Notification::fromPost();
- * 
+ *
  * // Access properties directly
  * echo $notification->order_id;
  * echo $notification->email;
  * echo $notification->transaction_amount;
- * 
+ *
  * // Check event type
  * if ($notification->event === Event::ON_PAYMENT) {
  *     // Grant access to product
  * }
- * 
+ *
  * // Work with arrays
  * foreach ($notification->tags as $tag) {
  *     echo $tag;
@@ -651,18 +651,20 @@ final class Notification
         set(mixed $value) {
             if ($value === null || $value === '') {
                 $this->tags = null;
+
                 return;
             }
-            
+
             // If already an array, use it directly
             if (is_array($value)) {
                 /** @var string[] $value */
-                $this->tags = array_filter(array_map('trim', $value), fn($tag) => $tag !== '');
+                $this->tags = array_filter(array_map('trim', $value), fn ($tag) => $tag !== '');
+
                 return;
             }
-            
+
             // Convert comma-separated string to array
-            $this->tags = array_filter(array_map('trim', explode(',', (string) $value)), fn($tag) => $tag !== '');
+            $this->tags = array_filter(array_map('trim', explode(',', (string) $value)), fn ($tag) => $tag !== '');
         }
     }
 
@@ -772,16 +774,17 @@ final class Notification
 
     /**
      * Parse boolean values from various string formats.
-     * 
+     *
      * This internal method handles Digistore24's different boolean representations
      * and converts them to proper PHP boolean values.
-     * 
+     *
      * Supported TRUE values: '1', 1, 'Y', 'y', 'yes', 'YES', 'Yes', 'T', 't', 'true', 'TRUE', 'True'
      * Supported FALSE values: '0', 0, 'N', 'n', 'no', 'NO', 'No', 'F', 'f', 'false', 'FALSE', 'False'
-     * 
+     *
      * @param mixed $value The value to parse as boolean
+     *
      * @return bool|null The parsed boolean value, or null if not recognized
-     * 
+     *
      * @internal Used by Property Hooks for automatic boolean conversion
      */
     private static function parseBool(mixed $value): ?bool
@@ -798,24 +801,25 @@ final class Notification
         if (in_array($value, $falseValues, true)) {
             return false;
         }
-        
+
         // Return null for unrecognized values
         return null;
     }
 
     /**
      * Create Notification instance from associative array.
-     * 
+     *
      * This factory method creates a new Notification object and populates it
      * with data from an associative array. Property Hooks automatically handle
      * all type conversions (strings → int, float, bool, DateTimeImmutable, Enums).
-     * 
+     *
      * Only properties that exist in the Notification class will be set.
      * Unknown keys in the input array are safely ignored.
-     * 
+     *
      * @param array<string, mixed> $data Associative array with IPN field names as keys
+     *
      * @return self A new Notification instance with populated properties
-     * 
+     *
      * @example
      * ```php
      * $data = [
@@ -837,29 +841,30 @@ final class Notification
                 $dto->$key = $value; // Property Hook handles type conversion
             }
         }
+
         return $dto;
     }
 
     /**
      * Create Notification instance from $_POST superglobal.
-     * 
+     *
      * Convenience method for creating a Notification from POST data.
      * This is the most common way to handle IPN callbacks, as Digistore24
      * typically sends IPN data via POST request.
-     * 
+     *
      * IMPORTANT: Always validate the signature before trusting the data:
      * ```php
      * Signature::validateSignature('your-passphrase', $_POST);
      * $notification = Notification::fromPost();
      * ```
-     * 
+     *
      * @return self A new Notification instance with data from $_POST
-     * 
+     *
      * @example
      * ```php
      * // In your IPN endpoint (e.g., webhook.php)
      * $notification = Notification::fromPost();
-     * 
+     *
      * if ($notification->event === Event::ON_PAYMENT) {
      *     // Process successful payment
      *     echo "Order ID: {$notification->order_id}";
@@ -874,23 +879,23 @@ final class Notification
 
     /**
      * Create Notification instance from $_GET superglobal.
-     * 
+     *
      * Convenience method for creating a Notification from GET parameters.
      * Less common than POST, but some IPN configurations may use GET requests.
-     * 
+     *
      * IMPORTANT: Always validate the signature before trusting the data:
      * ```php
      * Signature::validateSignature('your-passphrase', $_GET);
      * $notification = Notification::fromGet();
      * ```
-     * 
+     *
      * @return self A new Notification instance with data from $_GET
-     * 
+     *
      * @example
      * ```php
      * // For GET-based IPN callbacks
      * $notification = Notification::fromGet();
-     * 
+     *
      * // Access the data
      * echo $notification->order_id;
      * ```

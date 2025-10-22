@@ -149,7 +149,7 @@ final class IPNWorkflowTest extends TestCase
 
         // product_ids is a comma-separated string from Digistore24
         $this->assertSame('111,222,333', $notification->product_ids);
-        
+
         // Can be split into array if needed
         $productArray = explode(',', $notification->product_ids);
         $this->assertSame(['111', '222', '333'], $productArray);
@@ -159,7 +159,7 @@ final class IPNWorkflowTest extends TestCase
     public function it_creates_multi_login_response(): void
     {
         $ipnData = $this->createSimulatedIPNData();
-        
+
         Signature::validateSignature(self::PASSPHRASE, $ipnData);
         $notification = Notification::fromArray($ipnData);
 
@@ -196,14 +196,14 @@ final class IPNWorkflowTest extends TestCase
     public function it_handles_custom_fields_in_response(): void
     {
         $ipnData = $this->createSimulatedIPNData();
-        
+
         Signature::validateSignature(self::PASSPHRASE, $ipnData);
         $notification = Notification::fromArray($ipnData);
 
         $response = new Response();
         $response->thankyouUrl = 'https://example.com/thanks';
         $response->addLoginBlock('user', 'pass', 'https://example.com/login');
-        
+
         // Add custom fields
         $response->setAdditionalData('order_reference', $notification->order_id ?? 'N/A');
         $response->setAdditionalData('customer_id', 'CUST-12345');

@@ -108,6 +108,7 @@ enum Event: string
      * "OK".
      * If the test fails, check again the above points of this
      * integration guide and if the server is reachable with the script.
+     *
      * @link https://dev.digistore24.com/hc/en-us/articles/32480217565969-Quick-Integration-Guide
      */
     case CONNECTION_TEST = 'connection_test';

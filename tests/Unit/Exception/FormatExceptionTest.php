@@ -71,6 +71,7 @@ final class FormatExceptionTest extends TestCase
             throw new FormatException('Test error');
         } catch (FormatException $e) {
             $this->assertSame('Test error', $e->getMessage());
+
             return;
         }
     }
@@ -82,6 +83,7 @@ final class FormatExceptionTest extends TestCase
             throw new FormatException('Test error');
         } catch (InvalidArgumentException $e) {
             $this->assertInstanceOf(FormatException::class, $e);
+
             return;
         }
     }
@@ -93,6 +95,7 @@ final class FormatExceptionTest extends TestCase
             throw new FormatException('Test error');
         } catch (Throwable $e) {
             $this->assertInstanceOf(FormatException::class, $e);
+
             return;
         }
     }
