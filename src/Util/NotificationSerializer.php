@@ -106,6 +106,11 @@ final class NotificationSerializer
     {
         $data = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
 
+        if (!is_array($data)) {
+            throw new \InvalidArgumentException('JSON must decode to an array');
+        }
+
+        /** @var array<string, mixed> $data */
         return Notification::fromArray($data);
     }
 }

@@ -279,6 +279,7 @@ final class NotificationTest extends TestCase
 
         $this->assertJson($json);
         $decoded = json_decode($json, true);
+        $this->assertIsArray($decoded);
         $this->assertSame('on_payment', $decoded['event']);
         $this->assertSame('12345', $decoded['order_id']);
     }

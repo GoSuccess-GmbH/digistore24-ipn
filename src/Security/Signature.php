@@ -119,7 +119,17 @@ final class Signature
 
             // Build signature string: KEY=value{passphrase}
             $outKey = $convertKeysToUppercase ? strtoupper($key) : $key;
-            $shaString .= "{$outKey}={$value}{$shaPassphrase}";
+            
+            // Convert value to string safely
+            if (is_scalar($value)) {
+                $stringValue = (string) $value;
+            } elseif (is_object($value) && method_exists($value, '__toString')) {
+                $stringValue = (string) $value;
+            } else {
+                continue; // Skip non-stringable values
+            }
+            
+            $shaString .= "{$outKey}={$stringValue}{$shaPassphrase}";
         }
 
         // Calculate SHA-512 hash and return uppercase
@@ -180,9 +190,14 @@ final class Signature
         );
 
         // Compare signatures (must match exactly for valid IPN)
-        if ($receivedSignature !== $expectedSignature) {
+        if (!is_string($receivedSignature) && !is_scalar($receivedSignature)) {
+            throw new FormatException('Received signature must be a scalar value');
+        }
+        
+        $receivedSig = (string) $receivedSignature;
+        if ($receivedSig !== $expectedSignature) {
             throw new FormatException(
-                "Signature is invalid. Expected: {$expectedSignature}, Received: {$receivedSignature}"
+                "Signature is invalid. Expected: {$expectedSignature}, Received: {$receivedSig}"
             );
         }
     }

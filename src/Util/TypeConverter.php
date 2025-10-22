@@ -27,11 +27,24 @@ final class TypeConverter
      */
     public static function toFloat(mixed $value): ?float
     {
-        if ($value === null || $value === '') {
+        if ($value === null || $value === '' || $value === false) {
             return null;
         }
 
-        return (float) $value;
+        if (is_float($value) || is_int($value)) {
+            return (float) $value;
+        }
+
+        if (is_string($value) && is_numeric($value)) {
+            return (float) $value;
+        }
+
+        if (is_bool($value)) {
+            return $value ? 1.0 : 0.0;
+        }
+
+        // Non-numeric values should return null
+        return null;
     }
 
     /**
@@ -43,11 +56,28 @@ final class TypeConverter
      */
     public static function toInt(mixed $value): ?int
     {
-        if ($value === null || $value === '') {
+        if ($value === null || $value === '' || $value === false) {
             return null;
         }
 
-        return (int) $value;
+        if (is_int($value)) {
+            return $value;
+        }
+
+        if (is_float($value)) {
+            return (int) $value;
+        }
+
+        if (is_string($value) && is_numeric($value)) {
+            return (int) $value;
+        }
+
+        if (is_bool($value)) {
+            return $value ? 1 : 0;
+        }
+
+        // Non-numeric strings should return null (e.g., 'TXN-999888' for transaction_id)
+        return null;
     }
 
     /**
@@ -100,6 +130,10 @@ final class TypeConverter
         }
 
         // Try parsing the value as ISO 8601 or standard date format
+        if (!is_string($value) && !is_numeric($value)) {
+            throw new \InvalidArgumentException('DateTime value must be string or numeric');
+        }
+
         return new DateTimeImmutable((string) $value);
     }
 
@@ -121,6 +155,10 @@ final class TypeConverter
 
         if ($value instanceof $enumClass) {
             return $value;
+        }
+
+        if (!is_string($value) && !is_int($value)) {
+            throw new \InvalidArgumentException('Enum value must be string or int');
         }
 
         try {
@@ -147,13 +185,20 @@ final class TypeConverter
         }
 
         if (is_array($value)) {
-            return $value;
+            return array_map(
+                static fn (mixed $item): string => is_scalar($item) ? (string) $item : '',
+                $value
+            );
+        }
+
+        if (!is_string($value) && !is_scalar($value)) {
+            throw new \InvalidArgumentException('Value must be string or scalar to convert to array');
         }
 
         // Split by comma and filter empty values
         $parts = explode(',', (string) $value);
         $trimmed = array_map('trim', $parts);
 
-        return array_filter($trimmed, fn ($item) => $item !== '');
+        return array_values(array_filter($trimmed, fn ($item) => $item !== ''));
     }
 }

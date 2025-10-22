@@ -255,7 +255,8 @@ final class Notification
         set(mixed $value) => match (true) {
             $value === null => null,
             $value instanceof Event => $value,
-            default => Event::from($value),
+            is_string($value) => Event::from($value),
+            default => throw new \InvalidArgumentException('Event value must be string or Event instance'),
         };
     }
 
