@@ -2,7 +2,7 @@
 
 /**
  * Example: Working with IPN Data
- * 
+ *
  * Demonstrates how to access IPN properties with PHP 8.4 Property Hooks
  */
 

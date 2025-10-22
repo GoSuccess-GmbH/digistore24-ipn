@@ -2,7 +2,7 @@
 
 /**
  * Quick Start Example
- * 
+ *
  * The simplest possible IPN handler.
  * Copy this code and customize it for your needs.
  */
@@ -22,21 +22,21 @@ $secret = 'YOUR_SECRET_HERE';
 try {
     // Validate signature
     Signature::validateSignature($secret, $_POST);
-    
+
     // Get IPN data
     $notification = Notification::fromPost();
-    
+
     // Handle payment
     if ($notification->event === Event::ON_PAYMENT) {
-        
+
         // Get order details
         $orderId = $notification->order_id;
         $email = $notification->email;
         $amount = $notification->amount_brutto;
-        
+
         // Your code: Create user, grant access, etc.
         // ...
-        
+
         // Optional: Return login credentials
         $response = new Response();
         $response->headline = 'Welcome!';
@@ -47,9 +47,9 @@ try {
         );
         die($response->toString());
     }
-    
+
     echo "OK";
-    
+
 } catch (FormatException $e) {
     http_response_code(400);
     die('ERROR');

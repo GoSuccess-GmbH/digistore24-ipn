@@ -2,7 +2,7 @@
 
 /**
  * Example: Digistore24 IPN Handler
- * 
+ *
  * This example demonstrates a complete IPN handler implementation
  * with logging, error handling, and response generation.
  */
@@ -124,22 +124,22 @@ function handlePayment(Notification $ipn): void
 {
     $orderId = $ipn->order_id;
     $email = $ipn->email;
-    
+
     // Get all product IDs (supports multiple products in one order)
     $productIds = [];
     if ($ipn->product_id) {
         $productIds[] = $ipn->product_id;
     }
-    
+
     // If there are multiple products, they're in product_ids as comma-separated string
     if ($ipn->product_ids) {
         $additionalIds = array_map('intval', explode(',', $ipn->product_ids));
         $productIds = array_merge($productIds, $additionalIds);
     }
-    
+
     // Remove duplicates and reindex
     $productIds = array_values(array_unique($productIds));
-    
+
     logIpn('Processing payment', [
         'order_id' => $orderId,
         'email' => $email,
@@ -155,28 +155,28 @@ function handlePayment(Notification $ipn): void
     // Example: Generate and return login credentials
     $response = new Response();
     $response->headline = 'Your Access Details';
-    
+
     // Generate login credentials (example)
     $username = generateUsername($email);
     $password = generatePassword();
-    
+
     // Save credentials to database
     // saveUserCredentials($orderId, $username, $password);
-    
+
     $response->addLoginBlock(
         $username,
         $password,
         'https://yourapp.com/login'
     );
-    
+
     // Add license key if applicable
     if (count($productIds) > 0) {
         $licenseKey = generateLicenseKey($orderId);
         $response->setAdditionalData('License Key', $licenseKey);
     }
-    
+
     logIpn('Payment processed successfully', ['order_id' => $orderId]);
-    
+
     die($response->toString());
 }
 
@@ -187,7 +187,7 @@ function handleRefund(Notification $ipn): void
 {
     $orderId = $ipn->order_id;
     $email = $ipn->email;
-    
+
     logIpn('Processing refund', [
         'order_id' => $orderId,
         'email' => $email,
@@ -198,10 +198,10 @@ function handleRefund(Notification $ipn): void
     // 2. Deactivate user account
     // 3. Cancel licenses
     // 4. Send refund confirmation email
-    
+
     // revokeAccess($orderId);
     // deactivateLicenses($orderId);
-    
+
     logIpn('Refund processed successfully', ['order_id' => $orderId]);
 }
 
@@ -211,13 +211,13 @@ function handleRefund(Notification $ipn): void
 function handleChargeback(Notification $ipn): void
 {
     $orderId = $ipn->order_id;
-    
+
     logIpn('Processing chargeback', ['order_id' => $orderId]);
 
     // Similar to refund handling
     // revokeAccess($orderId);
     // flagAccountForReview($orderId);
-    
+
     logIpn('Chargeback processed successfully', ['order_id' => $orderId]);
 }
 
@@ -228,7 +228,7 @@ function handlePaymentMissed(Notification $ipn): void
 {
     $orderId = $ipn->order_id;
     $email = $ipn->email;
-    
+
     logIpn('Processing missed payment', [
         'order_id' => $orderId,
         'email' => $email,
@@ -238,10 +238,10 @@ function handlePaymentMissed(Notification $ipn): void
     // 1. Temporarily suspend access
     // 2. Send payment reminder email
     // 3. Log for follow-up
-    
+
     // temporarilySuspendAccess($orderId);
     // sendPaymentReminder($email);
-    
+
     logIpn('Missed payment processed', ['order_id' => $orderId]);
 }
 
@@ -251,12 +251,12 @@ function handlePaymentMissed(Notification $ipn): void
 function handleRebillCancelled(Notification $ipn): void
 {
     $orderId = $ipn->order_id;
-    
+
     logIpn('Processing rebill cancellation', ['order_id' => $orderId]);
 
     // Note: Access should remain until last_paid_day event
     // updateSubscriptionStatus($orderId, 'cancelled');
-    
+
     logIpn('Rebill cancellation processed', ['order_id' => $orderId]);
 }
 
@@ -266,16 +266,16 @@ function handleRebillCancelled(Notification $ipn): void
 function handleRebillResumed(Notification $ipn): void
 {
     $orderId = $ipn->order_id;
-    
+
     logIpn('Processing rebill resumption', ['order_id' => $orderId]);
 
     // Your business logic here:
     // 1. Restore full access if suspended
     // 2. Update subscription status
-    
+
     // restoreAccess($orderId);
     // updateSubscriptionStatus($orderId, 'active');
-    
+
     logIpn('Rebill resumption processed', ['order_id' => $orderId]);
 }
 
@@ -286,7 +286,7 @@ function handleLastPaidDay(Notification $ipn): void
 {
     $orderId = $ipn->order_id;
     $email = $ipn->email;
-    
+
     logIpn('Processing last paid day', [
         'order_id' => $orderId,
         'email' => $email,
@@ -296,11 +296,11 @@ function handleLastPaidDay(Notification $ipn): void
     // 1. Permanently revoke access
     // 2. Deactivate subscription
     // 3. Send goodbye/reactivation email
-    
+
     // revokeAccess($orderId);
     // deactivateSubscription($orderId);
     // sendGoodbyeEmail($email);
-    
+
     logIpn('Last paid day processed', ['order_id' => $orderId]);
 }
 
