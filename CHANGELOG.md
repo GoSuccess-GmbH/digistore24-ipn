@@ -5,40 +5,45 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0] - 2025-10-12
+## [2.0.0] - 2025-10-22
 
 ### 🚨 BREAKING CHANGES
 
 This is a **major version update** with breaking changes. Please read the [UPGRADE.md](docs/UPGRADE.md) guide before updating.
 
 #### Changed
+- **BREAKING**: Namespace changed from `GoSuccess\Digistore24IPN` to `GoSuccess\Digistore24\Ipn`
+- **BREAKING**: Class `IPNRequestDto` renamed to `Notification`
+- **BREAKING**: Class `IPNResponseDto` renamed to `Response`
 - **BREAKING**: Minimum PHP version is now **8.4** (was 8.0+)
 - **BREAKING**: All properties now use **snake_case** names matching Digistore24 IPN API exactly (e.g., `order_id`, `amount_brutto`, `address_first_name`)
 - **BREAKING**: Replaced all getter methods with **direct property access** using PHP 8.4 Property Hooks
   - Old: `$ipn->getOrderId()`
-  - New: `$ipn->order_id`
+  - New: `$notification->order_id`
 - **BREAKING**: Replaced all setter methods with **direct property assignment**
   - Old: `$response->setHeadline('text')`
   - New: `$response->headline = 'text'`
-- **BREAKING**: Changed static factory method `IPNRequestDto::map()` to:
-  - `IPNRequestDto::fromPost()` - For $_POST data
-  - `IPNRequestDto::fromGet()` - For $_GET data
-  - `IPNRequestDto::fromArray($data)` - For custom array
+- **BREAKING**: Changed static factory method from `IPNRequestDto::map()` to:
+  - `Notification::fromPost()` - For $_POST data
+  - `Notification::fromGet()` - For $_GET data
+  - `Notification::fromArray($data)` - For custom array
 - **BREAKING**: Removed `tag1` through `tag100` properties, replaced with single `tags` property
   - Old: `$ipn->getTag1()`, `$ipn->getTag2()`, etc.
-  - New: `$ipn->tags` (array with automatic comma-split conversion)
+  - New: `$notification->tags` (array with automatic comma-split conversion)
 
 #### Removed
 - **BREAKING**: Removed all array helper methods (use direct property access instead):
-  - `getAllProductIds()` - Use `$ipn->product_id` and `$ipn->product_ids`
-  - `getAllCouponCodes()` - Use `$ipn->coupon_code`
-  - `getAllTags()` - Use `$ipn->tags` (now returns array directly)
-  - `getAllLicenseKeys()` - Use `$ipn->license_key`
-  - `getAllEticketUrls()` - Use `$ipn->eticket_url`
-  - `getAllUpgradedProductIds()` - Use `$ipn->upgraded_product_id`
-  - `getAllCouponAmountsLeft()` - Use `$ipn->coupon_amount_left`
-  - `getAllCouponAmountsTotal()` - Use `$ipn->coupon_amount_total`
+  - `getAllProductIds()` - Use `$notification->product_id` and `$notification->product_ids`
+  - `getAllCouponCodes()` - Use `$notification->coupon_code`
+  - `getAllTags()` - Use `$notification->tags` (now returns array directly)
+  - `getAllLicenseKeys()` - Use `$notification->license_key`
+  - `getAllEticketUrls()` - Use `$notification->eticket_url`
+  - `getAllUpgradedProductIds()` - Use `$notification->upgraded_product_id`
+  - `getAllCouponAmountsLeft()` - Use `$notification->coupon_amount_left`
+  - `getAllCouponAmountsTotal()` - Use `$notification->coupon_amount_total`
 - **BREAKING**: Removed `__call()` magic method (no longer needed with Property Hooks)
+- Deleted `.github/workflows/release.yml` (redundant with tests.yml)
+- Deleted `docs/README.md` (merged into main README.md)
 
 ### Added
 - **PHP 8.4 Property Hooks** for automatic type conversion and validation
@@ -55,7 +60,7 @@ This is a **major version update** with breaking changes. Please read the [UPGRA
 - Migration guide in [docs/UPGRADE.md](docs/UPGRADE.md)
 
 ### Performance
-- 🚀 **92.2% code reduction** in IPNRequestDto (7616 → 597 lines)
+- 🚀 **88.3% code reduction** in Notification class (7616 → 891 lines, formerly IPNRequestDto)
 - 🚀 **52% code reduction** in DtoHelper (130 → 62 lines)
 - ⚡ **No reflection overhead** - direct property access
 - ⚡ Property Hooks are compiled for optimal performance
@@ -63,9 +68,13 @@ This is a **major version update** with breaking changes. Please read the [UPGRA
 ### Documentation
 - Updated README.md with PHP 8.4 examples
 - Completely rewritten [docs/UPGRADE.md](docs/UPGRADE.md) for v2.0 migration
-- Updated all examples in `examples/` directory
+- Updated all examples in `examples/` directory to use `Notification` class
 - Updated examples/README.md with Property Hooks explanation
 - All code examples now use snake_case properties and direct access
+- Merged docs/README.md content into main README.md
+- Enhanced README.md with Development, Documentation, and Questions sections
+- Updated CONTRIBUTING.md for PHP 8.4 requirements
+- Updated LICENSE copyright to "GoSuccess GmbH"
 - Cleaned up documentation folder (removed internal test summaries and reports)
 - Kept only user-facing documentation: UPGRADE.md and README.md
 
@@ -74,7 +83,8 @@ This is a **major version update** with breaking changes. Please read the [UPGRA
 - Fixed integration tests to use authentic Digistore24 field names
 - Corrected field names: `email`, `transaction_amount`, `address_first_name`, `pay_method`
 - Fixed enum values to match actual Digistore24 enums
-- Configured PHPStan to exclude Request.php and Response.php (Property Hooks not yet supported in PHPStan 1.12.32)
+- Updated tests for namespace change and class renames
+- Configured PHPStan to exclude Notification.php and Response.php (Property Hooks not yet fully supported in PHPStan 2.1.31)
 
 ### CI/CD
 - Updated GitHub Actions workflows to support PHP 8.4
