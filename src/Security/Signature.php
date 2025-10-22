@@ -119,7 +119,7 @@ final class Signature
 
             // Build signature string: KEY=value{passphrase}
             $outKey = $convertKeysToUppercase ? strtoupper($key) : $key;
-            
+
             // Convert value to string safely
             if (is_scalar($value)) {
                 $stringValue = (string) $value;
@@ -128,7 +128,7 @@ final class Signature
             } else {
                 continue; // Skip non-stringable values
             }
-            
+
             $shaString .= "{$outKey}={$stringValue}{$shaPassphrase}";
         }
 
@@ -193,7 +193,7 @@ final class Signature
         if (!is_string($receivedSignature) && !is_scalar($receivedSignature)) {
             throw new FormatException('Received signature must be a scalar value');
         }
-        
+
         $receivedSig = (string) $receivedSignature;
         if ($receivedSig !== $expectedSignature) {
             throw new FormatException(
