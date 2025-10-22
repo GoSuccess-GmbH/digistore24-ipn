@@ -2,23 +2,30 @@
 
 declare(strict_types=1);
 
-namespace GoSuccess\Digistore24\Ipn\Helper;
+namespace GoSuccess\Digistore24\Ipn\Util;
 
 use BackedEnum;
 use DateTimeImmutable;
 use Exception;
 
 /**
- * Helper trait for Property Hooks type conversions.
+ * Utility class for type conversions in Property Hooks.
  *
- * This trait provides reusable conversion methods for PHP 8.4 Property Hooks
+ * This class provides static conversion methods for PHP 8.4 Property Hooks
  * to handle Digistore24 IPN data types consistently across all properties.
  *
  * Digistore24 sends all data as strings, but we need proper PHP types.
- * This trait handles the conversion with proper null handling.
+ * This class handles the conversion with proper null handling.
  */
-trait PropertyConversions
+final class TypeConverter
 {
+    /**
+     * Prevent instantiation of utility class.
+     */
+    private function __construct()
+    {
+    }
+
     /**
      * Convert value to float or null.
      *
@@ -26,7 +33,7 @@ trait PropertyConversions
      *
      * @return float|null The converted float value or null
      */
-    private function toFloat(mixed $value): ?float
+    public static function toFloat(mixed $value): ?float
     {
         if ($value === null || $value === '') {
             return null;
@@ -42,7 +49,7 @@ trait PropertyConversions
      *
      * @return int|null The converted integer value or null
      */
-    private function toInt(mixed $value): ?int
+    public static function toInt(mixed $value): ?int
     {
         if ($value === null || $value === '') {
             return null;
@@ -62,7 +69,7 @@ trait PropertyConversions
      *
      * @return bool|null The converted boolean value or null
      */
-    private function toBool(mixed $value): ?bool
+    public static function toBool(mixed $value): ?bool
     {
         if ($value === null || $value === '') {
             return null;
@@ -90,7 +97,7 @@ trait PropertyConversions
      *
      * @return DateTimeImmutable|null The converted DateTimeImmutable or null
      */
-    private function toDateTime(mixed $value): ?DateTimeImmutable
+    public static function toDateTime(mixed $value): ?DateTimeImmutable
     {
         if ($value === null || $value === '') {
             return null;
@@ -114,7 +121,7 @@ trait PropertyConversions
      *
      * @return T|null The enum case or null
      */
-    private function toEnum(string $enumClass, mixed $value): ?BackedEnum
+    public static function toEnum(string $enumClass, mixed $value): ?BackedEnum
     {
         if ($value === null || $value === '') {
             return null;
@@ -125,7 +132,6 @@ trait PropertyConversions
         }
 
         try {
-            /** @phpstan-ignore catch.neverThrown */
             return $enumClass::from($value);
         } catch (Exception) {
             // Invalid enum value - return null
@@ -142,7 +148,7 @@ trait PropertyConversions
      *
      * @return array<string> Array of trimmed, non-empty values
      */
-    private function toArray(mixed $value): array
+    public static function toArray(mixed $value): array
     {
         if ($value === null || $value === '') {
             return [];

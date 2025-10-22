@@ -16,7 +16,7 @@ use GoSuccess\Digistore24\Ipn\Enum\ProductDeliveryType;
 use GoSuccess\Digistore24\Ipn\Enum\Salutation;
 use GoSuccess\Digistore24\Ipn\Enum\TransactionType;
 use GoSuccess\Digistore24\Ipn\Enum\UpgradeType;
-use GoSuccess\Digistore24\Ipn\Helper\PropertyConversions;
+use GoSuccess\Digistore24\Ipn\Util\TypeConverter;
 
 /**
  * Data Transfer Object for handling IPN notifications from Digistore24.
@@ -67,10 +67,8 @@ use GoSuccess\Digistore24\Ipn\Helper\PropertyConversions;
  */
 final class Notification
 {
-    use PropertyConversions;
-
     public ?Action $action = null {
-        set(mixed $value) => $this->toEnum(Action::class, $value);
+        set(mixed $value) => TypeConverter::toEnum(Action::class, $value);
     }
 
     public ?float $amount_affiliate = null {
@@ -150,7 +148,7 @@ final class Notification
     }
 
     public ?Salutation $address_salutation = null {
-        set(mixed $value) => $this->toEnum(Salutation::class, $value);
+        set(mixed $value) => TypeConverter::toEnum(Salutation::class, $value);
     }
 
     public ?string $address_state = null {
@@ -198,15 +196,15 @@ final class Notification
     }
 
     public ?BillingStatus $billing_status = null {
-        set(mixed $value) => $this->toEnum(BillingStatus::class, $value);
+        set(mixed $value) => TypeConverter::toEnum(BillingStatus::class, $value);
     }
 
     public ?BillingStopReason $billing_stop_reason = null {
-        set(mixed $value) => $this->toEnum(BillingStopReason::class, $value);
+        set(mixed $value) => TypeConverter::toEnum(BillingStopReason::class, $value);
     }
 
     public ?BillingType $billing_type = null {
-        set(mixed $value) => $this->toEnum(BillingType::class, $value);
+        set(mixed $value) => TypeConverter::toEnum(BillingType::class, $value);
     }
 
     public ?int $buyer_id = null {
@@ -482,15 +480,15 @@ final class Notification
     }
 
     public ?BillingStatus $order_billing_status = null {
-        set(mixed $value) => $this->toEnum(BillingStatus::class, $value);
+        set(mixed $value) => TypeConverter::toEnum(BillingStatus::class, $value);
     }
 
     public ?DateTimeImmutable $order_date = null {
-        set(mixed $value) => $this->toDateTime($value);
+        set(mixed $value) => TypeConverter::toDateTime($value);
     }
 
     public ?DateTimeImmutable $order_date_time = null {
-        set(mixed $value) => $this->toDateTime($value);
+        set(mixed $value) => TypeConverter::toDateTime($value);
     }
 
     public ?string $order_details_url = null {
@@ -510,7 +508,7 @@ final class Notification
     }
 
     public ?OrderType $order_type = null {
-        set(mixed $value) => $this->toEnum(OrderType::class, $value);
+        set(mixed $value) => TypeConverter::toEnum(OrderType::class, $value);
     }
 
     public ?int $orderform_id = null {
@@ -530,7 +528,7 @@ final class Notification
     }
 
     public ?PayMethod $pay_method = null {
-        set(mixed $value) => $this->toEnum(PayMethod::class, $value);
+        set(mixed $value) => TypeConverter::toEnum(PayMethod::class, $value);
     }
 
     public ?int $pay_sequence_no = null {
@@ -546,7 +544,7 @@ final class Notification
     }
 
     public ?ProductDeliveryType $product_delivery_type = null {
-        set(mixed $value) => $this->toEnum(ProductDeliveryType::class, $value);
+        set(mixed $value) => TypeConverter::toEnum(ProductDeliveryType::class, $value);
     }
 
     public ?float $product_amount = null {
@@ -696,7 +694,7 @@ final class Notification
     }
 
     public ?TransactionType $transaction_type = null {
-        set(mixed $value) => $this->toEnum(TransactionType::class, $value);
+        set(mixed $value) => TypeConverter::toEnum(TransactionType::class, $value);
     }
 
     public ?string $trackingkey = null {
@@ -708,7 +706,7 @@ final class Notification
     }
 
     public ?UpgradeType $upgrade_type = null {
-        set(mixed $value) => $this->toEnum(UpgradeType::class, $value);
+        set(mixed $value) => TypeConverter::toEnum(UpgradeType::class, $value);
     }
 
     public ?string $upgraded_address_first_name = null {

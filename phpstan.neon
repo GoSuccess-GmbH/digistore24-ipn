@@ -10,6 +10,6 @@ parameters:
         -
             identifier: missingType.iterableValue
         -
-            identifier: catch.neverThrown
-            path: src/Helper/PropertyConversions.php
+            message: '#Dead catch - Exception is never thrown in the try block\.#'
+            path: src/Util/TypeConverter.php
 
