@@ -194,11 +194,10 @@ final class Signature
             throw new FormatException('Received signature must be a scalar value');
         }
 
+        // Timing-safe comparison; never expose the expected signature
         $receivedSig = (string) $receivedSignature;
-        if ($receivedSig !== $expectedSignature) {
-            throw new FormatException(
-                "Signature is invalid. Expected: {$expectedSignature}, Received: {$receivedSig}"
-            );
+        if (!hash_equals($expectedSignature, $receivedSig)) {
+            throw new FormatException('Signature is invalid.');
         }
     }
 }
