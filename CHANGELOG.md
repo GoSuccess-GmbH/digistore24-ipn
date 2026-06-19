@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- `api_mode` field and `Notification::isTestMode()` helper to distinguish test orders from live orders
+
+### Fixed
+- Unknown `event` values no longer throw a `ValueError`; the property is set to `null` instead, keeping notification parsing robust against new Digistore24 events
+- Invalid or empty date values (including Digistore24's `0000-00-00 00:00:00`) now convert to `null` instead of throwing or producing a nonsensical date
+- Signature comparison is now timing-safe (`hash_equals`) and the error message no longer leaks the expected signature
+- Signature calculation now matches the official Digistore24 receiver exactly: HTML decoding uses `ENT_HTML401` and array values are encoded as RFC3986 query parts
+
+### Changed
+- Removed the meaningless numeric `order_id` validation (order ids are alphanumeric strings)
+- `tags` keeps an explicitly empty value as an empty array instead of collapsing it to `null`
+- Merged the redundant `SHASIGN` property into the canonical `sha_sign` field (normalized in `fromArray()`)
+- Removed redundant string casts in `Response::toString()`
+
 ## [2.0.0] - 2025-10-22
 
 ### 🚨 BREAKING CHANGES
