@@ -488,9 +488,13 @@ final class Notification
         set(mixed $value) => TypeConverter::toInt($value);
     }
 
+    /**
+     * SHA-512 signature sent by Digistore24.
+     *
+     * Digistore24 may use either 'sha_sign' or 'SHASIGN' as the field name;
+     * fromArray() normalizes the latter into this canonical property.
+     */
     public ?string $sha_sign = null;
-
-    public ?string $SHASIGN = null;
 
     public ?string $support_url = null;
 
@@ -606,6 +610,13 @@ final class Notification
     public static function fromArray(array $data): self
     {
         $dto = new self();
+
+        // Normalize the alternative signature field name to the canonical one
+        if (!isset($data['sha_sign']) && isset($data['SHASIGN'])) {
+            $data['sha_sign'] = $data['SHASIGN'];
+        }
+        unset($data['SHASIGN']);
+
         foreach ($data as $key => $value) {
             // Only set properties that actually exist in the class
             if (property_exists($dto, $key)) {
