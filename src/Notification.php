@@ -252,12 +252,7 @@ final class Notification
     public ?string $eticket_used_at = null;
 
     public ?Event $event = null {
-        set(mixed $value) => match (true) {
-            $value === null => null,
-            $value instanceof Event => $value,
-            is_string($value) => Event::from($value),
-            default => throw new \InvalidArgumentException('Event value must be string or Event instance'),
-        };
+        set(mixed $value) => TypeConverter::toEnum(Event::class, $value);
     }
 
     public ?string $event_label = null;

@@ -92,6 +92,18 @@ final class NotificationTest extends TestCase
     }
 
     #[Test]
+    public function it_handles_unknown_event_gracefully(): void
+    {
+        // Digistore24 may introduce new events; an unknown value must not crash.
+        $notification = Notification::fromArray([
+            'event' => 'some_future_event',
+            'order_id' => 'ORD-1',
+        ]);
+
+        $this->assertNull($notification->event);
+    }
+
+    #[Test]
     public function it_returns_false_for_null_event(): void
     {
         $notification = new Notification();
