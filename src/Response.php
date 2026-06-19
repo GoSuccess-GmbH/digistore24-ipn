@@ -248,7 +248,7 @@ class Response
 
         // Add thankyou URL if provided
         if ($this->thankyouUrl !== null) {
-            $lines[] = (string) 'thankyou_url: ' . $this->thankyouUrl;
+            $lines[] = 'thankyou_url: ' . $this->thankyouUrl;
         }
 
         // Add all login blocks with proper numbering
@@ -271,12 +271,12 @@ class Response
 
         // Add headline if provided
         if ($this->headline !== null) {
-            $lines[] = (string) 'headline: ' . $this->headline;
+            $lines[] = 'headline: ' . $this->headline;
         }
 
         // Add all custom additional data fields
         foreach ($this->additionalData as $key => $value) {
-            $lines[] = (string) $key . ': ' . $value;
+            $lines[] = $key . ': ' . $value;
         }
 
         // Join all lines with newline character
