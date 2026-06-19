@@ -104,6 +104,20 @@ final class NotificationTest extends TestCase
     }
 
     #[Test]
+    public function it_handles_invalid_dates_gracefully(): void
+    {
+        // Invalid or empty Digistore24 date values must not crash parsing.
+        foreach (['0000-00-00 00:00:00', 'garbage', '2025-13-99'] as $invalidDate) {
+            $notification = Notification::fromArray([
+                'event' => 'on_payment',
+                'order_date' => $invalidDate,
+            ]);
+
+            $this->assertNull($notification->order_date, "Failed for: $invalidDate");
+        }
+    }
+
+    #[Test]
     public function it_returns_false_for_null_event(): void
     {
         $notification = new Notification();

@@ -134,7 +134,19 @@ final class TypeConverter
             throw new \InvalidArgumentException('DateTime value must be string or numeric');
         }
 
-        return new DateTimeImmutable((string) $value);
+        $stringValue = (string) $value;
+
+        // Digistore24 sends "0000-00-00 00:00:00" for empty dates
+        if (str_starts_with($stringValue, '0000-00-00')) {
+            return null;
+        }
+
+        // Invalid date strings must not crash notification parsing
+        try {
+            return new DateTimeImmutable($stringValue);
+        } catch (\Exception) {
+            return null;
+        }
     }
 
     /**
