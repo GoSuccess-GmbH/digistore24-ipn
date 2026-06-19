@@ -102,14 +102,11 @@ final class Signature
         foreach ($keys as $key) {
             $value = $parameters[$key];
 
-            // Skip array values (they cannot be used in signature)
-            if (is_array($value)) {
-                continue;
-            }
-
-            // Optionally decode HTML entities in values
+            // Optionally decode HTML entities in values. Use the same flags as
+            // the official Digistore24 receiver (PHP default = ENT_HTML401), so
+            // the calculated signature matches what Digistore24 sends.
             if ($doHtmlDecode && is_string($value)) {
-                $value = html_entity_decode($value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5);
+                $value = html_entity_decode($value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401);
             }
 
             // Skip empty/null/false values (they don't contribute to signature)
@@ -119,6 +116,25 @@ final class Signature
 
             // Build signature string: KEY=value{passphrase}
             $outKey = $convertKeysToUppercase ? strtoupper($key) : $key;
+
+            // Array values are encoded the same way Digistore24 does: as RFC3986
+            // query parts, each followed by the passphrase.
+            if (is_array($value)) {
+                $queryString = http_build_query([$outKey => $value], '', '&', PHP_QUERY_RFC3986);
+                if ($queryString === '') {
+                    continue;
+                }
+
+                foreach (explode('&', $queryString) as $queryPart) {
+                    if ($queryPart === '') {
+                        continue;
+                    }
+
+                    $shaString .= rawurldecode($queryPart) . $shaPassphrase;
+                }
+
+                continue;
+            }
 
             // Convert value to string safely
             if (is_scalar($value)) {
