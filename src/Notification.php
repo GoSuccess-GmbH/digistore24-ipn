@@ -501,7 +501,7 @@ final class Notification
      */
     public ?array $tags = null {
         set(mixed $value) {
-            $this->tags = TypeConverter::toArray($value) ?: null;
+            $this->tags = TypeConverter::toArray($value);
         }
     }
 
