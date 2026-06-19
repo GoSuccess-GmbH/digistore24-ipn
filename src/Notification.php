@@ -159,6 +159,13 @@ final class Notification
 
     public ?string $affiliate_link = null;
 
+    /**
+     * API mode of the notification: 'live' for real orders, 'test' for test orders.
+     *
+     * Use isTestMode() to reliably distinguish test notifications from live ones.
+     */
+    public ?string $api_mode = null;
+
     public ?BillingStatus $billing_status = null {
         set(mixed $value) => TypeConverter::toEnum(BillingStatus::class, $value);
     }
@@ -781,6 +788,19 @@ final class Notification
     public function isCustomForm(): bool
     {
         return $this->event === Event::CUSTOM_FORM;
+    }
+
+    /**
+     * Check if this notification is a test order (not a live order).
+     *
+     * Mirrors the official Digistore24 receiver logic: every api_mode other
+     * than 'live' is treated as a test notification.
+     *
+     * @return bool True if the notification is in test mode
+     */
+    public function isTestMode(): bool
+    {
+        return $this->api_mode !== null && $this->api_mode !== 'live';
     }
 
     // ========================================

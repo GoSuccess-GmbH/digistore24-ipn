@@ -118,6 +118,18 @@ final class NotificationTest extends TestCase
     }
 
     #[Test]
+    public function it_detects_test_mode(): void
+    {
+        $live = Notification::fromArray(['event' => 'on_payment', 'api_mode' => 'live']);
+        $test = Notification::fromArray(['event' => 'on_payment', 'api_mode' => 'test']);
+        $none = Notification::fromArray(['event' => 'on_payment']);
+
+        $this->assertFalse($live->isTestMode());
+        $this->assertTrue($test->isTestMode());
+        $this->assertFalse($none->isTestMode());
+    }
+
+    #[Test]
     public function it_returns_false_for_null_event(): void
     {
         $notification = new Notification();
