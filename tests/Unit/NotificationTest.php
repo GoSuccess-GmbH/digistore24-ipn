@@ -195,15 +195,16 @@ final class NotificationTest extends TestCase
     }
 
     #[Test]
-    public function it_detects_negative_order_id(): void
+    public function it_accepts_non_numeric_order_id(): void
     {
+        // Digistore24 order ids are alphanumeric strings, not numbers.
         $notification = new Notification();
         $notification->event = Event::ON_PAYMENT;
-        $notification->order_id = '-123';
+        $notification->order_id = 'ABC-123-XYZ';
 
         $errors = $notification->validate();
 
-        $this->assertContains('order_id must be positive: -123', $errors);
+        $this->assertEmpty($errors);
     }
 
     #[Test]
@@ -224,7 +225,7 @@ final class NotificationTest extends TestCase
         $notification = new Notification();
         $notification->email = 'invalid';
         $notification->amount_brutto = -50.0;
-        $notification->order_id = '-100';
+        $notification->product_id = -100;
 
         $errors = $notification->validate();
 

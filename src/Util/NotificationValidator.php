@@ -23,7 +23,6 @@ final class NotificationValidator
      * Validation checks:
      * - Email format validation
      * - Non-negative monetary amounts
-     * - Positive order ID
      * - Positive product ID
      * - Required event field
      *
@@ -72,11 +71,6 @@ final class NotificationValidator
             if ($value !== null && $value < 0) {
                 $errors[] = "{$field} must not be negative: {$value}";
             }
-        }
-
-        // Validate order_id is positive if present
-        if ($notification->order_id !== null && $notification->order_id <= 0) {
-            $errors[] = "order_id must be positive: {$notification->order_id}";
         }
 
         // Validate product_id is positive if present
