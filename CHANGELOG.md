@@ -5,22 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.1.0] - 2026-06-21
 
 ### Added
 - `api_mode` field and `Notification::isTestMode()` helper to distinguish test orders from live orders
+- Coverage of all fields sent by real Digistore24 IPNs (verified against live `on_payment`/`on_refund`/`connection_test` payloads):
+  - Buyer blocks `buyer_*` and `buyer_address_*`, and billing address block `billing_*` (sent alongside `address_*`)
+  - Transaction/order fields: `amount`, `vat_amount`, `transaction_vat_amount`, `parent_transaction_id`, `order_item_id`, `item_count`, `transaction_time`, `purchase_key`, `server_time`, `monthly_amount`, `monthly_vat_amount`, `function_call`
+  - URL/meta fields: `invoice_url`, `add_url`, `store_url`, `image_url`, `switch_pay_interval_url`, `product_name_intern`, `language_name`, `upsell_no`, `upsell_path`, `click_id`, `has_custom_forms`, `is_payment_planned`, `license_accessdata_keys`, `tag`
+- Unknown/new Digistore24 fields are now kept as raw magic properties (e.g. `$notification->some_new_field`) instead of being dropped, with `getDynamicFields()` for static-analysis-safe access; unknown fields are included in `toArray()`/`toJson()` so serialization stays lossless
+- `examples/ipn-receiver.php`: a capture/inspection receiver that stores every incoming IPN (raw + parsed) and always replies `OK`
+- Direct unit tests for `TypeConverter`, `NotificationValidator`, and `NotificationSerializer`
 
 ### Fixed
 - Unknown `event` values no longer throw a `ValueError`; the property is set to `null` instead, keeping notification parsing robust against new Digistore24 events
 - Invalid or empty date values (including Digistore24's `0000-00-00 00:00:00`) now convert to `null` instead of throwing or producing a nonsensical date
 - Signature comparison is now timing-safe (`hash_equals`) and the error message no longer leaks the expected signature
 - Signature calculation now matches the official Digistore24 receiver exactly: HTML decoding uses `ENT_HTML401` and array values are encoded as RFC3986 query parts
+- Field-name bug: `ipn_config_products_ids` renamed to `ipn_config_product_ids` (the old name never matched what Digistore24 sends, so it was never populated)
+- `TypeConverter::toBool()` now passes real boolean input through (`true`/`false`), consistent with `toInt()`/`toFloat()`
+- `examples/ipn-handler.php` used a wrong `vendor/autoload.php` path; examples are now null-safe for unknown events
 
 ### Changed
 - Removed the meaningless numeric `order_id` validation (order ids are alphanumeric strings)
 - `tags` keeps an explicitly empty value as an empty array instead of collapsing it to `null`
 - Merged the redundant `SHASIGN` property into the canonical `sha_sign` field (normalized in `fromArray()`)
 - Removed redundant string casts in `Response::toString()`
+- Compiler-optimized native functions are now called from the global namespace (`\is_string()` etc.) via the PHP-CS-Fixer `native_function_invocation` rule
+
+### Removed
+- `SECURITY.md` and `CONTRIBUTING.md` (this library is primarily developed for internal use; external contributions are not maintained)
 
 ## [2.0.0] - 2025-10-22
 
@@ -147,6 +161,7 @@ See [docs/UPGRADE.md](docs/UPGRADE.md) for complete migration instructions from 
 - Exception handling for invalid IPN data
 - MIT License
 
+[2.1.0]: https://github.com/GoSuccess-GmbH/digistore24-ipn/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/GoSuccess-GmbH/digistore24-ipn/compare/v1.1.2...v2.0.0
 [1.1.2]: https://github.com/GoSuccess-GmbH/digistore24-ipn/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/GoSuccess-GmbH/digistore24-ipn/compare/v1.1.0...v1.1.1
