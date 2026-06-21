@@ -126,7 +126,7 @@ try {
     // Log basic information
     logMessage(sprintf(
         'Processing IPN - Event: %s, Order: %s, Email: %s',
-        $notification->event->value,
+        $notification->event?->value ?? 'unknown',
         $notification->order_id ?? 'N/A',
         $notification->email ?? 'N/A'
     ));
@@ -165,7 +165,8 @@ try {
             break;
 
         default:
-            logMessage('Unknown event type: ' . $notification->event->value, 'WARNING');
+            // Unknown or future event types resolve to null; always reply OK
+            logMessage('Unknown event type: ' . ($notification->event?->value ?? 'unknown'), 'WARNING');
             http_response_code(200);
             echo 'OK';
     }

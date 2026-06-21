@@ -220,9 +220,9 @@ class IPNErrorHandler
             throw new InvalidArgumentException("Invalid amount: {$notification->amount_brutto}");
         }
 
-        // Order ID validation
-        if ($notification->order_id !== null && $notification->order_id <= 0) {
-            throw new InvalidArgumentException("Invalid order ID: {$notification->order_id}");
+        // Order ID validation (Digistore24 order ids are alphanumeric strings)
+        if ($notification->order_id !== null && $notification->order_id === '') {
+            throw new InvalidArgumentException('Order ID must not be empty');
         }
     }
 
@@ -238,7 +238,7 @@ class IPNErrorHandler
             Event::ON_PAYMENT => $this->handlePayment($notification),
             Event::ON_REFUND => $this->handleRefund($notification),
             Event::CONNECTION_TEST => $this->handleConnectionTest(),
-            default => $this->log("Unhandled event: {$notification->event->value}", 'WARNING'),
+            default => $this->log('Unhandled event: ' . ($notification->event?->value ?? 'unknown'), 'WARNING'),
         };
     }
 

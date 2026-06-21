@@ -54,7 +54,7 @@ try {
     $amount = $ipnNotification->amount_brutto;
 
     logIpn('Processing event', [
-        'event' => $event->value,
+        'event' => $event?->value ?? 'unknown',
         'order_id' => $orderId,
         'email' => $email,
         'amount' => $amount,
@@ -96,7 +96,8 @@ try {
             exit;
 
         default:
-            logIpn('Unknown event type', ['event' => $event->value]);
+            // Unknown or future event types resolve to null; always reply OK
+            logIpn('Unknown event type', ['event' => $event?->value ?? 'unknown']);
             echo "OK";
             exit;
     }
