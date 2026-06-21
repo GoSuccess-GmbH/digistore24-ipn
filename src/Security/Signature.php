@@ -105,7 +105,7 @@ final class Signature
             // Optionally decode HTML entities in values. Use the same flags as
             // the official Digistore24 receiver (PHP default = ENT_HTML401), so
             // the calculated signature matches what Digistore24 sends.
-            if ($doHtmlDecode && is_string($value)) {
+            if ($doHtmlDecode && \is_string($value)) {
                 $value = html_entity_decode($value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401);
             }
 
@@ -119,7 +119,7 @@ final class Signature
 
             // Array values are encoded the same way Digistore24 does: as RFC3986
             // query parts, each followed by the passphrase.
-            if (is_array($value)) {
+            if (\is_array($value)) {
                 $queryString = http_build_query([$outKey => $value], '', '&', PHP_QUERY_RFC3986);
                 if ($queryString === '') {
                     continue;
@@ -137,9 +137,9 @@ final class Signature
             }
 
             // Convert value to string safely
-            if (is_scalar($value)) {
+            if (\is_scalar($value)) {
                 $stringValue = (string) $value;
-            } elseif (is_object($value) && method_exists($value, '__toString')) {
+            } elseif (\is_object($value) && method_exists($value, '__toString')) {
                 $stringValue = (string) $value;
             } else {
                 continue; // Skip non-stringable values
@@ -206,7 +206,7 @@ final class Signature
         );
 
         // Compare signatures (must match exactly for valid IPN)
-        if (!is_string($receivedSignature) && !is_scalar($receivedSignature)) {
+        if (!\is_string($receivedSignature) && !\is_scalar($receivedSignature)) {
             throw new FormatException('Received signature must be a scalar value');
         }
 

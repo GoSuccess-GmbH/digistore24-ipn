@@ -327,7 +327,7 @@ final class ResponseTest extends TestCase
 
         $this->assertStringContainsString("\n", $output);
         $lines = explode("\n", $output);
-        $this->assertGreaterThan(1, count($lines));
+        $this->assertGreaterThan(1, \count($lines));
     }
 
     #[Test]

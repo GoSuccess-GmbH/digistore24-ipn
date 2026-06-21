@@ -348,7 +348,7 @@ final class SignatureTest extends TestCase
         $parameters = ['order_id' => '12345'];
         $signature = Signature::getExpectedSignature(self::PASSPHRASE, $parameters);
 
-        $this->assertSame(128, strlen($signature));
+        $this->assertSame(128, \strlen($signature));
         $this->assertMatchesRegularExpression('/^[A-F0-9]+$/', $signature);
     }
 

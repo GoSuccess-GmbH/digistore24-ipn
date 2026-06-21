@@ -31,15 +31,15 @@ final class TypeConverter
             return null;
         }
 
-        if (is_float($value) || is_int($value)) {
+        if (\is_float($value) || \is_int($value)) {
             return (float) $value;
         }
 
-        if (is_string($value) && is_numeric($value)) {
+        if (\is_string($value) && is_numeric($value)) {
             return (float) $value;
         }
 
-        if (is_bool($value)) {
+        if (\is_bool($value)) {
             return $value ? 1.0 : 0.0;
         }
 
@@ -60,19 +60,19 @@ final class TypeConverter
             return null;
         }
 
-        if (is_int($value)) {
+        if (\is_int($value)) {
             return $value;
         }
 
-        if (is_float($value)) {
+        if (\is_float($value)) {
             return (int) $value;
         }
 
-        if (is_string($value) && is_numeric($value)) {
+        if (\is_string($value) && is_numeric($value)) {
             return (int) $value;
         }
 
-        if (is_bool($value)) {
+        if (\is_bool($value)) {
             return $value ? 1 : 0;
         }
 
@@ -98,7 +98,7 @@ final class TypeConverter
         }
 
         // Normalize to lowercase string for comparison
-        $normalized = is_string($value) ? strtolower(trim($value)) : $value;
+        $normalized = \is_string($value) ? strtolower(trim($value)) : $value;
 
         return match ($normalized) {
             // TRUE values
@@ -130,7 +130,7 @@ final class TypeConverter
         }
 
         // Try parsing the value as ISO 8601 or standard date format
-        if (!is_string($value) && !is_numeric($value)) {
+        if (!\is_string($value) && !is_numeric($value)) {
             throw new \InvalidArgumentException('DateTime value must be string or numeric');
         }
 
@@ -169,7 +169,7 @@ final class TypeConverter
             return $value;
         }
 
-        if (!is_string($value) && !is_int($value)) {
+        if (!\is_string($value) && !\is_int($value)) {
             throw new \InvalidArgumentException('Enum value must be string or int');
         }
 
@@ -196,14 +196,14 @@ final class TypeConverter
             return [];
         }
 
-        if (is_array($value)) {
+        if (\is_array($value)) {
             return array_map(
-                static fn (mixed $item): string => is_scalar($item) ? (string) $item : '',
+                static fn (mixed $item): string => \is_scalar($item) ? (string) $item : '',
                 $value
             );
         }
 
-        if (!is_string($value) && !is_scalar($value)) {
+        if (!\is_string($value) && !\is_scalar($value)) {
             throw new \InvalidArgumentException('Value must be string or scalar to convert to array');
         }
 

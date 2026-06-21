@@ -34,7 +34,11 @@ return (new Config())
         'concat_space' => ['spacing' => 'one'],
         'declare_strict_types' => true,
         'function_typehint_space' => true,
-        'native_function_invocation' => false,
+        'native_function_invocation' => [
+            'include' => ['@compiler_optimized'],
+            'scope' => 'namespaced',
+            'strict' => true,
+        ],
         'no_blank_lines_after_class_opening' => true,
         'no_blank_lines_after_phpdoc' => true,
         'no_empty_phpdoc' => true,

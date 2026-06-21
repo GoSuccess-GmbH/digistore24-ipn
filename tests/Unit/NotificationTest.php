@@ -267,7 +267,7 @@ final class NotificationTest extends TestCase
 
         $errors = $notification->validate();
 
-        $this->assertGreaterThanOrEqual(3, count($errors));
+        $this->assertGreaterThanOrEqual(3, \count($errors));
         $this->assertContains('event field is required', $errors);
     }
 
