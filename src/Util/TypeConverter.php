@@ -97,6 +97,11 @@ final class TypeConverter
             return null;
         }
 
+        // Pass real booleans through (consistent with toInt()/toFloat())
+        if (\is_bool($value)) {
+            return $value;
+        }
+
         // Normalize to lowercase string for comparison
         $normalized = \is_string($value) ? strtolower(trim($value)) : $value;
 
