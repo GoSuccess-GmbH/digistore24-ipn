@@ -131,6 +131,33 @@ $notification->tags[0]           // 'webinar'
 $notification->tags[1]           // 'premium'
 ```
 
+### Test vs. Live Orders
+
+Digistore24 sends `api_mode` (`'live'` or `'test'`) so you can tell test
+orders apart from real ones. Use the `isTestMode()` helper:
+
+```php
+if ($notification->isTestMode()) {
+    // Skip fulfilment, granting access, sending emails, etc.
+    echo 'OK';
+    exit;
+}
+```
+
+### Unknown Events
+
+Unknown or future event values resolve to `null` instead of throwing, so new
+Digistore24 events never break your handler. Guard accordingly:
+
+```php
+$event = $notification->event;   // null for unknown values
+
+if ($event === null) {
+    echo 'OK'; // acknowledge and ignore
+    exit;
+}
+```
+
 ## Migration from v1.x
 
 **Version 2.0** introduces breaking changes with PHP 8.4 Property Hooks:
@@ -200,10 +227,9 @@ composer test && composer cs:fix && composer analyze
 
 ### Project Status
 
-**Version**: 2.0.0  
 **PHP**: >= 8.4  
-**Tests**: 69/69 passing ✅  
-**PHPStan**: Level 8 ✅  
+**Tests**: PHPUnit (unit + integration) passing ✅  
+**PHPStan**: Level 9 ✅  
 **Code Style**: PSR-12 ✅
 
 ## Documentation
