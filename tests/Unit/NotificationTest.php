@@ -130,6 +130,44 @@ final class NotificationTest extends TestCase
     }
 
     #[Test]
+    public function it_maps_additional_real_ds24_fields(): void
+    {
+        // Fields captured from real Digistore24 IPN payloads.
+        $notification = Notification::fromArray([
+            'event' => 'on_refund',
+            'ipn_config_product_ids' => 'all',
+            'amount' => '0.95',
+            'vat_amount' => '0.15',
+            'parent_transaction_id' => '120110409',
+            'order_item_id' => '72706700',
+            'item_count' => '1',
+            'buyer_email' => 'buyer@example.com',
+            'billing_first_name' => 'Paul',
+            'billing_id' => '47171496',
+            'has_custom_forms' => 'N',
+            'is_payment_planned' => 'Y',
+            'server_time' => '2026-06-21 17:17:10',
+            'transaction_time' => '17:20:41',
+            'product_name_intern' => 'WordPress Hosting',
+        ]);
+
+        $this->assertSame('all', $notification->ipn_config_product_ids);
+        $this->assertSame(0.95, $notification->amount);
+        $this->assertSame(0.15, $notification->vat_amount);
+        $this->assertSame(120110409, $notification->parent_transaction_id);
+        $this->assertSame(72706700, $notification->order_item_id);
+        $this->assertSame(1, $notification->item_count);
+        $this->assertSame('buyer@example.com', $notification->buyer_email);
+        $this->assertSame('Paul', $notification->billing_first_name);
+        $this->assertSame('47171496', $notification->billing_id);
+        $this->assertFalse($notification->has_custom_forms);
+        $this->assertTrue($notification->is_payment_planned);
+        $this->assertInstanceOf(\DateTimeImmutable::class, $notification->server_time);
+        $this->assertSame('17:20:41', $notification->transaction_time);
+        $this->assertSame('WordPress Hosting', $notification->product_name_intern);
+    }
+
+    #[Test]
     public function it_returns_false_for_null_event(): void
     {
         $notification = new Notification();

@@ -288,7 +288,7 @@ final class Notification
         set(mixed $value) => TypeConverter::toInt($value);
     }
 
-    public ?string $ipn_config_products_ids = null;
+    public ?string $ipn_config_product_ids = null;
 
     public ?float $ipn_version = null {
         set(mixed $value) => TypeConverter::toFloat($value);
@@ -580,6 +580,186 @@ final class Notification
     public ?int $used_coupon_id = null {
         set(mixed $value) => TypeConverter::toInt($value);
     }
+
+    // ======================================================================
+    // Additional fields observed in real Digistore24 IPN payloads.
+    // Grouped by topic. See https://dev.digistore24.com for field semantics.
+    // ======================================================================
+
+    // -- Transaction / order header --
+
+    /** Mirrors the "event" field (the called function). */
+    public ?string $function_call = null;
+
+    public ?DateTimeImmutable $server_time = null {
+        set(mixed $value) => TypeConverter::toDateTime($value);
+    }
+
+    public ?string $transaction_time = null;
+
+    /** For refunds/chargebacks: the id of the original transaction. */
+    public ?int $parent_transaction_id = null {
+        set(mixed $value) => TypeConverter::toInt($value);
+    }
+
+    public ?string $purchase_key = null;
+
+    public ?int $order_item_id = null {
+        set(mixed $value) => TypeConverter::toInt($value);
+    }
+
+    public ?int $item_count = null {
+        set(mixed $value) => TypeConverter::toInt($value);
+    }
+
+    // -- Amounts --
+
+    public ?float $amount = null {
+        set(mixed $value) => TypeConverter::toFloat($value);
+    }
+
+    public ?float $amount_main_affiliate = null {
+        set(mixed $value) => TypeConverter::toFloat($value);
+    }
+
+    public ?float $vat_amount = null {
+        set(mixed $value) => TypeConverter::toFloat($value);
+    }
+
+    public ?float $transaction_vat_amount = null {
+        set(mixed $value) => TypeConverter::toFloat($value);
+    }
+
+    public ?float $monthly_amount = null {
+        set(mixed $value) => TypeConverter::toFloat($value);
+    }
+
+    public ?float $monthly_vat_amount = null {
+        set(mixed $value) => TypeConverter::toFloat($value);
+    }
+
+    // -- Buyer (person + address) --
+
+    public ?string $buyer_email = null;
+
+    public ?string $buyer_first_name = null;
+
+    public ?string $buyer_last_name = null;
+
+    public ?string $buyer_language = null;
+
+    public ?string $buyer_address_id = null;
+
+    public ?string $buyer_address_city = null;
+
+    public ?string $buyer_address_company = null;
+
+    public ?string $buyer_address_country = null;
+
+    public ?string $buyer_address_state = null;
+
+    public ?string $buyer_address_street = null;
+
+    public ?string $buyer_address_street2 = null;
+
+    public ?string $buyer_address_zipcode = null;
+
+    public ?string $buyer_address_phone_no = null;
+
+    public ?string $buyer_address_mobile_no = null;
+
+    public ?string $buyer_address_tax_id = null;
+
+    // -- Billing address --
+
+    public ?string $billing_id = null;
+
+    public ?string $billing_descriptor = null;
+
+    public ?Salutation $billing_salutation = null {
+        set(mixed $value) => TypeConverter::toEnum(Salutation::class, $value);
+    }
+
+    public ?string $billing_salutation_name = null;
+
+    public ?string $billing_title = null;
+
+    public ?string $billing_first_name = null;
+
+    public ?string $billing_last_name = null;
+
+    public ?string $billing_company = null;
+
+    public ?string $billing_street = null;
+
+    public ?string $billing_street2 = null;
+
+    public ?string $billing_street_name = null;
+
+    public ?string $billing_street_number = null;
+
+    public ?string $billing_zipcode = null;
+
+    public ?string $billing_city = null;
+
+    public ?string $billing_state = null;
+
+    public ?string $billing_country = null;
+
+    public ?string $billing_phone_no = null;
+
+    public ?string $billing_mobile_no = null;
+
+    public ?string $billing_tax_id = null;
+
+    // -- Address block extras --
+
+    public ?string $address_mobile_no = null;
+
+    public ?string $address_salutation_name = null;
+
+    // -- Product --
+
+    /** Internal product name (vendor-facing), may differ from product_name. */
+    public ?string $product_name_intern = null;
+
+    public ?string $image_url = null;
+
+    // -- URLs --
+
+    public ?string $add_url = null;
+
+    public ?string $invoice_url = null;
+
+    public ?string $store_url = null;
+
+    public ?string $switch_pay_interval_url = null;
+
+    // -- Upsell / funnel --
+
+    public ?int $upsell_no = null {
+        set(mixed $value) => TypeConverter::toInt($value);
+    }
+
+    public ?string $upsell_path = null;
+
+    public ?string $click_id = null;
+
+    // -- Misc flags / meta --
+
+    public ?bool $has_custom_forms = null {
+        set(mixed $value) => TypeConverter::toBool($value);
+    }
+
+    public ?bool $is_payment_planned = null {
+        set(mixed $value) => TypeConverter::toBool($value);
+    }
+
+    public ?string $language_name = null;
+
+    public ?string $license_accessdata_keys = null;
+
+    public ?string $tag = null;
 
     /**
      * Create Notification instance from associative array.
