@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.1.0] - 2026-06-21
+## [2.2.0] - 2026-06-21
 
 ### Added
 - `api_mode` field and `Notification::isTestMode()` helper to distinguish test orders from live orders
@@ -35,6 +35,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 - `SECURITY.md` and `CONTRIBUTING.md` (this library is primarily developed for internal use; external contributions are not maintained)
+
+## [2.1.0] - 2025-10-22
+
+### Added
+- Modern enum architecture: all 18 enums implement the `StringBackedEnum` interface and use the `StringBackedEnumTrait`, adding `label()`, `fromString()` (case-insensitive), `isValid()`, `values()`, and `labels()`
+
+### Changed
+- Upgraded static analysis from PHPStan level 8 to level 9 with no baseline suppressions
+- Consolidated all type conversions into the `TypeConverter` utility class
+- Extracted validation into `NotificationValidator` and serialization into `NotificationSerializer`
+- `TypeConverter` returns `null` for non-numeric strings instead of throwing, and validates scalars/arrays before casting
+
+### Removed
+- Unused int-backed enum infrastructure, redundant no-op property hooks, and unnecessary utility-class constructors
 
 ## [2.0.0] - 2025-10-22
 
@@ -161,9 +175,10 @@ See [docs/UPGRADE.md](docs/UPGRADE.md) for complete migration instructions from 
 - Exception handling for invalid IPN data
 - MIT License
 
-[2.1.0]: https://github.com/GoSuccess-GmbH/digistore24-ipn/compare/v2.0.0...v2.1.0
-[2.0.0]: https://github.com/GoSuccess-GmbH/digistore24-ipn/compare/v1.1.2...v2.0.0
-[1.1.2]: https://github.com/GoSuccess-GmbH/digistore24-ipn/compare/v1.1.1...v1.1.2
-[1.1.1]: https://github.com/GoSuccess-GmbH/digistore24-ipn/compare/v1.1.0...v1.1.1
-[1.1.0]: https://github.com/GoSuccess-GmbH/digistore24-ipn/compare/v1.0.0...v1.1.0
-[1.0.0]: https://github.com/GoSuccess-GmbH/digistore24-ipn/releases/tag/v1.0.0
+[2.2.0]: https://github.com/GoSuccessHQ/digistore24-ipn/compare/2.1.0...2.2.0
+[2.1.0]: https://github.com/GoSuccessHQ/digistore24-ipn/compare/2.0.0...2.1.0
+[2.0.0]: https://github.com/GoSuccessHQ/digistore24-ipn/compare/1.1.2...2.0.0
+[1.1.2]: https://github.com/GoSuccessHQ/digistore24-ipn/compare/1.1.1...1.1.2
+[1.1.1]: https://github.com/GoSuccessHQ/digistore24-ipn/compare/1.1.0...1.1.1
+[1.1.0]: https://github.com/GoSuccessHQ/digistore24-ipn/compare/1.0.0...1.1.0
+[1.0.0]: https://github.com/GoSuccessHQ/digistore24-ipn/releases/tag/1.0.0

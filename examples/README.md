@@ -249,4 +249,4 @@ $customer = [
 
 ## ❓ Questions?
 
-Open an issue on GitHub: https://github.com/GoSuccess-GmbH/digistore24-ipn/issues
+Open an issue on GitHub: https://github.com/GoSuccessHQ/digistore24-ipn/issues

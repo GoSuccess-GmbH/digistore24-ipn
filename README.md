@@ -1,8 +1,8 @@
 # Digistore24 IPN PHP Library
 
 [![Latest Version](https://img.shields.io/packagist/v/gosuccess/digistore24-ipn.svg?style=flat-square)](https://packagist.org/packages/gosuccess/digistore24-ipn)
-[![GitHub Tests](https://img.shields.io/github/actions/workflow/status/GoSuccess-GmbH/digistore24-ipn/tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/GoSuccess-GmbH/digistore24-ipn/actions)
-[![License](https://img.shields.io/github/license/GoSuccess-GmbH/digistore24-ipn.svg?style=flat-square)](LICENSE)
+[![GitHub Tests](https://img.shields.io/github/actions/workflow/status/GoSuccessHQ/digistore24-ipn/tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/GoSuccessHQ/digistore24-ipn/actions)
+[![License](https://img.shields.io/github/license/GoSuccessHQ/digistore24-ipn.svg?style=flat-square)](LICENSE)
 [![PHP Version](https://img.shields.io/packagist/php-v/gosuccess/digistore24-ipn.svg?style=flat-square)](https://packagist.org/packages/gosuccess/digistore24-ipn)
 
 A modern PHP 8.4+ library for handling Digistore24 Instant Payment Notification (IPN) webhooks. This package provides typed DTOs with Property Hooks for all possible webhook fields, signature validation, and helper utilities to make integration with Digistore24's IPN system easy and secure.
@@ -261,8 +261,8 @@ composer test && composer cs:fix && composer analyze
 
 ## Questions?
 
-- **GitHub Issues**: https://github.com/GoSuccess-GmbH/digistore24-ipn/issues
-- **Discussions**: https://github.com/GoSuccess-GmbH/digistore24-ipn/discussions
+- **GitHub Issues**: https://github.com/GoSuccessHQ/digistore24-ipn/issues
+- **Discussions**: https://github.com/GoSuccessHQ/digistore24-ipn/discussions
 
 ## Error Handling
 
