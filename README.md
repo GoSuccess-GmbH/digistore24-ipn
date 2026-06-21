@@ -144,6 +144,27 @@ if ($notification->isTestMode()) {
 }
 ```
 
+### Unknown Fields
+
+Digistore24 keeps adding and changing IPN fields. Any field without a declared
+property is kept as a **raw value** (no type conversion) and is accessible like
+a normal property — so new fields are available immediately and never lost:
+
+```php
+$notification->some_new_field;          // raw string value, or null if absent
+```
+
+For static-analysis-safe access (PhpStan/Psalm can't know arbitrary field
+names), use `getDynamicFields()`:
+
+```php
+$extra = $notification->getDynamicFields();  // ['some_new_field' => '...', ...]
+$value = $extra['some_new_field'] ?? null;
+```
+
+Unknown fields are also included in `toArray()` / `toJson()`, so serialization
+stays lossless.
+
 ### Unknown Events
 
 Unknown or future event values resolve to `null` instead of throwing, so new

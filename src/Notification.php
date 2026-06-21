@@ -66,6 +66,15 @@ use GoSuccess\Digistore24\Ipn\Util\TypeConverter;
  *     echo $tag;
  * }
  * ```
+ *
+ * UNKNOWN FIELDS:
+ * Digistore24 adds and changes IPN fields over time. Any field that is not a
+ * declared property is kept as a raw field (value taken as-is, no type
+ * conversion) and is accessible like a normal property, so new fields are
+ * immediately available and never lost:
+ * ```php
+ * $notification->some_new_field; // raw string value sent by Digistore24
+ * ```
  */
 final class Notification
 {
@@ -762,14 +771,64 @@ final class Notification
     public ?string $tag = null;
 
     /**
+     * Raw, unmapped Digistore24 fields (anything without a declared property).
+     *
+     * Values are stored exactly as received, without type conversion.
+     *
+     * @var array<string, mixed>
+     */
+    private array $dynamicFields = [];
+
+    /**
+     * Read an unknown Digistore24 field as its raw value (null if absent).
+     *
+     * @param string $name The field name
+     */
+    public function __get(string $name): mixed
+    {
+        return $this->dynamicFields[$name] ?? null;
+    }
+
+    /**
+     * Store an unknown Digistore24 field as its raw value (no type conversion).
+     *
+     * @param string $name The field name
+     */
+    public function __set(string $name, mixed $value): void
+    {
+        $this->dynamicFields[$name] = $value;
+    }
+
+    public function __isset(string $name): bool
+    {
+        return isset($this->dynamicFields[$name]);
+    }
+
+    public function __unset(string $name): void
+    {
+        unset($this->dynamicFields[$name]);
+    }
+
+    /**
+     * Get all raw unknown fields that were received but have no declared property.
+     *
+     * @return array<string, mixed>
+     */
+    public function getDynamicFields(): array
+    {
+        return $this->dynamicFields;
+    }
+
+    /**
      * Create Notification instance from associative array.
      *
      * This factory method creates a new Notification object and populates it
      * with data from an associative array. Property Hooks automatically handle
-     * all type conversions (strings → int, float, bool, DateTimeImmutable, Enums).
+     * all type conversions (strings → int, float, bool, DateTimeImmutable, Enums)
+     * for declared properties.
      *
-     * Only properties that exist in the Notification class will be set.
-     * Unknown keys in the input array are safely ignored.
+     * Keys without a declared property are kept as raw dynamic properties (value
+     * taken as-is), so new or changed Digistore24 fields are never lost.
      *
      * @param array<string, mixed> $data Associative array with IPN field names as keys
      *
@@ -798,10 +857,9 @@ final class Notification
         unset($data['SHASIGN']);
 
         foreach ($data as $key => $value) {
-            // Only set properties that actually exist in the class
-            if (property_exists($dto, $key)) {
-                $dto->$key = $value; // Property Hook handles type conversion
-            }
+            // Declared properties run through their type hook; unknown fields
+            // are kept as raw dynamic properties so nothing is ever lost.
+            $dto->$key = $value;
         }
 
         return $dto;

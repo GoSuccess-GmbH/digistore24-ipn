@@ -55,6 +55,11 @@ final class NotificationSerializer
             }
         }
 
+        // Append raw unknown fields so serialization stays lossless
+        foreach ($notification->getDynamicFields() as $property => $value) {
+            $data[$property] = $value;
+        }
+
         return $data;
     }
 

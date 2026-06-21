@@ -168,6 +168,34 @@ final class NotificationTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_unknown_fields_as_raw_dynamic_properties(): void
+    {
+        // Digistore24 keeps adding/changing fields; unknown ones must survive
+        // as raw properties without any type conversion.
+        $notification = Notification::fromArray([
+            'event' => 'on_payment',
+            'ds24_brand_new_field' => 'hello',
+            'another_new_flag' => 'Y',      // must stay 'Y', not become bool
+            'numeric_looking_id' => '01067', // leading zero must be preserved
+        ]);
+
+        // Direct property access works at runtime (magic getter). Static
+        // analysis cannot know arbitrary field names, hence the ignore.
+        // @phpstan-ignore property.notFound
+        $this->assertSame('hello', $notification->ds24_brand_new_field);
+
+        // Static-analysis-safe access to the same raw values.
+        $extra = $notification->getDynamicFields();
+        $this->assertSame('hello', $extra['ds24_brand_new_field']);
+        $this->assertSame('Y', $extra['another_new_flag']);
+        $this->assertSame('01067', $extra['numeric_looking_id']);
+
+        // Unknown fields are serialized too (lossless round-trip).
+        $this->assertSame('hello', $notification->toArray()['ds24_brand_new_field']);
+        $this->assertSame('hello', Notification::fromJson($notification->toJson())->getDynamicFields()['ds24_brand_new_field']);
+    }
+
+    #[Test]
     public function it_returns_false_for_null_event(): void
     {
         $notification = new Notification();
