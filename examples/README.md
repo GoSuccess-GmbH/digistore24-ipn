@@ -232,7 +232,6 @@ $customer = [
 - [Digistore24 IPN Documentation](https://dev.digistore24.com/)
 - [Main README](../README.md)
 - [CHANGELOG](../CHANGELOG.md)
-- [Contributing Guide](../CONTRIBUTING.md)
 
 ---
 

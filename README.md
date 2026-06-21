@@ -210,7 +210,6 @@ composer test && composer cs:fix && composer analyze
 
 - **[UPGRADE.md](docs/UPGRADE.md)** - Upgrade guide from v1.x to v2.0
 - **[CHANGELOG.md](CHANGELOG.md)** - Version history and all changes
-- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contribution guidelines
 - **[examples/](examples/)** - Practical code examples
 
 ## Questions?
