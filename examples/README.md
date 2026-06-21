@@ -52,6 +52,18 @@ Demonstrates direct property access and automatic type conversions.
 
 **Use this when:** You need to understand how Property Hooks work.
 
+### 4. `ipn-receiver.php`
+A capture/inspection receiver: stores every incoming IPN (raw + parsed) for
+later analysis and always replies `OK`.
+
+**Features:**
+- Records the full payload as JSON (plus an appended `ipn.jsonl`)
+- Optional signature validation (logged, never rejected)
+- Writes logs outside the web root so customer data stays private
+
+**Use this when:** You want to capture real Digistore24 IPNs to inspect which
+fields are sent, or to replay/debug them later.
+
 ---
 
 ## 🚀 Quick Start
